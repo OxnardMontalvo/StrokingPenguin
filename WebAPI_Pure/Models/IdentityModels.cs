@@ -26,9 +26,7 @@ namespace WebAPI_Pure.Models {
 	}
 
 	public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
-		public ApplicationDbContext()
-			: base("DefaultConnection", throwIfV1Schema: false) {
-		}
+		public ApplicationDbContext() : base("StrokingPenguin", throwIfV1Schema: false) { }
 
 		public static ApplicationDbContext Create() {
 			return new ApplicationDbContext();
