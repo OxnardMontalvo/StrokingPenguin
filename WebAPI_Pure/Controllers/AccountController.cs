@@ -22,20 +22,20 @@ namespace WebAPI_Pure.Controllers {
 	[RoutePrefix("api/Account")]
 	public class AccountController : ApiController {
 		private const string LocalLoginProvider = "Local";
-		private ApplicationUserManager _userManager;
+		private AppUserManager _userManager;
 
 		public AccountController() {
 		}
 
-		public AccountController(ApplicationUserManager userManager,
+		public AccountController(AppUserManager userManager,
 			ISecureDataFormat<AuthenticationTicket> accessTokenFormat) {
 			UserManager = userManager;
 			AccessTokenFormat = accessTokenFormat;
 		}
 
-		public ApplicationUserManager UserManager {
+		public AppUserManager UserManager {
 			get {
-				return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+				return _userManager ?? Request.GetOwinContext().GetUserManager<AppUserManager>();
 			}
 			private set {
 				_userManager = value;
@@ -211,7 +211,7 @@ namespace WebAPI_Pure.Controllers {
 				return new ChallengeResult(provider, this);
 			}
 
-			ApplicationUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+			AppUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
 				externalLogin.ProviderKey));
 
 			bool hasRegistered = user != null;
@@ -277,7 +277,7 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest(ModelState);
 			}
 
-			var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+			var user = new AppUser() { UserName = model.Email, Email = model.Email };
 
 			IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -302,7 +302,7 @@ namespace WebAPI_Pure.Controllers {
 				return InternalServerError();
 			}
 
-			var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+			var user = new AppUser() { UserName = model.Email, Email = model.Email };
 
 			IdentityResult result = await UserManager.CreateAsync(user);
 			if ( !result.Succeeded ) {

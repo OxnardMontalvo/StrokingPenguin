@@ -8,8 +8,8 @@ using System.Collections.Generic;
 
 namespace WebAPI_Pure.Models {
 	// You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-	public class ApplicationUser : IdentityUser {
-		public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType) {
+	public class AppUser : IdentityUser {
+		public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager, string authenticationType) {
 			// Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
 			var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
 			// Add custom user claims here
@@ -25,11 +25,11 @@ namespace WebAPI_Pure.Models {
 		public ICollection<Flyer> Flyers { get; set; }
 	}
 
-	public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
-		public ApplicationDbContext() : base("StrokingPenguin", throwIfV1Schema: false) { }
+	public class AppDB : IdentityDbContext<AppUser> {
+		public AppDB() : base("StrokingPenguin", throwIfV1Schema: false) { }
 
-		public static ApplicationDbContext Create() {
-			return new ApplicationDbContext();
+		public static AppDB Create() {
+			return new AppDB();
 		}
 
 		public DbSet<Flyer> Flyers { get; set; }
