@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,10 @@ namespace WebAPI_Pure.Controllers {
 			pass = GeneratePassword();
 			pass = GeneratePassword();
 			pass = GeneratePassword();
+
+			//var user = new AddUserViewModel { Email = "user@local.se", Name = "Ad Min", Address = "Adminroad 44", PostalCode = "690 69", County = "Admina" };
+			//AddUser(user);
+
 			GetUsers();
 			return View();
 		}
@@ -54,8 +59,14 @@ namespace WebAPI_Pure.Controllers {
 
 		[HttpPost]
 		public JsonResult GetUsers() {
-			var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).ToList();
-			return Json(users);
+			try {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).ToList();
+				return Json(users);
+
+			} catch ( Exception ex ) {
+
+				return null;
+			}
 		}
 
 		[HttpPost]
@@ -106,9 +117,9 @@ namespace WebAPI_Pure.Controllers {
 						UserName = vm.Email,
 						Email = vm.Email,
 						PostalCode = vm.PostalCode,
-						County = vm.County
+						County = vm.County,
+						Flyers = new Collection<Flyer>() { flyer }
 					};
-					user.Flyers.Add(flyer);
 					var result = await UserManager.CreateAsync(user, GeneratePassword());
 					if ( result.Succeeded ) {
 						UserManager.AddToRole(user.Id, "User");
@@ -150,6 +161,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// Helper functions
+
 		public string GeneratePassword() {
 			string password = "";
 			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/";
