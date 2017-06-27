@@ -103,12 +103,15 @@ namespace WebAPI_Pure.Controllers {
 					County = vm.County,
 					Flyers = new Collection<Flyer>() { flyer }
 				};
-				var newUser = DB.Users.Add(user);
-				if ( DB.SaveChanges() == 0 ) {
-					return Conflict();
+				var result = UserManager.Create(user, GeneratePassword());
+				if ( result.Succeeded ) {
+					UserManager.AddToRole(user.Id, "User");
+					DB.SaveChanges();
+					return Ok(result);
 				}
+
 				//return Created<AppUser>(Request.RequestUri + newUser.Id, newUser);
-				return Created<AddUserViewModel>(Request.RequestUri + newUser.Id, vm);
+				return Created<AddUserViewModel>(Request.RequestUri + user.Id, vm);
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
@@ -167,6 +170,18 @@ namespace WebAPI_Pure.Controllers {
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
+		}
+
+		// Helper functions
+
+		public string GeneratePassword() {
+			string password = "";
+			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/";
+			Random r = new Random();
+			int length = r.Next(20, 32);
+			for ( int i = 0; i <= length; i++ )
+				password += passwordChars.Substring(r.Next(0, passwordChars.Length - 1), 1);
+			return password;
 		}
 	}
 
