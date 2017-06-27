@@ -20,8 +20,8 @@ namespace WebAPI_Pure.Models {
 		public string Address { get; set; }
 		public string PostalCode { get; set; }
 		public string County { get; set; }
-		public int DistrictNumber { get; set; }
-		public int DeliveryOrderNumber { get; set; }
+		public int? DistrictNumber { get; set; }
+		public int? DeliveryOrderNumber { get; set; }
 		public ICollection<Flyer> Flyers { get; set; }
 	}
 
@@ -34,7 +34,6 @@ namespace WebAPI_Pure.Models {
 
 		public DbSet<Flyer> Flyers { get; set; }
 		public DbSet<Category> Categories { get; set; }
-
 	}
 
 	public class Flyer {
@@ -49,12 +48,13 @@ namespace WebAPI_Pure.Models {
 		public ICollection<Flyer> Flyers { get; set; }
 	}
 
-
 	public class AddUserViewModel {
 		public string Name { get; set; }
 		public string Address { get; set; }
 		public string Email { get; set; }
 		public string PostalCode { get; set; }
 		public string County { get; set; }
+		public int? DistrictNumber { get; set; }
+		public int? DeliveryOrderNumber { get; set; }
 	}
 }
