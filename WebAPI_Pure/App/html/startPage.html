@@ -1,0 +1,72 @@
+﻿<div ng-show="vm.show == true" class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="ma-customHeader">
+            Information
+        </div>
+        <div class="ma-border">
+            <div class="ma-wrap-padding">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer blandit ex a nibh mollis, vitae ornare mi rhoncus.
+                    Quisque luctus mauris eu urna suscipit, at varius enim blandit. Sed eu lectus in tortor cursus condimentum.
+                    Fusce in libero pulvinar, venenatis urna sed, condimentum felis. Phasellus interdum nec arcu finibus pulvinar.
+                    Nullam pretium accumsan ante, sed interdum risus laoreet quis. Duis finibus leo eleifend magna hendrerit, vitae aliquet velit egestas.
+                    Nam lacinia magna at metus aliquet condimentum. Suspendisse dolor diam, faucibus vitae tempus a, consectetur at libero.
+                    Sed eget purus ac ante faucibus pulvinar. Integer vitae erat felis. Sed magna nisl, condimentum id dignissim eu, venenatis id erat.
+                    Cras gravida leo laoreet gravida dapibus. Sed vehicula nisi mi, at suscipit neque viverra nec. Curabitur lacus mi, congue in efficitur vel, vehicula non libero.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="ma-customHeader">
+            Intresseanmälan
+        </div>
+        <div class="ma-border">
+            <div class="ma-center ma-wrap-padding">
+                <form>
+                    <div class="form-group">
+                        <input class="form-control input-lg" type="text" placeholder="Namn" />
+                        <input class="form-control input-lg" type="text" placeholder="Adress" />
+                        <input class="form-control input-lg" type="text" placeholder="Ort" />
+                        <input class="form-control input-lg" type="text" placeholder="Post nummer" />
+                        <input class="form-control input-lg" type="text" placeholder="Epost" />
+                    </div>
+                    <input ng-click="" type="submit" class="ma-btn-lg btn-success" value="Anmäl dig" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-hide="vm.phaseOneHide == true" class="row ma-main">
+    <div class="col-xs-12 col-md-6">
+        <div class="ma-border">
+            <div class="ma-center ma-wrap-padding">
+                <form>
+                    <div class="form-group">
+                        <input disabled class="form-control input-lg" type="text" placeholder="Namn" />
+                        <input disabled class="form-control input-lg" type="text" placeholder="Adress" />
+                        <input disabled class="form-control input-lg" type="text" placeholder="Ort" />
+                        <input disabled class="form-control input-lg" type="text" placeholder="Post nummer" />
+                        <input disabled class="form-control input-lg" type="text" placeholder="Epost" />
+                        <input disabled class="form-control input-lg" type="text" placeholder="Lösenord" />
+                        <input disabled class="form-control input-lg" type="text" placeholder="Repetera ditt lösenord" />
+                    </div>
+                    <input disabled ng-click="" type="submit" class="ma-btn-lg btn-success" value="Registrera dig" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="ma-border">
+            <div class="ma-center ma-wrap-padding">
+                <form>
+                    <div class="form-group">
+                        <input class="form-control input-lg" type="email" placeholder="Epost" />
+                        <input class="form-control input-lg" type="password" placeholder="Lösenord" />
+                    </div>
+                    <input type="submit" class="ma-btn-lg btn-success" value="Logga in" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
