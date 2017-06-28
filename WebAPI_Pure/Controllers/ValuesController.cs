@@ -92,7 +92,7 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
-				if ( flyer != null ) {
+				if ( flyer == null ) {
 					return BadRequest("No flyers available");
 				}
 
@@ -110,7 +110,7 @@ namespace WebAPI_Pure.Controllers {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 					await DB.SaveChangesAsync();
 					return Ok(result);
-				}
+                }
 
 				//return Created<AppUser>(Request.RequestUri + newUser.Id, newUser);
 				return Created<AddUserViewModel>(Request.RequestUri + user.Id, vm);

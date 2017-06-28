@@ -3,6 +3,18 @@
     angular.module("services")
     .factory("userAccount", ["$resource", "appSettings", userAccount])
 
+    .factory("noticeOfIntrest", ["$resource", "appSettings", noticeOfIntrest])
+
+    .factory("displayUsers", ["$resource", "appSettings", displayUsers])
+
+    function displayUsers($resource, appSettings) {
+        return $resource(appSettings.serverPath + "api/Users", null);
+    };
+
+    function noticeOfIntrest($resource, appSettings) {
+        return $resource(appSettings.serverPath + "api/Users", null);
+    };
+
     function userAccount($resource, appSettings) {
         return $resource(appSettings.serverPath + "/Token", null,
             {

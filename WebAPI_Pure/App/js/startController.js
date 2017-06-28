@@ -2,11 +2,21 @@
     "use strict";
 
     angular.module("app")
-    .controller("startCtrl", function () {
+    .controller("startCtrl", function (noticeOfIntrest) {
         var vm = this;
 
         vm.show = true;
         vm.phaseOneHide = true;
+
+        vm.formData = {};
+
+        vm.submitForm = function () {
+
+            noticeOfIntrest.save(vm.formData);
+
+            vm.formData = {};
+        };
+
     })
     .controller("adminLoginCtrl", function (userAccount) {
         var vm = this;
@@ -41,6 +51,11 @@
                 vm.message = "ERROR";
             })
         };
+
+    })
+    .controller("adminDisplayCtrl", function (displayUsers) {
+        var vm = this;
+
 
     });
 

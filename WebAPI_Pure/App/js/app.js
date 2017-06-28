@@ -18,6 +18,16 @@
             controller: "adminLoginCtrl",
             controllerAs: "vm"
         })
+        .when("/Admin", {
+            templateUrl: "App/html/adminPage.html",
+            controller: "adminDisplayCtrl",
+            controllerAs: "vm"
+        })
+        .when("/User", {
+            templateUrl: "",
+            controller: "",
+            controllerAs: ""
+        })
         .otherwise({
             redirectTo: "/"
         });
