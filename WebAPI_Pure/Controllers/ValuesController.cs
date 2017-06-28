@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Web.Http.Description;
 using System.Web.Http.OData;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace WebAPI_Pure.Controllers {
 	//[Authorize]
@@ -52,6 +53,7 @@ namespace WebAPI_Pure.Controllers {
 				return InternalServerError(ex);
 			}
 		}
+
 		// GET: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[ResponseType(typeof(AddUserViewModel))]
 		//[Authorize()]
@@ -79,7 +81,7 @@ namespace WebAPI_Pure.Controllers {
 		// POST: api/Users
 		[ResponseType(typeof(AddUserViewModel))]
 		[Route("api/Users")]
-		public IHttpActionResult Post([FromBody]AddUserViewModel vm) {
+		public async Task<IHttpActionResult> Post([FromBody]AddUserViewModel vm) {
 			try {
 				if ( vm == null ) {
 					return BadRequest("User cannot be null");
@@ -89,7 +91,7 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var flyer = DB.Flyers.FirstOrDefault();
+				var flyer = await DB.Flyers.FirstOrDefaultAsync();
 				if ( flyer != null ) {
 					return BadRequest("No flyers available");
 				}
@@ -103,10 +105,10 @@ namespace WebAPI_Pure.Controllers {
 					County = vm.County,
 					Flyers = new Collection<Flyer>() { flyer }
 				};
-				var result = UserManager.Create(user, GeneratePassword());
+				var result = await UserManager.CreateAsync(user, GeneratePassword());
 				if ( result.Succeeded ) {
-					UserManager.AddToRole(user.Id, "User");
-					DB.SaveChanges();
+					await UserManager.AddToRoleAsync(user.Id, "User");
+					await DB.SaveChangesAsync();
 					return Ok(result);
 				}
 
@@ -119,7 +121,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[Route("api/Users/{id}")]
-		public IHttpActionResult Put(string id, [FromBody]AddUserViewModel vm) {
+		public async Task<IHttpActionResult> Put(string id, [FromBody]AddUserViewModel vm) {
 			try {
 				if ( vm == null ) {
 					return BadRequest("User cannot be null");
@@ -139,7 +141,7 @@ namespace WebAPI_Pure.Controllers {
 					PostalCode = vm.PostalCode,
 					County = vm.County
 				};
-				if ( DB.SaveChanges() == 0 ) {
+				if ( await DB.SaveChangesAsync() == 0 ) {
 					return NotFound();
 				}
 				return Ok();
@@ -150,7 +152,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// DELETE: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[Route("api/Users/{id}")]
-		public IHttpActionResult Delete(string id) {
+		public async Task<IHttpActionResult> Delete(string id) {
 			try {
 				if ( id == null ) {
 					return BadRequest("User cannot be null");
@@ -163,7 +165,7 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				DB.Users.Remove(user);
-				if ( DB.SaveChanges() == 0 ) {
+				if ( await DB.SaveChangesAsync() == 0 ) {
 					return NotFound();
 				}
 				return Ok();
