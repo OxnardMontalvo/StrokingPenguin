@@ -8,9 +8,7 @@
         vm.show = true;
         vm.phaseOneHide = true;
     })
-    .controller("adminLoginCtrl", ["userAccount", adminLoginCtrl]);
-
-    function adminLoginCtrl(userAccount) {
+    .controller("adminLoginCtrl", function (userAccount) {
         var vm = this;
 
         vm.show = false;
@@ -35,6 +33,7 @@
                 vm.message = "";
                 vm.password = "";
                 vm.token = data.access_token;
+
             },
             function (response) {
                 vm.password = "";
@@ -43,6 +42,6 @@
             })
         };
 
-    }
+    });
 
 })();

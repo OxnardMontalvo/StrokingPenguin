@@ -1,6 +1,5 @@
 ﻿(function () {
     "use strict";
-
     angular.module("services")
     .factory("userAccount", ["$resource", "appSettings", userAccount])
 

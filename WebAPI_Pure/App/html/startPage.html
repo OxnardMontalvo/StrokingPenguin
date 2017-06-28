@@ -61,10 +61,10 @@
             <div class="ma-center ma-wrap-padding">
                 <form>
                     <div class="form-group">
-                        <input class="form-control input-lg" type="email" placeholder="Epost" />
-                        <input class="form-control input-lg" type="password" placeholder="Lösenord" />
+                        <input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" />
+                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" />
                     </div>
-                    <input type="submit" class="ma-btn-lg btn-success" value="Logga in" />
+                    <input ng-click="vm.login()" type="submit" class="ma-btn-lg btn-success" value="Logga in" />
                 </form>
             </div>
         </div>
