@@ -248,6 +248,10 @@
     <Compile Include="Migrations\201706271128095_Init.Designer.cs">
       <DependentUpon>201706271128095_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706271009055_OptionalDiDeNumbers.cs" />
+    <Compile Include="Migrations\201706271009055_OptionalDiDeNumbers.Designer.cs">
+      <DependentUpon>201706271009055_OptionalDiDeNumbers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1112,6 +1116,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706271128095_Init.resx">
       <DependentUpon>201706271128095_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706271009055_OptionalDiDeNumbers.resx">
+      <DependentUpon>201706271009055_OptionalDiDeNumbers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
