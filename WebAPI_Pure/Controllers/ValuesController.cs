@@ -92,7 +92,7 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
-				if ( flyer != null ) {
+				if ( flyer == null ) {
 					return BadRequest("No flyers available");
 				}
 
