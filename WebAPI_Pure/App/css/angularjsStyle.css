@@ -14,6 +14,11 @@
     padding: .5em 1em;
     font-size: 1.5em;
 }
+.ma-btn-lg-w {
+    padding: .5em 1em;
+    font-size: 1.5em;
+    width: 10em;
+}
 
 .ma-placed-header {
     position: relative;
@@ -58,4 +63,30 @@
 
 .ma-wrap-padding {
     padding: 2em .75em .75em .75em;
+}
+
+.ma-show {
+    display: block;
+}
+
+.ma-hidden {
+    display: none;
+}
+
+@media only screen and (max-width : 480px) {
+    .ma-hidden {
+        display: block;
+    }
+    .ma-show {
+        display: none;
+    }
+}
+
+.ma-mobileMode, p {
+    font-weight: bold;
+    font-size: .75em;
+}
+.ma-mobileMode, p span {
+    font-style: italic;
+    font-size: .75em;
 }

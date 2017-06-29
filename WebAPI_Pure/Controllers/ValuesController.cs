@@ -15,7 +15,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace WebAPI_Pure.Controllers {
-	[Authorize(Roles = "Admin")]
+	//[Authorize(Roles = "Admin")]
 	public class UsersController : ApiController {
 		AppDB _db;
 		AppUserManager _userManager;

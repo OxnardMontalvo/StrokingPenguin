@@ -53,7 +53,7 @@
         };
 
     })
-    .controller("adminDisplayCtrl", function (displayUsers) {
+    .controller("adminDisplayCtrl", function (displayUsers, saveEditUser) {
         var vm = this;
 
         vm.users = [];
@@ -62,6 +62,41 @@
             displayUsers.query(function (data) {
                 angular.copy(data, vm.users);
             });
+        };
+
+        vm.show = true;
+        vm.hide = true;
+        vm.currentEdit = '';
+        var editData = {
+            Name: '',
+            Address: '',
+            PostalCode: '',
+            County: '',
+            Email: '',
+            DistrictNumber: '',
+            DeliveryOrderNumber: ''
+        };
+        vm.clickTest = function (email) {
+            if (vm.currentEdit == email) {
+                vm.currentEdit = '';
+            } else {
+                vm.currentEdit = email;
+            }
+            vm.show = false;
+            vm.hide = false;
+
+            saveEditUser.get({ id: "a7db7785-e5fb-4f07-a55a-13cdf4395510" }, function (data) {
+                angular.copy(data, editData);
+            });
+
+            console.log(editData);
+        };
+
+        vm.saveEdits = function () {
+            var user = {};
+            user = editData;
+
+            console.log(user);
         };
 
     });
