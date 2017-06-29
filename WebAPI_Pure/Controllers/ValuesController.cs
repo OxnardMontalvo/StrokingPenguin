@@ -15,7 +15,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace WebAPI_Pure.Controllers {
-	//[Authorize]
+	[Authorize(Roles = "Admin")]
 	public class UsersController : ApiController {
 		AppDB _db;
 		AppUserManager _userManager;
@@ -34,19 +34,20 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		// GET: api/Users
-		[EnableQuery()]
 		[ResponseType(typeof(AddUserViewModel))]
-		[Route("api/Users")]
-		public IHttpActionResult Get() {
+		[Route("api/Users/ByDN")]
+		[HttpGet]
+		public IHttpActionResult GetByDN() {
 			try {
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new AddUserViewModel {
 					Name = x.Name,
 					Address = x.Address,
 					PostalCode = x.PostalCode,
 					County = x.County,
-					Email = x.Email
-				}).ToList();
+					Email = x.Email,
+					DistrictNumber = x.DistrictNumber,
+					DeliveryOrderNumber = x.DeliveryOrderNumber
+				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
 			} catch ( Exception ex ) {
@@ -56,7 +57,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[ResponseType(typeof(AddUserViewModel))]
-		//[Authorize()]
 		[Route("api/Users/{id}")]
 		public IHttpActionResult Get(string id) {
 			try {
@@ -67,7 +67,9 @@ namespace WebAPI_Pure.Controllers {
 						Address = x.Address,
 						PostalCode = x.PostalCode,
 						County = x.County,
-						Email = x.Email
+						Email = x.Email,
+						DistrictNumber = x.DistrictNumber,
+						DeliveryOrderNumber = x.DeliveryOrderNumber
 					}).FirstOrDefault();
 				} else {
 					vm = new AddUserViewModel();
@@ -80,6 +82,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// POST: api/Users
 		[ResponseType(typeof(AddUserViewModel))]
+		[AllowAnonymous]
 		[Route("api/Users")]
 		public async Task<IHttpActionResult> Post([FromBody]AddUserViewModel vm) {
 			try {
@@ -139,7 +142,9 @@ namespace WebAPI_Pure.Controllers {
 					UserName = vm.Email,
 					Email = vm.Email,
 					PostalCode = vm.PostalCode,
-					County = vm.County
+					County = vm.County,
+					DistrictNumber = vm.DistrictNumber,
+					DeliveryOrderNumber = vm.DeliveryOrderNumber
 				};
 				if ( await DB.SaveChangesAsync() == 0 ) {
 					return NotFound();
@@ -175,7 +180,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// Helper functions
-
 		public string GeneratePassword() {
 			string password = "";
 			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/";
