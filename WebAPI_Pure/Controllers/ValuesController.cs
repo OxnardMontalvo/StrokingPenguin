@@ -34,19 +34,20 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		// GET: api/Users
-		[EnableQuery()]
 		[ResponseType(typeof(AddUserViewModel))]
-		[Route("api/Users")]
-		public IHttpActionResult Get() {
+		[Route("api/Users/ByDN")]
+		[HttpGet]
+		public IHttpActionResult GetByDN() {
 			try {
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new AddUserViewModel {
 					Name = x.Name,
 					Address = x.Address,
 					PostalCode = x.PostalCode,
 					County = x.County,
-					Email = x.Email
-				}).ToList();
+					Email = x.Email,
+					DistrictNumber = x.DistrictNumber,
+					DeliveryOrderNumber = x.DeliveryOrderNumber
+				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
 			} catch ( Exception ex ) {
