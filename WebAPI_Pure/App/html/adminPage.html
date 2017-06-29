@@ -53,16 +53,16 @@
                 <td>{{user.County}}</td>
                 <td>{{user.Email}}</td>
                 <td>
-                    <span ng-show="vm.currentEdit != user.Email">{{user.DistrictNumber}}</span>
-                    <input ng-model="vm.editData.DistrictNumber" ng-show="vm.currentEdit == user.Email" type="text" />
+                    <span ng-show="vm.currentEdit != user.Id">{{user.DistrictNumber}}</span>
+                    <input ng-model="user.DistrictNumber" ng-show="vm.currentEdit == user.Id" type="text" />
                 </td>
                 <td>
-                    <span ng-show="vm.currentEdit != user.Email">{{user.DeliveryOrderNumber}}</span>
-                    <input ng-model="vm.editData.DeliveryOrderNumber" ng-show="vm.currentEdit == user.Email" type="text" />
+                    <span ng-show="vm.currentEdit != user.Id">{{user.DeliveryOrderNumber}}</span>
+                    <input ng-model="user.DeliveryOrderNumber" ng-show="vm.currentEdit == user.Id" type="text" />
                 </td>
                 <td>
-                    <a ng-click="vm.saveEdits()" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Email">Spara</a>
-                    <a ng-click="vm.clickTest(user.Email)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Email">Ändra</a>
+                    <a ng-click="vm.saveEdits()" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id">Spara</a>
+                    <a ng-click="vm.clickTest(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Id">Ändra</a>
                 </td>
             </tr>
         </tbody>

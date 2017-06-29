@@ -68,6 +68,7 @@
         vm.hide = true;
         vm.currentEdit = '';
         var editData = {
+            Id: '',
             Name: '',
             Address: '',
             PostalCode: '',
@@ -76,16 +77,16 @@
             DistrictNumber: '',
             DeliveryOrderNumber: ''
         };
-        vm.clickTest = function (email) {
-            if (vm.currentEdit == email) {
+        vm.clickTest = function (getId) {
+            if (vm.currentEdit == getId) {
                 vm.currentEdit = '';
             } else {
-                vm.currentEdit = email;
+                vm.currentEdit = getId;
             }
             vm.show = false;
             vm.hide = false;
 
-            saveEditUser.get({ id: "a7db7785-e5fb-4f07-a55a-13cdf4395510" }, function (data) {
+            saveEditUser.get({ id: getId }, function (data) {
                 angular.copy(data, editData);
             });
 
@@ -93,10 +94,10 @@
         };
 
         vm.saveEdits = function () {
-            var user = {};
-            user = editData;
 
-            console.log(user);
+            console.log(vm.users);
+
+
         };
 
     });
