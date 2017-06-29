@@ -36,11 +36,12 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users
 		//[EnableQuery()]
-		[ResponseType(typeof(AddUserViewModel))]
+		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users")]
 		public IHttpActionResult Get() {
 			try {
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new AddUserViewModel {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new UserViewModel {
+					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
 					PostalCode = x.PostalCode,
@@ -57,7 +58,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Users/5/2
-		[ResponseType(typeof(AddUserViewModel))]
+		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/{take}/{page}")]
 		[HttpGet]
 		public IHttpActionResult Get(int take, int page = 0) {
@@ -65,7 +66,8 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest("Invalid");
 			}
 			try {
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new AddUserViewModel {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new UserViewModel {
+					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
 					PostalCode = x.PostalCode,
@@ -82,13 +84,14 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[ResponseType(typeof(AddUserViewModel))]
+		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/{id}")]
 		public IHttpActionResult Get(string id) {
 			try {
-				AddUserViewModel vm;
+				UserViewModel vm;
 				if ( id.Length > 0 ) {
-					vm = DB.Users.Include(x => x.Flyers).Where(x => x.Id == id).Select(x => new AddUserViewModel {
+					vm = DB.Users.Include(x => x.Flyers).Where(x => x.Id == id).Select(x => new UserViewModel {
+						Id = x.Id,
 						Name = x.Name,
 						Address = x.Address,
 						PostalCode = x.PostalCode,
@@ -98,7 +101,7 @@ namespace WebAPI_Pure.Controllers {
 						DeliveryOrderNumber = x.DeliveryOrderNumber
 					}).FirstOrDefault();
 				} else {
-					vm = new AddUserViewModel();
+					vm = new UserViewModel();
 				}
 				return Ok(vm);
 			} catch ( Exception ex ) {
@@ -107,10 +110,10 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Users
-		[ResponseType(typeof(AddUserViewModel))]
+		[ResponseType(typeof(UserViewModel))]
 		[AllowAnonymous]
 		[Route("api/Users")]
-		public async Task<IHttpActionResult> Post([FromBody]AddUserViewModel vm) {
+		public async Task<IHttpActionResult> Post([FromBody]UserViewModel vm) {
 			try {
 				if ( vm == null ) {
 					return BadRequest("User cannot be null");
@@ -142,7 +145,7 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				//return Created<AppUser>(Request.RequestUri + newUser.Id, newUser);
-				return Created<AddUserViewModel>(Request.RequestUri + user.Id, vm);
+				return Created<UserViewModel>(Request.RequestUri + user.Id, vm);
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
@@ -150,7 +153,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[Route("api/Users/{id}")]
-		public async Task<IHttpActionResult> Put(string id, [FromBody]AddUserViewModel vm) {
+		public async Task<IHttpActionResult> Put(string id, [FromBody]UserViewModel vm) {
 			try {
 				if ( vm == null ) {
 					return BadRequest("User cannot be null");
@@ -162,7 +165,6 @@ namespace WebAPI_Pure.Controllers {
 
 				var user = DB.Users.FirstOrDefault(x => x.Id == id);
 				user = new AppUser {
-					Id = user.Id,
 					Name = vm.Name,
 					Address = vm.Address,
 					UserName = vm.Email,

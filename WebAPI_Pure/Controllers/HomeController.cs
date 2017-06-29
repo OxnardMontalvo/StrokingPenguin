@@ -106,7 +106,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		[HttpPost]
-		public async Task<JsonResult> AddUser(AddUserViewModel vm) {
+		public async Task<JsonResult> AddUser(UserViewModel vm) {
 			if ( ModelState.IsValid ) {
 				var flyer = DB.Flyers.FirstOrDefault();
 				if ( flyer != null ) {

@@ -48,7 +48,8 @@ namespace WebAPI_Pure.Models {
 		public ICollection<Flyer> Flyers { get; set; }
 	}
 
-	public class AddUserViewModel {
+	public class UserViewModel {
+		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Address { get; set; }
 		public string Email { get; set; }
