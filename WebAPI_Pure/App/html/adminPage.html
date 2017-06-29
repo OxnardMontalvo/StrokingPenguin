@@ -61,7 +61,7 @@
                     <input ng-model="user.DeliveryOrderNumber" ng-show="vm.currentEdit == user.Id" type="text" />
                 </td>
                 <td>
-                    <a ng-click="vm.saveEdits()" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id">Spara</a>
+                    <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id">Spara</a>
                     <a ng-click="vm.clickTest(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Id">Ändra</a>
                 </td>
             </tr>

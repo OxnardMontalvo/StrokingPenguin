@@ -86,18 +86,25 @@
             vm.show = false;
             vm.hide = false;
 
-            saveEditUser.get({ id: getId }, function (data) {
-                angular.copy(data, editData);
-            });
+            //saveEditUser.get({ id: getId }, function (data) {
+            //    angular.copy(data, editData);
+            //});
 
-            console.log(editData);
+            //console.log(editData);
         };
 
-        vm.saveEdits = function () {
+        vm.saveEdits = function (getId) {
 
             console.log(vm.users);
-
-
+            var editUser = {};
+            for (var i = 0; i < vm.users.length; i++) {
+                if (vm.users[i].Id == getId ) {
+                    editUser = vm.users[i];
+                    break;
+                };
+            };
+            console.log(editUser);
+            saveEditUser.update({ id: getId }, editUser);
         };
 
     });
