@@ -1,7 +1,7 @@
 ﻿
 <div class="row">
     <div class="col-xs-12">
-        <button class="ma-btn-lg" type="button">Lista användare</button>
+        <button ng-click="vm.getList()" class="ma-btn-lg" type="button">Lista användare</button>
         <button class="ma-btn-lg" type="button">Skriv ut</button>
     </div>
 </div>
@@ -19,14 +19,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr ng-repeat="user in vm.users">
+                <td>{{user.Name}}</td>
+                <td>{{user.Address}}</td>
+                <td>{{user.County}}</td>
+                <td>{{user.Email}}</td>
+                <td>{{user.DistrictNumber}}</td>
+                <td>{{user.DeliveryOrderNumber}}</td>
+            </tr>
+            <!--<tr>
                 <td>Markus</td>
                 <td>testv. 34</td>
                 <td>Växjö</td>
                 <td>ma@ma.se</td>
                 <td>3</td>
                 <td>23</td>
-            </tr>
+                DistrictNumber = x.DistrictNumber,
+                DeliveryOrderNumber = x.DeliveryOrderNumber
+            </tr>-->
         </tbody>
     </table>
 </div>

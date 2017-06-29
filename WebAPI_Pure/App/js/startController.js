@@ -56,6 +56,13 @@
     .controller("adminDisplayCtrl", function (displayUsers) {
         var vm = this;
 
+        vm.users = [];
+
+        vm.getList = function () {
+            displayUsers.query(function (data) {
+                angular.copy(data, vm.users);
+            });
+        };
 
     });
 

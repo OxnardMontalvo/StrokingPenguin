@@ -1,21 +1,7 @@
 ﻿(function () {
     "use strict";
     angular.module("services")
-    .factory("userAccount", ["$resource", "appSettings", userAccount])
-
-    .factory("noticeOfIntrest", ["$resource", "appSettings", noticeOfIntrest])
-
-    .factory("displayUsers", ["$resource", "appSettings", displayUsers])
-
-    function displayUsers($resource, appSettings) {
-        return $resource(appSettings.serverPath + "api/Users", null);
-    };
-
-    function noticeOfIntrest($resource, appSettings) {
-        return $resource(appSettings.serverPath + "api/Users", null);
-    };
-
-    function userAccount($resource, appSettings) {
+    .factory("userAccount", ["$resource", "appSettings", function ($resource, appSettings) {
         return $resource(appSettings.serverPath + "/Token", null,
             {
                 'loginUser': {
@@ -29,6 +15,19 @@
                     }
                 }
             });
-    }
+    }])
+
+    .factory("noticeOfIntrest", ["$resource", "appSettings", function ($resource, appSettings) {
+        return $resource(appSettings.serverPath + "api/Users", null);
+    }])
+
+    .factory("displayUsers", ["$resource", "appSettings", function ($resource, appSettings) {
+        return $resource(appSettings.serverPath + "api/Users", null);
+    }])
+
+    .factory("editUser", ["$resource", "appSettings", function ($resource, appSettings) {
+        return $resource(appSettings.serverPath + "api/Users", null);
+    }]);
+
 
 })();
