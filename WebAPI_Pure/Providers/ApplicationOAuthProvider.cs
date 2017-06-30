@@ -36,11 +36,11 @@ namespace WebAPI_Pure.Providers {
 			ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, OAuthDefaults.AuthenticationType);
 			ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
 
-
 			// TESTING CLAIMS DANGER! DANGER!
 			var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 			identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
 			identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+			//TODO: Add filtering logic to give the right claim to ther right user.
 			//identity.AddClaim(new Claim(ClaimTypes.Role, "User"));
 			// TESTING CLAIMS END
 
@@ -48,7 +48,6 @@ namespace WebAPI_Pure.Providers {
 			AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
 			context.Validated(ticket);
 			context.Request.Context.Authentication.SignIn(cookiesIdentity);
-
 		}
 
 		public override Task TokenEndpoint(OAuthTokenEndpointContext context) {
