@@ -13,6 +13,8 @@ using System.Web.Http.Description;
 using System.Web.Http.OData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace WebAPI_Pure.Controllers {
 	//[Authorize(Roles = "Admin")]
@@ -34,10 +36,14 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
+		//void RoloMano() {
+		//	var roleMan = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
+		//}
+
 		// GET: api/Users
 		//[EnableQuery()]
 		[ResponseType(typeof(UserViewModel))]
-		[Route("api/Users")]
+		[System.Web.Http.Route("api/Users")]
 		public IHttpActionResult Get() {
 			try {
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new UserViewModel {
@@ -59,8 +65,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/5/2
 		[ResponseType(typeof(UserViewModel))]
-		[Route("api/Users/{take}/{page}")]
-		[HttpGet]
+		[System.Web.Http.Route("api/Users/{take}/{page}")]
 		public IHttpActionResult Get(int take, int page = 0) {
 			if ( take < 1 || page < 1 ) {
 				return BadRequest("Invalid");
@@ -85,7 +90,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[ResponseType(typeof(UserViewModel))]
-		[Route("api/Users/{id}")]
+		[System.Web.Http.Route("api/Users/{id}")]
 		public IHttpActionResult Get(string id) {
 			try {
 				UserViewModel vm;
@@ -111,8 +116,8 @@ namespace WebAPI_Pure.Controllers {
 
 		// POST: api/Users
 		[ResponseType(typeof(UserViewModel))]
-		[AllowAnonymous]
-		[Route("api/Users")]
+		[System.Web.Http.AllowAnonymous]
+		[System.Web.Http.Route("api/Users")]
 		public async Task<IHttpActionResult> Post([FromBody]UserViewModel vm) {
 			try {
 				if ( vm == null ) {
@@ -151,7 +156,8 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[Route("api/Users/{id}")]
+		[System.Web.Http.Route("api/Users/{id}")]
+		[ValidateAntiForgeryToken]
 		public async Task<IHttpActionResult> Put(string id, [FromBody]UserViewModel vm) {
 			try {
 				if ( vm == null ) {
@@ -182,7 +188,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// DELETE: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[Route("api/Users/{id}")]
+		[System.Web.Http.Route("api/Users/{id}")]
 		public async Task<IHttpActionResult> Delete(string id) {
 			try {
 				if ( id == null ) {
@@ -228,7 +234,7 @@ namespace WebAPI_Pure.Controllers {
 		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
-		[Route("api/UserFlyers/{guid}")]
+		[System.Web.Http.Route("api/UserFlyers/{guid}")]
 		public IHttpActionResult Get(string guid) {
 			try {
 				return Ok(DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid).Flyers);
@@ -241,7 +247,7 @@ namespace WebAPI_Pure.Controllers {
 		// GET: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
 		[ResponseType(typeof(Flyer))]
 		//[Authorize()]
-		[Route("api/UserFlyers/{guid}/{id}")]
+		[System.Web.Http.Route("api/UserFlyers/{guid}/{id}")]
 		public IHttpActionResult Get(string guid, int id) {
 			try {
 				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
@@ -252,8 +258,9 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0
+		[ValidateAntiForgeryToken]
 		[ResponseType(typeof(Flyer))]
-		[Route("api/UserFlyers/{guid}/{id}")]
+		[System.Web.Http.Route("api/UserFlyers/{guid}/{id}")]
 		public IHttpActionResult Post(string guid, int id) {
 			try {
 				if ( id <= 0 || string.IsNullOrEmpty(guid) ) {
@@ -285,7 +292,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// DELETE: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[Route("api/UserFlyers/{guid}")]
+		[System.Web.Http.Route("api/UserFlyers/{guid}")]
 		public IHttpActionResult Delete(string guid) {
 			try {
 				if ( string.IsNullOrEmpty(guid) ) {
@@ -308,7 +315,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// DELETE: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
-		[Route("api/UserFlyers/{guid}/{id}")]
+		[System.Web.Http.Route("api/UserFlyers/{guid}/{id}")]
 		public IHttpActionResult Delete(string guid, int id) {
 			try {
 				if ( id <= 0 || string.IsNullOrEmpty(guid) ) {
@@ -370,6 +377,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Flyers
+		[ValidateAntiForgeryToken]
 		[ResponseType(typeof(Flyer))]
 		public IHttpActionResult Post([FromBody]Flyer flyer) {
 			try {
@@ -469,6 +477,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Cats
+		[ValidateAntiForgeryToken]
 		[ResponseType(typeof(Category))]
 		public IHttpActionResult Post([FromBody]Category category) {
 			try {
