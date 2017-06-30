@@ -144,7 +144,6 @@ namespace WebAPI_Pure.Controllers {
 					return Ok(result);
 				}
 
-				//return Created<AppUser>(Request.RequestUri + newUser.Id, newUser);
 				return Created<UserViewModel>(Request.RequestUri + user.Id, vm);
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
@@ -156,30 +155,29 @@ namespace WebAPI_Pure.Controllers {
 		public async Task<IHttpActionResult> Put(string id, [FromBody]UserViewModel vm) {
 			try {
 				if ( vm == null ) {
-					return BadRequest("User cannot be null");
+					return Json(( "User cannot be null" ));
 				}
 
 				if ( !ModelState.IsValid ) {
-					return BadRequest(ModelState);
+					return Json(HttpStatusCode.BadRequest);
 				}
 
 				var user = DB.Users.FirstOrDefault(x => x.Id == id);
-				user = new AppUser {
-					Name = vm.Name,
-					Address = vm.Address,
-					UserName = vm.Email,
-					Email = vm.Email,
-					PostalCode = vm.PostalCode,
-					County = vm.County,
-					DistrictNumber = vm.DistrictNumber,
-					DeliveryOrderNumber = vm.DeliveryOrderNumber
-				};
+				user.Name = vm.Name;
+				user.Address = vm.Address;
+				user.UserName = vm.Email;
+				user.Email = vm.Email;
+				user.PostalCode = vm.PostalCode;
+				user.County = vm.County;
+				user.DistrictNumber = vm.DistrictNumber;
+				user.DeliveryOrderNumber = vm.DeliveryOrderNumber;
+
 				if ( await DB.SaveChangesAsync() == 0 ) {
-					return NotFound();
+					return Json(HttpStatusCode.NotFound);
 				}
 				return Ok();
 			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+				return Json(ex);
 			}
 		}
 
