@@ -53,13 +53,13 @@
         };
 
     })
-    .controller("adminDisplayCtrl", function (displayUsers, saveEditUser) {
+    .controller("adminDisplayCtrl", function (noticeOfIntrest) {
         var vm = this;
 
         vm.users = [];
 
         vm.getList = function () {
-            displayUsers.query(function (data) {
+            noticeOfIntrest.query(function (data) {
                 angular.copy(data, vm.users);
             });
         };
@@ -85,12 +85,6 @@
             }
             vm.show = false;
             vm.hide = false;
-
-            //saveEditUser.get({ id: getId }, function (data) {
-            //    angular.copy(data, editData);
-            //});
-
-            //console.log(editData);
         };
 
         vm.saveEdits = function (getId) {
@@ -104,9 +98,13 @@
                 };
             };
             console.log(editUser);
-            saveEditUser.update({ id: getId }, editUser);
+            noticeOfIntrest.update({ id: getId }, editUser);
+            vm.currentEdit = '';
+            //vm.getList();
         };
 
     });
 
 })();
+
+//vm.users.splice(vm.user.length - 1, 0, vm.user);
