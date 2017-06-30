@@ -3,19 +3,7 @@
     padding: 0;
 }
 
-.navbar {
-    display: none;
-}
-
-button {
-    display: none;
-}
-
-footer {
-    display: none;
-}
-
-a {
+.navbar,button,footer,a,legend {
     display: none;
 }
 
@@ -23,10 +11,6 @@ a {
     display: block;
 }
 .ma-show {
-    display: none;
-}
-
-legend {
     display: none;
 }
 
