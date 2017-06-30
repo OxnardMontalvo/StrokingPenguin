@@ -4,45 +4,21 @@
         <button ng-click="vm.getList()" class="ma-btn-lg-w" type="button">Lista användare</button>
     </div>
     <div class="col-xs-12 col-md-3">
-        <button class="ma-btn-lg-w" type="button">Skriv ut</button>
+        <button onclick="window.print()" class="ma-btn-lg-w" type="button">Skriv ut</button>
     </div>
 </div>
-
-<!--<div ng-show="vm.show" class="row ma-show">
-    <table class="table table-responsive table-striped">
-        <thead>
-            <tr>
-                <th>Namn</th>
-                <th>Adress</th>
-                <th>Ort</th>
-                <th>Email</th>
-                <th>Distrikt nr.</th>
-                <th>Gång nr.</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-click="vm.clickTest(user.Email)" ng-repeat="user in vm.users">
-                <td>{{user.Name}}</td>
-                <td>{{user.Address}}</td>
-                <td>{{user.County}}</td>
-                <td>{{user.Email}}</td>
-                <td>{{user.DistrictNumber}}</td>
-                <td>{{user.DeliveryOrderNumber}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>-->
 
 <div class="row ma-show">
     <table class="table table-responsive table-striped">
         <thead>
             <tr>
-                <th>Namn</th>
-                <th>Adress</th>
-                <th>Ort</th>
-                <th>Email</th>
-                <th>Distrikt nr.</th>
-                <th>Gång nr.</th>
+                <th class="ma-table-width-15">Namn</th>
+                <th class="ma-table-width-20">Adress</th>
+                <th class="ma-table-width-15">Ort</th>
+                <th class="ma-table-width-15">Post nr.</th>
+                <th class="ma-table-width-15">Email</th>
+                <th class="ma-table-width-10">Distrikt nr.</th>
+                <th class="ma-table-width-10">Gång nr.</th>
                 <th>Kontroll</th>
             </tr>
         </thead>
@@ -51,14 +27,15 @@
                 <td>{{user.Name}}</td>
                 <td>{{user.Address}}</td>
                 <td>{{user.County}}</td>
+                <td>{{user.PostalCode}}</td>
                 <td>{{user.Email}}</td>
                 <td>
                     <span ng-show="vm.currentEdit != user.Id">{{user.DistrictNumber}}</span>
-                    <input ng-model="user.DistrictNumber" ng-show="vm.currentEdit == user.Id" type="text" />
+                    <input class="form-control input-sm" ng-model="user.DistrictNumber" ng-show="vm.currentEdit == user.Id" type="text" />
                 </td>
                 <td>
                     <span ng-show="vm.currentEdit != user.Id">{{user.DeliveryOrderNumber}}</span>
-                    <input ng-model="user.DeliveryOrderNumber" ng-show="vm.currentEdit == user.Id" type="text" />
+                    <input class="form-control input-sm" ng-model="user.DeliveryOrderNumber" ng-show="vm.currentEdit == user.Id" type="text" />
                 </td>
                 <td>
                     <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id">Spara</a>
@@ -71,12 +48,14 @@
 
 <div class="row ma-hidden">
     <div class="col-xs-12 ma-mobileMode">
-        <div class="jumbotron" ng-repeat="user in vm.users">
+        <div class="break jumbotron" ng-repeat="user in vm.users">
             <p>Namn: <span>{{user.Name}}</span></p>
             <legend></legend>
             <p>Adress: <span>{{user.Address}}</span></p>
             <legend></legend>
             <p>Ort: <span>{{user.County}}</span></p>
+            <legend></legend>
+            <p>Post nr.: <span>{{user.PostalCode}}</span></p>
             <legend></legend>
             <p>Email: <span>{{user.Email}}</span></p>
             <legend></legend>

@@ -1,0 +1,43 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: none;
+}
+
+button {
+    display: none;
+}
+
+footer {
+    display: none;
+}
+
+a {
+    display: none;
+}
+
+.ma-hidden {
+    display: block;
+}
+.ma-show {
+    display: none;
+}
+
+legend {
+    display: none;
+}
+
+p {
+    font-size: 30pt;
+}
+
+span {
+    font-size: 18pt;
+}
+
+.break {
+    page-break-after: always;
+}

@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\css\angularjsStyle.css" />
+    <Content Include="App\css\printStyle.css" />
     <Content Include="App\html\adminPage.html" />
     <Content Include="App\html\startPage.html" />
     <Content Include="App\js\app.js" />
