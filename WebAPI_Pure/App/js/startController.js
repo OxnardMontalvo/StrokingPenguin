@@ -2,7 +2,7 @@
     "use strict";
 
     angular.module("app")
-    .controller("startCtrl", function (noticeOfIntrest) {
+    .controller("startCtrl", function (user) {
         var vm = this;
 
         vm.show = true;
@@ -12,7 +12,7 @@
 
         vm.submitForm = function () {
 
-            noticeOfIntrest.save(vm.formData);
+            user.save(vm.formData);
 
             vm.formData = {};
         };
@@ -53,13 +53,13 @@
         };
 
     })
-    .controller("adminDisplayCtrl", function (noticeOfIntrest) {
+    .controller("adminDisplayCtrl", function (user) {
         var vm = this;
 
         vm.users = [];
 
         vm.getList = function () {
-            noticeOfIntrest.query(function (data) {
+            user.query(function (data) {
                 angular.copy(data, vm.users);
             });
         };
@@ -98,7 +98,7 @@
                 };
             };
             console.log(editUser);
-            noticeOfIntrest.update({ id: getId }, editUser);
+            user.update({ id: getId }, editUser);
             vm.currentEdit = '';
             //vm.getList();
         };

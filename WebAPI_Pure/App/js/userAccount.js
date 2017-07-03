@@ -17,21 +17,10 @@
             });
     }])
 
-    .factory("noticeOfIntrest", ["$resource", "appSettings", function ($resource, appSettings) {
+    .factory("user", ["$resource", "appSettings", function ($resource, appSettings) {
         return $resource(appSettings.serverPath + "api/Users/:id", null, {
             'update': { method: 'PUT' }
         });
     }]);
-
-    //.factory("displayUsers", ["$resource", "appSettings", function ($resource, appSettings) {
-    //    return $resource(appSettings.serverPath + "api/Users", null);
-    //}])
-
-    //.factory("saveEditUser", ["$resource", "appSettings", function ($resource, appSettings) {
-    //    return $resource(appSettings.serverPath + "api/Users/id", null, {
-    //        'update' :{method: 'PUT'}
-    //    });
-    //}]);
-
 
 })();
