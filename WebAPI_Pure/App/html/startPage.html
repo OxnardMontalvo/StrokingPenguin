@@ -33,6 +33,9 @@
                     </div>
                     <input ng-click="vm.submitForm()" type="submit" class="ma-btn-lg btn-success" value="Anmäl dig" />
                 </form>
+                <div ng-show="vm.validMsg" style="margin-top: .25em;">
+                    <span class="text-info" style="font-size: 2em;">{{vm.msg}}</span>
+                </div>
             </div>
         </div>
     </div>

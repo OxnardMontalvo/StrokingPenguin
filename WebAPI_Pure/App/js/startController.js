@@ -7,12 +7,17 @@
 
         vm.show = true;
         vm.phaseOneHide = true;
+        vm.validMsg = false;
+        vm.msg = "Tack för din anmälan."
 
         vm.formData = {};
 
         vm.submitForm = function () {
 
-            user.save(vm.formData);
+            user.save(vm.formData, function (response) {
+                console.log(response);
+                vm.validMsg = response.Succeeded;
+            });
 
             vm.formData = {};
         };
