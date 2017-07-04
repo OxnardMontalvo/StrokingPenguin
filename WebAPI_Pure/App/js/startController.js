@@ -20,12 +20,14 @@
     })
     .controller("adminLoginCtrl", function (userAccount) {
         var vm = this;
-
+        
         vm.show = false;
         vm.phaseOneHide = false;
 
         //Logging in code.
-        vm.isLoggedIn = false;
+        vm.isLoggedIn = function () {
+            return currentUser.getProfile().isLoggedIn;
+        };
         vm.message = '';
         vm.userData = {
             userName: '',
@@ -37,19 +39,19 @@
         vm.login = function () {
             vm.userData.grant_type = "password";
             vm.userData.userName = vm.userData.email;
+            
 
             userAccount.loginUser(vm.userData, function (data) {
-                vm.isLoggedIn = true;
+                //console.log(data);
                 vm.message = "";
                 vm.password = "";
-                vm.token = data.access_token;
-
+                currentUser.setProfile(vm.userData.userName, data.access_token);
+                //console.log(currentUser.getProfile());
             },
             function (response) {
                 vm.password = "";
-                vm.isLoggedIn = false;
                 vm.message = "ERROR";
-            })
+            });
         };
 
     })

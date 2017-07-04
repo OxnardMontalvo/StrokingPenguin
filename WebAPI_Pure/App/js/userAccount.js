@@ -18,9 +18,54 @@
     }])
 
     .factory("user", ["$resource", "appSettings", function ($resource, appSettings) {
+        //console.log(currentUser.getProfile().token);
         return $resource(appSettings.serverPath + "api/Users/:id", null, {
-            'update': { method: 'PUT' }
+            'update': {
+                method: 'PUT'
+            }
         });
     }]);
+
+    //.factory("currentUser", function ($cookies) {
+    //    var profile = {};
+    //    var authentication = $cookies.getObject("authentication");
+    //    //console.log(authentication)
+    //    if (authentication != null && authentication != undefined) {
+    //        profile = {
+    //            isLoggedIn: authentication.isLoggedIn,
+    //            username: authentication.username,
+    //            token: authentication.token
+    //        };
+    //    } else {
+    //        profile = {
+    //            isLoggedIn: false,
+    //            username: '',
+    //            token: ''
+    //        };
+    //    }
+
+    //    //var profile = {
+    //    //    isLoggedIn: false,
+    //    //    username: '',
+    //    //    token: ''
+    //    //};
+
+    //    var setProfile = function (username, token) {
+    //        profile.username = username;
+    //        profile.token = token;
+    //        profile.isLoggedIn = true;
+    //        $cookies.put("authentication", JSON.stringify(profile));
+    //    };
+
+    //    var getProfile = function () {
+    //        return profile;
+    //    };
+
+    //    return {
+    //        setProfile: setProfile,
+    //        getProfile: getProfile
+    //    };
+
+    //});
 
 })();

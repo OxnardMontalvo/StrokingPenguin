@@ -5,7 +5,7 @@
 (function () {
     "use strict";
 
-    angular.module("app", ["ngRoute", "services"])
+    angular.module("app", ["ngRoute", "services", "ngCookies"])
     .config(function ($routeProvider) {
         $routeProvider
         .when("/", {
