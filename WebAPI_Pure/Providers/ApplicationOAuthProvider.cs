@@ -36,9 +36,6 @@ namespace WebAPI_Pure.Providers {
 			ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, OAuthDefaults.AuthenticationType);
 			ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
 
-			oAuthIdentity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-			oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-
 			AuthenticationProperties properties = CreateProperties(user.UserName);
 			AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
 			context.Validated(ticket);
