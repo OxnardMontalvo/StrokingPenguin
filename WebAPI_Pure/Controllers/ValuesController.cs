@@ -35,10 +35,12 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		//void RoloMano() {
-		//	var roleMan = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
-		//}
-
+		// GET: api/Users/Roles
+		//Built under duress
+		[Route("api/Users/Roles")]
+		public IHttpActionResult GetRoles() {
+			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
+		}
 		// GET: api/Users
 		//[EnableQuery()]
 		[ResponseType(typeof(UserViewModel))]
