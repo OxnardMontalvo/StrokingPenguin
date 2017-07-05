@@ -16,8 +16,8 @@
         // Getting users and display them.
         vm.users = [];
         vm.getUsers = function () {
-            user.query(function (data) {
-                console.log(data);
+            user.query(function (response) {
+                console.log(response);
                 //angular.copy(response, vm.users);
             });
         };

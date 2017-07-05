@@ -25,7 +25,7 @@
             },
             'query': {
                 method: 'GET',
-                headers: { "Authorization": 'Bearer ' + sessionStorage.getItem("access_token") }
+                headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem("access_token") }
             }
         });
     }]);
