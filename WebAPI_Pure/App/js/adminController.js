@@ -17,7 +17,8 @@
         vm.users = [];
         vm.getUsers = function () {
             user.query(function (data) {
-                angular.copy(data, vm.users);
+                console.log(data);
+                //angular.copy(response, vm.users);
             });
         };
 
