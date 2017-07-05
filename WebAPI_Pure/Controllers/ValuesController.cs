@@ -42,8 +42,7 @@ namespace WebAPI_Pure.Controllers {
 			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
 		}
 
-		// GET: api/Users
-		[AllowAnonymous]
+		// GET: api/Users/Query/Greta
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Query/{query}")]
 		public IHttpActionResult GetUsersByQuery(string query = "") {
