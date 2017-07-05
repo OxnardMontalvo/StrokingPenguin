@@ -19,12 +19,13 @@
     }])
 
     .factory("user", ["$resource", "appSettings", function ($resource, appSettings) {
-        return $resource(appSettings.serverPath + "api/Users/:id", null, {
+        return $resource(appSettings.serverPath + "api/Users/:id", {}, {
             'update': {
                 method: 'PUT'
             },
             'query': {
-                method: 'GET'
+                method: 'GET',
+                headers: { "Authorization": 'Bearer ' + sessionStorage.getItem("access_token") }
             }
         });
     }]);
@@ -53,3 +54,9 @@
 //        $location.path("/Login")
 //    }
 //});
+
+//var t = sessionStorage.getItem(tokenKey);
+//var headers = {};
+//if (t) {
+//    headers.Authorization = 'Bearer ' + t;
+//}

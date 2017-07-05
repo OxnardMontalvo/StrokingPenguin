@@ -5,7 +5,7 @@
 
     angular.module("app")
     // Register and Login controller, for both users and admin.
-    .controller("registerAndLoginCtrl", function (userAccount) {
+    .controller("registerAndLoginCtrl", function (userAccount, $location) {
         var vm = this;
 
         vm.show = false;
@@ -28,7 +28,7 @@
                 console.log(response);
                 sessionStorage.setItem(tokenKey, response.access_token);
 
-                if (response.data.roles[0] == "Admin") {
+                if (response.roles[0] == "Admin") {
                     $location.path("/Admin")
                 } else {
                     $location.path("/Login")
