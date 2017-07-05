@@ -6,19 +6,11 @@
     .controller("adminCtrl", function (user) {
         var vm = this;
 
-        var t = sessionStorage.getItem("access_token");
-        console.log(t);
-        //var headers = {};
-        //if (t) {
-        //    headers.Authorization = 'Bearer ' + t;
-        //}
-
         // Getting users and display them.
         vm.users = [];
         vm.getUsers = function () {
-            user.query(function (response) {
-                console.log(response);
-                //angular.copy(response, vm.users);
+            user.query(function (data) {
+                angular.copy(data, vm.users);
             });
         };
 

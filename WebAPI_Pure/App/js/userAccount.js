@@ -21,14 +21,25 @@
     .factory("user", ["$resource", "appSettings", function ($resource, appSettings) {
         return $resource(appSettings.serverPath + "api/Users/:id", {}, {
             'update': {
-                method: 'PUT'
+                method: 'PUT',
+                headers: {"Authorization": headers}
             },
             'query': {
                 method: 'GET',
-                headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem("access_token") }
+                isArray: true,
+                headers: {"Authorization": headers}
             }
         });
     }]);
+
+    function headers() {
+        var t = sessionStorage.getItem("access_token");
+        var headers = {};
+        if (t) {
+            headers = 'Bearer ' + t;
+        }
+        return headers;
+    }
 
 })();
 

@@ -25,14 +25,14 @@
             vm.userData.confirmPassword = vm.userData.password;
             vm.userData.userName = vm.userData.email;
             userAccount.loginUser(vm.userData, function (response, headersGetter) {
-                console.log(response);
-                sessionStorage.setItem(tokenKey, response.access_token);
 
-                if (response.roles[0] == "Admin") {
-                    $location.path("/Admin")
-                } else {
-                    $location.path("/Login")
-                }
+                sessionStorage.setItem(tokenKey, response.access_token);
+                
+                //if (response.roles[0] == "Admin") {
+                //    $location.path("/Admin")
+                //} else {
+                //    $location.path("/Login")
+                //}
             });
         };
 
