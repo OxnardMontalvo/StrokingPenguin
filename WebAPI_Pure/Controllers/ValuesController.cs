@@ -41,6 +41,33 @@ namespace WebAPI_Pure.Controllers {
 		public IHttpActionResult GetRoles() {
 			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
 		}
+
+		// GET: api/Users
+		[AllowAnonymous]
+		[ResponseType(typeof(UserViewModel))]
+		[Route("api/Users/Query/{query}")]
+		public IHttpActionResult GetUsersByQuery(string query = "") {
+			var SearchQuery = query.Trim().ToLower();
+
+			try {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
+				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) || 
+				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new UserViewModel {
+					Id = x.Id,
+					Name = x.Name,
+					Address = x.Address,
+					PostalCode = x.PostalCode,
+					County = x.County,
+					Email = x.Email,
+					DistrictNumber = x.DistrictNumber,
+					DeliveryOrderNumber = x.DeliveryOrderNumber
+				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
+				return Ok(users);
+
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
 		// GET: api/Users
 		//[EnableQuery()]
 		[ResponseType(typeof(UserViewModel))]
@@ -131,7 +158,8 @@ namespace WebAPI_Pure.Controllers {
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
 				if ( flyer == null ) {
-					return BadRequest("No flyers available");
+					flyer = DB.Flyers.Add(new Flyer { Name = "DEFAULT" });
+					//return BadRequest("No flyers available");
 				}
 
 				var user = new AppUser {

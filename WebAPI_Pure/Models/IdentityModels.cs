@@ -21,7 +21,7 @@ namespace WebAPI_Pure.Models {
 		public string PostalCode { get; set; }
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
-		public int? DeliveryOrderNumber { get; set; }
+		public string DeliveryOrderNumber { get; set; }
 		public ICollection<Flyer> Flyers { get; set; }
 	}
 
@@ -56,6 +56,6 @@ namespace WebAPI_Pure.Models {
 		public string PostalCode { get; set; }
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
-		public int? DeliveryOrderNumber { get; set; }
+		public string DeliveryOrderNumber { get; set; }
 	}
 }

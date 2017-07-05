@@ -244,13 +244,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706261149530_init.cs" />
-    <Compile Include="Migrations\201706261149530_init.Designer.cs">
-      <DependentUpon>201706261149530_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706271009055_OptionalDiDeNumbers.cs" />
-    <Compile Include="Migrations\201706271009055_OptionalDiDeNumbers.Designer.cs">
-      <DependentUpon>201706271009055_OptionalDiDeNumbers.cs</DependentUpon>
+    <Compile Include="Migrations\201707050912071_init.cs" />
+    <Compile Include="Migrations\201707050912071_init.Designer.cs">
+      <DependentUpon>201707050912071_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -337,11 +333,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706261149530_init.resx">
-      <DependentUpon>201706261149530_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706271009055_OptionalDiDeNumbers.resx">
-      <DependentUpon>201706271009055_OptionalDiDeNumbers.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707050912071_init.resx">
+      <DependentUpon>201707050912071_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
