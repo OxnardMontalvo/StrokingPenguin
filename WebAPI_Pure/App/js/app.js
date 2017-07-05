@@ -5,7 +5,7 @@
 (function () {
     "use strict";
 
-    angular.module("app", ["ngRoute", "services", "ngCookies"])
+    angular.module("app", ["ngRoute", "services"])
     .config(function ($routeProvider) {
         $routeProvider
         .when("/", {
@@ -15,12 +15,12 @@
         })
         .when("/Login", {
             templateUrl: "App/html/startPage.html",
-            controller: "adminLoginCtrl",
+            controller: "registerAndLoginCtrl",
             controllerAs: "vm"
         })
         .when("/Admin", {
             templateUrl: "App/html/adminPage.html",
-            controller: "adminDisplayCtrl",
+            controller: "adminCtrl",
             controllerAs: "vm"
         })
         .when("/User", {

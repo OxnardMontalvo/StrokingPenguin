@@ -262,8 +262,10 @@
     <Content Include="App\css\printStyle.css" />
     <Content Include="App\html\adminPage.html" />
     <Content Include="App\html\startPage.html" />
+    <Content Include="App\js\adminController.js" />
     <Content Include="App\js\app.js" />
     <Content Include="App\js\commonServices.js" />
+    <Content Include="App\js\accountController.js" />
     <Content Include="App\js\startController.js" />
     <Content Include="App\js\userAccount.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />

@@ -1,7 +1,7 @@
 ﻿
 <div class="row">
     <div class="col-xs-12 col-md-offset-3 col-md-3">
-        <button ng-click="vm.getList()" class="ma-btn-lg-w" type="button">Lista användare</button>
+        <button ng-click="vm.getUsers()" class="ma-btn-lg-w" type="button">Lista användare</button>
     </div>
     <div class="col-xs-12 col-md-3">
         <button onclick="window.print()" class="ma-btn-lg-w" type="button">Skriv ut</button>
@@ -39,7 +39,7 @@
                 </td>
                 <td>
                     <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id">Spara</a>
-                    <a ng-click="vm.clickTest(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Id">Ändra</a>
+                    <a ng-click="vm.editUser(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Id">Ändra</a>
                 </td>
             </tr>
         </tbody>
