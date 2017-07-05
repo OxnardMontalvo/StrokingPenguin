@@ -6,10 +6,14 @@
     .controller("adminCtrl", function (user) {
         var vm = this;
 
+
+
         // Getting users and display them.
         vm.users = [];
         vm.getUsers = function () {
-            user.query(function (data) {
+            user.query({
+
+            }, function (data) {
                 angular.copy(data, vm.users);
             });
         };
