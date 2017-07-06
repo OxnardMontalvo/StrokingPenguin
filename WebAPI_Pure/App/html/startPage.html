@@ -23,15 +23,47 @@
         </div>
         <div class="ma-border">
             <div class="ma-center ma-wrap-padding">
-                <form>
-                    <div class="form-group">
+                <form ng-submit="vm.submitForm()" name="signUpForm">
+                    <div class="form-group" ng-form="Name">
+                        <input ng-class="{'ma-has-error-border': Name.$invalid && Name.$dirty}" ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" ng-required="true" ng-minlength="3" ng-maxlength="15" />
+                        <div ng-show="Name.$invalid && Name.$dirty">
+                            <span class="text-danger" ng-show="Name.$error.required">Fältet måste vara ifyllt!</span>
+                            <span class="text-danger" ng-show="Name.$error.minlength">Namnet måste minst innehålla 3 tecken!</span>
+                            <span class="text-danger" ng-show="Name.$error.maxlength">Namnet kan inte överstiga 15 tecken!</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-form="Address">
+                        <input ng-class="{'ma-has-error-border': Address.$invalid && Address.$dirty}" ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" ng-required="true" />
+                        <div ng-show="Address.$invalid && Address.$dirty">
+                            <span class="text-danger" ng-show="Address.$error.required">Fältet måste vara ifyllt!</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-form="County">
+                        <input ng-class="{'ma-has-error-border': County.$invalid && County.$dirty}" ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" ng-required="true" />
+                        <div ng-show="County.$invalid && County.$dirty">
+                            <span class="text-danger" ng-show="County.$error.required">Fältet måste vara ifyllt!</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-form="PostalCode">
+                        <input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" class="form-control input-lg" type="text" placeholder="Post nummer" ng-required="true" />
+                        <div ng-show="PostalCode.$invalid && PostalCode.$dirty">
+                            <span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-form="Email">
+                        <input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.formData.Email" class="form-control input-lg" type="email" placeholder="Epost" ng-required="true" />
+                        <div ng-show="Email.$invalid && Email.$dirty">
+                            <span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">
                         <input ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" />
                         <input ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" />
                         <input ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" />
                         <input ng-model="vm.formData.PostalCode" class="form-control input-lg" type="text" placeholder="Post nummer" />
                         <input ng-model="vm.formData.Email" class="form-control input-lg" type="text" placeholder="Epost" />
-                    </div>
-                    <input ng-click="vm.submitForm()" type="submit" class="ma-btn-lg btn-success" value="Anmäl dig" />
+                    </div>-->
+                    <input ng-class="{'btn-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg" value="Anmäl dig" />
                 </form>
                 <div ng-show="vm.validMsg">
                     <span class="text-info" style="font-size: 2em; margin-top: .25em;">{{vm.msg}}</span>

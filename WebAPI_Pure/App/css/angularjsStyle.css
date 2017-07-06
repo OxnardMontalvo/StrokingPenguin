@@ -100,3 +100,7 @@
 .ma-table-width-20 {
     width: 20%;
 }
+
+.ma-has-error-border {
+    border: red 2px solid !important;
+}
