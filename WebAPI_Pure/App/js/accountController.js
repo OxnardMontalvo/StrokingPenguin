@@ -5,7 +5,7 @@
 
     angular.module("app")
     // Register and Login controller, for both users and admin.
-    .controller("registerAndLoginCtrl", function (userAccount, $location) {
+    .controller("registerAndLoginCtrl", function (userAccount, $location, currentUser) {
         var vm = this;
 
         vm.show = false;
@@ -25,14 +25,14 @@
             vm.userData.confirmPassword = vm.userData.password;
             vm.userData.userName = vm.userData.email;
             userAccount.loginUser(vm.userData, function (response, headersGetter) {
-
+                currentUser.setProfile(response.userName, true);
                 sessionStorage.setItem(tokenKey, response.access_token);
-                
-                //if (response.roles[0] == "Admin") {
-                //    $location.path("/Admin")
-                //} else {
-                //    $location.path("/Login")
-                //}
+
+                if (response.roles == "Admin") {
+                    $location.path("/Admin")
+                } else {
+                    $location.path("/Login")
+                }
             });
         };
 

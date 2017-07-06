@@ -31,6 +31,43 @@
         .otherwise({
             redirectTo: "/"
         });
+    })
+
+    .factory("currentUser", function () {
+        var profile = {
+            isLoggedIn: false,
+            username: ""
+        };
+
+        var setProfile = function (username, isLoggedIn) {
+            profile.username = username;
+            profile.isLoggedIn = isLoggedIn;
+
+            sessionStorage.setItem("profile", profile.username);
+        };
+
+        var getProfile = function () {
+            return sessionStorage.getItem("profile", profile);
+
+        };
+
+        return {
+            setProfile: setProfile,
+            getProfile: getProfile
+        };
+    })
+
+    .controller("userInfo", function (currentUser, $scope) {
+        $scope.displayLogOut = false;
+        $scope.$watch(function () {
+            return currentUser.getProfile();
+        }, function (newValue, oldValue) {
+            if (newValue != null) {
+                $scope.cUser = newValue;
+                $scope.displayLogOut = true;
+            };
+        });
+        
     });
 
 })();

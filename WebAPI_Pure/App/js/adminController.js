@@ -3,8 +3,10 @@
 
     angular.module("app")
     // Admin controller for displaying admin specific tasks.
-    .controller("adminCtrl", function (user) {
+    .controller("adminCtrl", function (user, currentUser) {
         var vm = this;
+
+        console.log(currentUser.getProfile())
 
         // Getting users and display them.
         vm.users = [];

@@ -22,17 +22,17 @@
         return $resource(appSettings.serverPath + "api/Users/:id", {}, {
             'update': {
                 method: 'PUT',
-                headers: {"Authorization": headers}
+                headers: { "Authorization": tokenHeader }
             },
             'query': {
                 method: 'GET',
                 isArray: true,
-                headers: {"Authorization": headers}
+                headers: { "Authorization": tokenHeader }
             }
         });
     }]);
 
-    function headers() {
+    function tokenHeader() {
         var t = sessionStorage.getItem("access_token");
         var headers = {};
         if (t) {

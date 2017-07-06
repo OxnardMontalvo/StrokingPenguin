@@ -25,14 +25,19 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
+                <div class="navbar-text pull-right">
+                    <div style="color: orange; font-size: 1.5em;" ng-controller="userInfo"><span style="margin-right: .5em;">{{cUser}}</span><a ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">Logga ut</a></div>
+                </div>
             </div>
+            
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - ***tack.nu <span> <img src="https://www.sdr.se/images/main-logo.png" /> </span> i samarbete med <span>
+            <p>&copy; @DateTime.Now.Year - ***tack.nu i samarbete med <span>
+                    <img src="https://www.sdr.se/images/main-logo.png" />
                     <img src="https://www.ica.se/imagevaultfiles/id_161956/cf_259/ica_supermarket_logotyp_rod_rgb_bhs.png?" />
                 </span>
             </p>
