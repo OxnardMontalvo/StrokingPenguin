@@ -17,8 +17,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Migrations;
 
 namespace WebAPI_Pure.Controllers {
-	[Authorize(Roles = "Admin")]
-	public class UsersController : ApiController {
+	public class BaseApiController : ApiController {
 		AppDB _db;
 		AppUserManager _userManager;
 
@@ -35,7 +34,10 @@ namespace WebAPI_Pure.Controllers {
 				_userManager = value;
 			}
 		}
+	}
 
+	[Authorize(Roles = "Admin")]
+	public class UsersController : BaseApiController {
 		// GET: api/Users/Roles
 		//Built under duress
 		[Route("api/Users/Roles")]
@@ -279,14 +281,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-	public class UserFlyersController : ApiController {
-		AppDB _db;
-
-		public AppDB DB {
-			get { return _db ?? HttpContext.Current.GetOwinContext().Get<AppDB>(); }
-			set { _db = value; }
-		}
-
+	public class UserFlyersController : BaseApiController {
 		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
@@ -401,14 +396,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-	public class FlyersController : ApiController {
-		AppDB _db;
-
-		public AppDB DB {
-			get { return _db ?? HttpContext.Current.GetOwinContext().Get<AppDB>(); }
-			set { _db = value; }
-		}
-
+	public class FlyersController : BaseApiController {
 		// GET: api/Flyers
 		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
@@ -501,14 +489,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-	public class CatsController : ApiController {
-		AppDB _db;
-
-		public AppDB DB {
-			get { return _db ?? HttpContext.Current.GetOwinContext().Get<AppDB>(); }
-			set { _db = value; }
-		}
-
+	public class CatsController : BaseApiController {
 		// GET: api/Cats
 		[EnableQuery()]
 		[ResponseType(typeof(Category))]
