@@ -14,6 +14,7 @@ using System.Web.Http.OData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.Migrations;
 
 namespace WebAPI_Pure.Controllers {
 	[Authorize(Roles = "Admin")]
@@ -42,6 +43,33 @@ namespace WebAPI_Pure.Controllers {
 			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
 		}
 
+		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnStrongAnimalDesire
+		[AllowAnonymous]
+		[HttpGet]
+		[Route("api/Users/HoldMeBabyImAnAnimalManAndImFeelingSuchAnStrongAnimalDesire")]
+		public async Task<IHttpActionResult> CheckAdminAndRoles() {
+			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
+
+			if ( await DB.Roles.CountAsync() == 0 ) {
+				var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
+				DB.Roles.Add(new IdentityRole { Name = "User" });
+
+				var adminEmail = "admin@local.se";
+				var adminPass = GeneratePassword();
+
+				var user = new AppUser { UserName = adminEmail, Email = adminEmail };
+				var result = await UserManager.CreateAsync(user, adminPass);
+
+				if ( result.Succeeded ) {
+					await UserManager.AddToRoleAsync(user.Id, adminRole.Name);
+					await DB.SaveChangesAsync();
+					return Ok(result);
+				}
+			}
+
+			return Ok();
+		}
+
 		// GET: api/Users/Query/Greta
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Query/{query}")]
@@ -50,7 +78,7 @@ namespace WebAPI_Pure.Controllers {
 
 			try {
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
-				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) || 
+				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) ||
 				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new UserViewModel {
 					Id = x.Id,
 					Name = x.Name,
