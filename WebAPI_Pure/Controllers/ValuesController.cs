@@ -45,10 +45,10 @@ namespace WebAPI_Pure.Controllers {
 			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
 		}
 
-		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnStrongAnimalDesire
+		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire
 		[AllowAnonymous]
 		[HttpGet]
-		[Route("api/Users/HoldMeBabyImAnAnimalManAndImFeelingSuchAnStrongAnimalDesire")]
+		[Route("api/Users/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire")]
 		public async Task<IHttpActionResult> CheckAdminAndRoles() {
 			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
 
