@@ -45,11 +45,12 @@
 						</div>
 					</div>
 					<div class="form-group" ng-form="PostalCode">
-						<input ng-class="{'ma-has-error-border': PostalCode.$error.pattern && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^\d{3}\s\d{2}$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
-						<div ng-show="PostalCode.$error.pattern && PostalCode.$dirty">
+						<!--/^\d{3}\s\d{2}$/-->
+						<input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^363 (3[0-9]|4[0-1])$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
+						<div ng-show="PostalCode.$invalid && PostalCode.$dirty">
 							<span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: 363 30 - 41</span>
 						</div>
-						<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: XXX XX</span>
 					</div>
 					<div class="form-group" ng-form="Email">
 						<input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.formData.Email" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" class="form-control input-lg" type="email" placeholder="Epost" ng-required="true" />
