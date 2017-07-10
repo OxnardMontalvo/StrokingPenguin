@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI_Pure.Models {
 	// You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
@@ -21,7 +22,7 @@ namespace WebAPI_Pure.Models {
 		public string PostalCode { get; set; }
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
-		public int? DeliveryOrderNumber { get; set; }
+		public string DeliveryOrderNumber { get; set; }
 		public ICollection<Flyer> Flyers { get; set; }
 	}
 
@@ -50,12 +51,22 @@ namespace WebAPI_Pure.Models {
 
 	public class UserViewModel {
 		public string Id { get; set; }
+		[Required]
+		[StringLength(128, MinimumLength = 3)]
 		public string Name { get; set; }
+		[Required]
+		[StringLength(128, MinimumLength = 3)]
 		public string Address { get; set; }
+		[Required]
+		[EmailAddress]
 		public string Email { get; set; }
+		[Required]
+		[StringLength(6, MinimumLength = 5)]
 		public string PostalCode { get; set; }
+		[Required]
+		[StringLength(50)]
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
-		public int? DeliveryOrderNumber { get; set; }
+		public string DeliveryOrderNumber { get; set; }
 	}
 }

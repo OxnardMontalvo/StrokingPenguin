@@ -37,7 +37,7 @@ namespace WebAPI_Pure.Providers {
 			ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
 
 			List<Claim> roles = oAuthIdentity.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-			AuthenticationProperties properties = CreateProperties(user.UserName, Newtonsoft.Json.JsonConvert.SerializeObject(roles.Select(x => x.Value)));
+			AuthenticationProperties properties = CreateProperties(user.UserName, roles.Select(x => x.Value).FirstOrDefault());
 			AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
 
 			context.Validated(ticket);

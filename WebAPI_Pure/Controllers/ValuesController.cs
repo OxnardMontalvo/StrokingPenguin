@@ -14,10 +14,10 @@ using System.Web.Http.OData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.Migrations;
 
 namespace WebAPI_Pure.Controllers {
-	[Authorize(Roles = "Admin")]
-	public class UsersController : ApiController {
+	public class BaseApiController : ApiController {
 		AppDB _db;
 		AppUserManager _userManager;
 
@@ -34,11 +34,69 @@ namespace WebAPI_Pure.Controllers {
 				_userManager = value;
 			}
 		}
+	}
 
-		//void RoloMano() {
-		//	var roleMan = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
-		//}
+	[Authorize(Roles = "Admin")]
+	public class UsersController : BaseApiController {
+		// GET: api/Users/Roles
+		//Built under duress
+		[Route("api/Users/Roles")]
+		public IHttpActionResult GetRoles() {
+			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
+		}
 
+		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire
+		[AllowAnonymous]
+		[HttpGet]
+		[Route("api/Users/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire")]
+		public async Task<IHttpActionResult> CheckAdminAndRoles() {
+			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
+
+			if ( await DB.Roles.CountAsync() == 0 ) {
+				var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
+				DB.Roles.Add(new IdentityRole { Name = "User" });
+
+				var adminEmail = "admin@local.se";
+				var adminPass = GeneratePassword();
+
+				var user = new AppUser { UserName = adminEmail, Email = adminEmail };
+				var result = await UserManager.CreateAsync(user, adminPass);
+
+				if ( result.Succeeded ) {
+					await UserManager.AddToRoleAsync(user.Id, adminRole.Name);
+					await DB.SaveChangesAsync();
+					return Ok(result);
+				}
+			}
+
+			return Ok();
+		}
+
+		// GET: api/Users/Query/Greta
+		[ResponseType(typeof(UserViewModel))]
+		[Route("api/Users/Query/{query}")]
+		public IHttpActionResult GetUsersByQuery(string query = "") {
+			var SearchQuery = query.Trim().ToLower();
+
+			try {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
+				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) ||
+				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new UserViewModel {
+					Id = x.Id,
+					Name = x.Name,
+					Address = x.Address,
+					PostalCode = x.PostalCode,
+					County = x.County,
+					Email = x.Email,
+					DistrictNumber = x.DistrictNumber,
+					DeliveryOrderNumber = x.DeliveryOrderNumber
+				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
+				return Ok(users);
+
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
 		// GET: api/Users
 		//[EnableQuery()]
 		[ResponseType(typeof(UserViewModel))]
@@ -129,7 +187,8 @@ namespace WebAPI_Pure.Controllers {
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
 				if ( flyer == null ) {
-					return BadRequest("No flyers available");
+					flyer = DB.Flyers.Add(new Flyer { Name = "DEFAULT" });
+					//return BadRequest("No flyers available");
 				}
 
 				var user = new AppUser {
@@ -222,14 +281,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-	public class UserFlyersController : ApiController {
-		AppDB _db;
-
-		public AppDB DB {
-			get { return _db ?? HttpContext.Current.GetOwinContext().Get<AppDB>(); }
-			set { _db = value; }
-		}
-
+	public class UserFlyersController : BaseApiController {
 		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
@@ -344,14 +396,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-	public class FlyersController : ApiController {
-		AppDB _db;
-
-		public AppDB DB {
-			get { return _db ?? HttpContext.Current.GetOwinContext().Get<AppDB>(); }
-			set { _db = value; }
-		}
-
+	public class FlyersController : BaseApiController {
 		// GET: api/Flyers
 		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
@@ -444,14 +489,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-	public class CatsController : ApiController {
-		AppDB _db;
-
-		public AppDB DB {
-			get { return _db ?? HttpContext.Current.GetOwinContext().Get<AppDB>(); }
-			set { _db = value; }
-		}
-
+	public class CatsController : BaseApiController {
 		// GET: api/Cats
 		[EnableQuery()]
 		[ResponseType(typeof(Category))]
