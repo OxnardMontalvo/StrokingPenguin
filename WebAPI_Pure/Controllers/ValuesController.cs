@@ -205,7 +205,7 @@ namespace WebAPI_Pure.Controllers {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 					await DB.SaveChangesAsync();
 					return Ok(result);
-                }
+				}
 
 				return Created<UserViewModel>(Request.RequestUri + user.Id, vm);
 			} catch ( Exception ex ) {
@@ -396,6 +396,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
+	[Authorize(Roles = "Admin")]
 	public class FlyersController : BaseApiController {
 		// GET: api/Flyers
 		[EnableQuery()]
@@ -489,6 +490,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
+	[Authorize(Roles = "Admin")]
 	public class CatsController : BaseApiController {
 		// GET: api/Cats
 		[EnableQuery()]

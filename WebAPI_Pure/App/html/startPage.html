@@ -1,107 +1,109 @@
 ﻿<div ng-show="vm.show == true" class="row ma-main">
-    <div class="col-xs-12 col-md-6">
-        <div class="ma-customHeader">
-            Information
-        </div>
-        <div class="ma-border">
-            <div class="ma-wrap-padding">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer blandit ex a nibh mollis, vitae ornare mi rhoncus.
-                    Quisque luctus mauris eu urna suscipit, at varius enim blandit. Sed eu lectus in tortor cursus condimentum.
-                    Fusce in libero pulvinar, venenatis urna sed, condimentum felis. Phasellus interdum nec arcu finibus pulvinar.
-                    Nullam pretium accumsan ante, sed interdum risus laoreet quis. Duis finibus leo eleifend magna hendrerit, vitae aliquet velit egestas.
-                    Nam lacinia magna at metus aliquet condimentum. Suspendisse dolor diam, faucibus vitae tempus a, consectetur at libero.
-                    Sed eget purus ac ante faucibus pulvinar. Integer vitae erat felis. Sed magna nisl, condimentum id dignissim eu, venenatis id erat.
-                    Cras gravida leo laoreet gravida dapibus. Sed vehicula nisi mi, at suscipit neque viverra nec. Curabitur lacus mi, congue in efficitur vel, vehicula non libero.
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-md-6">
-        <div class="ma-customHeader">
-            Intresseanmälan
-        </div>
-        <div class="ma-border">
-            <div class="ma-center ma-wrap-padding">
-                <form ng-submit="vm.submitForm()" name="signUpForm">
-                    <div class="form-group" ng-form="Name">
-                        <input ng-class="{'ma-has-error-border': Name.$invalid && Name.$dirty}" ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" ng-required="true" ng-minlength="3" ng-maxlength="15" />
-                        <div ng-show="Name.$invalid && Name.$dirty">
-                            <span class="text-danger" ng-show="Name.$error.required">Fältet måste vara ifyllt!</span>
-                            <span class="text-danger" ng-show="Name.$error.minlength">Namnet måste minst innehålla 3 tecken!</span>
-                            <span class="text-danger" ng-show="Name.$error.maxlength">Namnet kan inte överstiga 15 tecken!</span>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-form="Address">
-                        <input ng-class="{'ma-has-error-border': Address.$invalid && Address.$dirty}" ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" ng-required="true" />
-                        <div ng-show="Address.$invalid && Address.$dirty">
-                            <span class="text-danger" ng-show="Address.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-form="County">
-                        <input ng-class="{'ma-has-error-border': County.$invalid && County.$dirty}" ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" ng-required="true" />
-                        <div ng-show="County.$invalid && County.$dirty">
-                            <span class="text-danger" ng-show="County.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-form="PostalCode">
-                        <input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" class="form-control input-lg" type="text" placeholder="Post nummer" ng-required="true" />
-                        <div ng-show="PostalCode.$invalid && PostalCode.$dirty">
-                            <span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-form="Email">
-                        <input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.formData.Email" class="form-control input-lg" type="email" placeholder="Epost" ng-required="true" />
-                        <div ng-show="Email.$invalid && Email.$dirty">
-                            <span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
-                    </div>
-                    <!--<div class="form-group">
-                        <input ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" />
-                        <input ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" />
-                        <input ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" />
-                        <input ng-model="vm.formData.PostalCode" class="form-control input-lg" type="text" placeholder="Post nummer" />
-                        <input ng-model="vm.formData.Email" class="form-control input-lg" type="text" placeholder="Epost" />
-                    </div>-->
-                    <input ng-class="{'btn-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg" value="Anmäl dig" />
-                </form>
-                <div ng-show="vm.validMsg">
-                    <span class="text-info" style="font-size: 2em; margin-top: .25em;">{{vm.msg}}</span>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="col-xs-12 col-md-6">
+		<div class="ma-customHeader">
+			Information
+		</div>
+		<div class="ma-border">
+			<div class="ma-wrap-padding">
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer blandit ex a nibh mollis, vitae ornare mi rhoncus.
+					Quisque luctus mauris eu urna suscipit, at varius enim blandit. Sed eu lectus in tortor cursus condimentum.
+					Fusce in libero pulvinar, venenatis urna sed, condimentum felis. Phasellus interdum nec arcu finibus pulvinar.
+					Nullam pretium accumsan ante, sed interdum risus laoreet quis. Duis finibus leo eleifend magna hendrerit, vitae aliquet velit egestas.
+					Nam lacinia magna at metus aliquet condimentum. Suspendisse dolor diam, faucibus vitae tempus a, consectetur at libero.
+					Sed eget purus ac ante faucibus pulvinar. Integer vitae erat felis. Sed magna nisl, condimentum id dignissim eu, venenatis id erat.
+					Cras gravida leo laoreet gravida dapibus. Sed vehicula nisi mi, at suscipit neque viverra nec. Curabitur lacus mi, congue in efficitur vel, vehicula non libero.
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-6">
+		<div class="ma-customHeader">
+			Intresseanmälan
+		</div>
+		<div class="ma-border">
+			<div class="ma-center ma-wrap-padding">
+				<form ng-submit="vm.submitForm()" name="signUpForm">
+					<div class="form-group" ng-form="Name">
+						<input ng-class="{'ma-has-error-border': Name.$invalid && Name.$dirty}" ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" ng-required="true" ng-minlength="3" ng-maxlength="128" />
+						<div ng-show="Name.$invalid && Name.$dirty">
+							<span class="text-danger" ng-show="Name.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="Name.$error.minlength">Namnet måste minst innehålla 3 tecken!</span>
+							<span class="text-danger" ng-show="Name.$error.maxlength">Namnet kan inte överstiga 128 tecken!</span>
+						</div>
+					</div>
+					<div class="form-group" ng-form="Address">
+						<input ng-class="{'ma-has-error-border': Address.$invalid && Address.$dirty}" ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" ng-required="true" />
+						<div ng-show="Address.$invalid && Address.$dirty">
+							<span class="text-danger" ng-show="Address.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
+					</div>
+					<div class="form-group" ng-form="County">
+						<input ng-class="{'ma-has-error-border': County.$invalid && County.$dirty}" ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" ng-required="true" />
+						<div ng-show="County.$invalid && County.$dirty">
+							<span class="text-danger" ng-show="County.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
+					</div>
+					<div class="form-group" ng-form="PostalCode">
+						<input ng-class="{'ma-has-error-border': PostalCode.$error.pattern && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^\d{3}\s\d{2}$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
+						<div ng-show="PostalCode.$error.pattern && PostalCode.$dirty">
+							<span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
+						<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: XXX XX</span>
+					</div>
+					<div class="form-group" ng-form="Email">
+						<input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.formData.Email" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" class="form-control input-lg" type="email" placeholder="Epost" ng-required="true" />
+						<div ng-show="Email.$invalid && Email.$dirty">
+							<span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="Email.$error.pattern">Fyll i en giltig e-post.</span>
+						</div>
+					</div>
+					<!--<div class="form-group">
+						<input ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" />
+						<input ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" />
+						<input ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" />
+						<input ng-model="vm.formData.PostalCode" class="form-control input-lg" type="text" placeholder="Post nummer" />
+						<input ng-model="vm.formData.Email" class="form-control input-lg" type="text" placeholder="Epost" />
+					</div>-->
+					<input ng-class="{'btn-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg" value="Anmäl dig" />
+				</form>
+				<div ng-show="vm.validMsg">
+					<span class="text-info" style="font-size: 2em; margin-top: .25em;">{{vm.msg}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div ng-hide="vm.phaseOneHide == true" class="row ma-main">
-    <div class="col-xs-12 col-md-6">
-        <div class="ma-border">
-            <div class="ma-center ma-wrap-padding">
-                <form>
-                    <div class="form-group">
-                        <input disabled class="form-control input-lg" type="text" placeholder="Namn" />
-                        <input disabled class="form-control input-lg" type="text" placeholder="Adress" />
-                        <input disabled class="form-control input-lg" type="text" placeholder="Ort" />
-                        <input disabled class="form-control input-lg" type="text" placeholder="Post nummer" />
-                        <input disabled class="form-control input-lg" type="text" placeholder="Epost" />
-                        <input disabled class="form-control input-lg" type="text" placeholder="Lösenord" />
-                        <input disabled class="form-control input-lg" type="text" placeholder="Repetera ditt lösenord" />
-                    </div>
-                    <input disabled ng-click="" type="submit" class="ma-btn-lg btn-success" value="Registrera dig" />
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-md-6">
-        <div class="ma-border">
-            <div class="ma-center ma-wrap-padding">
-                <form>
-                    <div class="form-group">
-                        <input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" />
-                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" />
-                    </div>
-                    <input ng-click="vm.login()" type="submit" class="ma-btn-lg btn-success" value="Logga in" />
-                </form>
-            </div>
-        </div>
-    </div>
+	<div class="col-xs-12 col-md-6">
+		<div class="ma-border">
+			<div class="ma-center ma-wrap-padding">
+				<form>
+					<div class="form-group">
+						<input disabled class="form-control input-lg" type="text" placeholder="Namn" />
+						<input disabled class="form-control input-lg" type="text" placeholder="Adress" />
+						<input disabled class="form-control input-lg" type="text" placeholder="Ort" />
+						<input disabled class="form-control input-lg" type="text" placeholder="Post nummer" />
+						<input disabled class="form-control input-lg" type="text" placeholder="Epost" />
+						<input disabled class="form-control input-lg" type="text" placeholder="Lösenord" />
+						<input disabled class="form-control input-lg" type="text" placeholder="Repetera ditt lösenord" />
+					</div>
+					<input disabled ng-click="" type="submit" class="ma-btn-lg btn-success" value="Registrera dig" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-6">
+		<div class="ma-border">
+			<div class="ma-center ma-wrap-padding">
+				<form>
+					<div class="form-group">
+						<input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" />
+						<input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" />
+					</div>
+					<input ng-click="vm.login()" type="submit" class="ma-btn-lg btn-success" value="Logga in" />
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
