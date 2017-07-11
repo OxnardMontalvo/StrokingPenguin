@@ -281,6 +281,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
+	[Authorize(Roles = "User")]
 	public class UserFlyersController : BaseApiController {
 		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[EnableQuery()]
@@ -288,6 +289,9 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/UserFlyers/{guid}")]
 		public IHttpActionResult Get(string guid) {
 			try {
+				if ( User.Identity.GetUserId() != guid ) {
+					return BadRequest("User do not match.");
+				}
 				return Ok(DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid).Flyers);
 
 			} catch ( Exception ex ) {
@@ -301,6 +305,9 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/UserFlyers/{guid}/{id}")]
 		public IHttpActionResult Get(string guid, int id) {
 			try {
+				if ( User.Identity.GetUserId() != guid ) {
+					return BadRequest("User do not match.");
+				}
 				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
 				return Ok(user.Flyers.FirstOrDefault(x => x.ID == id));
 			} catch ( Exception ex ) {
@@ -316,6 +323,10 @@ namespace WebAPI_Pure.Controllers {
 			try {
 				if ( id <= 0 || string.IsNullOrEmpty(guid) ) {
 					return BadRequest("Id's cannot be invalid");
+				}
+
+				if ( User.Identity.GetUserId() != guid ) {
+					return BadRequest("User do not match.");
 				}
 
 				if ( !ModelState.IsValid ) {
@@ -350,6 +361,10 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest("Id's cannot be invalid");
 				}
 
+				if ( User.Identity.GetUserId() != guid ) {
+					return BadRequest("User do not match.");
+				}
+
 				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
 				if ( user == null ) {
 					return NotFound();
@@ -371,6 +386,10 @@ namespace WebAPI_Pure.Controllers {
 			try {
 				if ( id <= 0 || string.IsNullOrEmpty(guid) ) {
 					return BadRequest("Id's cannot be invalid");
+				}
+
+				if ( User.Identity.GetUserId() != guid ) {
+					return BadRequest("User do not match.");
 				}
 
 				var flyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
