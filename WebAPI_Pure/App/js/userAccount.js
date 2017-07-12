@@ -41,7 +41,7 @@
                     headers: { "Authorization": tokenHeader }
                 }
             }),
-            districtSearch: $resource(appSetting.serverPath + "api/Users/District/:min/:max", {}, {
+            districtSearch: $resource(appSetting.serverPath + "api/Users/Districts/:query", {}, {
                 'query': {
                     method: 'GET',
                     isArray: true,

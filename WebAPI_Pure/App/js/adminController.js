@@ -61,11 +61,11 @@
                 angular.copy(data, vm.users);
             });
         };
-        vm.searchMin = null;
-        vm.searchMax = null;
+
+        vm.searchStringDistrict = null;
         vm.searchDistrict = function () {
             console.log(vm.searchString);
-            searchUser.districtSearch.query({ min: vm.searchMin, max: vm.searchMax }, function (data) {
+            searchUser.districtSearch.query({query: vm.searchStringDistrict }, function (data) {
                 console.log(data);
                 angular.copy(data, vm.users);
             });

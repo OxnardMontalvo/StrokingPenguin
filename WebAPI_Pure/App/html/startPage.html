@@ -1,7 +1,7 @@
 ﻿<div ng-show="vm.show == true" class="row ma-main">
 	<div class="col-xs-12 col-md-6">
 		<div class="ma-customHeader">
-			Information
+			<span class="glyphicon glyphicon-info-sign"></span> Information
 		</div>
 		<div class="ma-border">
 			<div class="ma-wrap-padding">
@@ -101,7 +101,8 @@
 						<input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" />
 						<input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" />
 					</div>
-					<input ng-click="vm.login()" type="submit" class="ma-btn-lg btn-success" value="Logga in" />
+					<!--<input ng-click="vm.login()" type="submit" class="ma-btn-lg btn-success" value="Logga in" />-->
+                    <a ng-click="vm.login()" class="ma-btn-lg btn-success"><span class="glyphicon glyphicon-log-in"></span> Logga in</a>
 				</form>
 			</div>
 		</div>
