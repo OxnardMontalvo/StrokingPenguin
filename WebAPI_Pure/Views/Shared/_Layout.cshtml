@@ -26,7 +26,7 @@
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
                 <div class="navbar-text pull-right">
-                    <div style="color: orange; font-size: 1.5em;" ng-controller="userInfo"><span style="margin-right: .5em;">{{cUser}}</span><a ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">Logga ut</a></div>
+                    <div style="color: orange; font-size: 1.5em;" ng-controller="userInfo"><span style="margin-right: .5em;">{{cUser}}</span><a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">Logga ut</a></div>
                 </div>
             </div>
             

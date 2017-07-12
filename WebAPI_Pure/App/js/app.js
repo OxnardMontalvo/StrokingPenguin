@@ -57,7 +57,7 @@
         };
     })
 
-    .controller("userInfo", function (currentUser, $scope) {
+    .controller("userInfo", function (currentUser, $scope, $location) {
         $scope.displayLogOut = false;
         $scope.$watch(function () {
             return currentUser.getProfile();
@@ -67,7 +67,14 @@
                 $scope.displayLogOut = true;
             };
         });
-        
+
+        $scope.logOut = function () {
+            sessionStorage.clear();
+            $scope.cUser = "";
+            $scope.displayLogOut = false;
+            $location.path("api/Account/Logout");
+        };
+
     });
 
 })();
