@@ -1,0 +1,27 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar,button,footer,a,legend {
+    display: none;
+}
+
+.ma-hidden {
+    display: block;
+}
+.ma-show {
+    display: none;
+}
+
+p {
+    font-size: 30pt;
+}
+
+span {
+    font-size: 18pt;
+}
+
+.break {
+    page-break-after: always;
+}

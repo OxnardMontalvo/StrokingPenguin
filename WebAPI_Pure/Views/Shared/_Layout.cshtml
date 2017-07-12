@@ -1,10 +1,12 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>*** | *** på dina villkor</title>
     @Styles.Render("~/Content/css")
+    <link href="~/App/css/angularjsStyle.css" rel="stylesheet" />
+    <link href="~/App/css/printStyle.css" rel="stylesheet" media="print" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -16,25 +18,44 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Logotyp eller Namn", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
+                <div class="navbar-text pull-right">
+                    <div style="color: orange; font-size: 1.5em;" ng-controller="userInfo"><span style="margin-right: .5em;">{{cUser}}</span><a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">Logga ut</a></div>
+                </div>
             </div>
+            
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - ***tack.nu i samarbete med <span>
+                    <img src="https://www.sdr.se/images/main-logo.png" />
+                    <img src="https://www.ica.se/imagevaultfiles/id_161956/cf_259/ica_supermarket_logotyp_rod_rgb_bhs.png?" />
+                </span>
+            </p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular-route.min.js"></script>
+    <script src="~/Scripts/angular-resource.min.js"></script>
+    <script src="~/App/js/app.js"></script>
+
+    <script src="~/App/js/commonServices.js"></script>
+    <script src="~/App/js/userAccount.js"></script>
+
+    <script src="~/App/js/accountController.js"></script>
+    <script src="~/App/js/startController.js"></script>
+    <script src="~/App/js/adminController.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
