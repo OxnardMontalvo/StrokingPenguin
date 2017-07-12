@@ -82,11 +82,11 @@
     }
 }
 
-.ma-mobileMode, p {
+.ma-mobileMode p {
     font-weight: bold;
     font-size: .75em;
 }
-.ma-mobileMode, p span {
+.ma-mobileMode p span {
     font-style: italic;
     font-size: .75em;
 }
@@ -103,4 +103,14 @@
 
 .ma-has-error-border {
     border: red 2px solid !important;
+}
+
+.ma-infoTxt {
+    font-size: 1.375em;
+
+}
+
+.ma-infoTxt span {
+    font-weight: 900;
+    font-style: normal;
 }
