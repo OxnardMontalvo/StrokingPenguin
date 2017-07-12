@@ -173,11 +173,11 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Users/District/1001/2002
+		[AllowAnonymous]
 		[HttpGet]
 		[ResponseType(typeof(UserViewModel))]
-		[Route("api/Users/District/{min}/{max}")]
-		public IHttpActionResult GetRange(int min, int max) {
-
+		[Route("api/Users/District/{min?}/{max?}")]
+		public IHttpActionResult GetRange(int min = int.MinValue, int max = int.MaxValue) {
 			if ( min > max ) min = min ^ max ^ ( max = min );
 
 			try {
