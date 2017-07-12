@@ -8,6 +8,15 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-xs-12 col-md-3">
+        <form ng-submit="vm.search()">
+            <input type="search", placeholder="Sök" ng-model="vm.searchString" />
+            <input type="submit", value="Sök" />
+        </form>
+    </div>
+</div>
+
 <div class="row ma-show">
     <table class="table table-responsive table-striped">
         <thead>

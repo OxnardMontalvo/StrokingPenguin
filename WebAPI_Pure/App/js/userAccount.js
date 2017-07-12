@@ -30,6 +30,16 @@
                 headers: { "Authorization": tokenHeader }
             }
         });
+    }])
+
+    .factory("searchUser", ["$resource", "appSettings", function ($resource, appsetting) {
+        return $resource(appsetting.serverPath + "api/Users/Query/:query", {}, {
+            'query': {
+                method: 'GET',
+                isArray: true,
+                headers: { "Authorization": tokenHeader }
+            }
+        });
     }]);
 
     function tokenHeader() {

@@ -3,7 +3,7 @@
 
     angular.module("app")
     // Admin controller for displaying admin specific tasks.
-    .controller("adminCtrl", function (user, currentUser) {
+    .controller("adminCtrl", function (user, currentUser, searchUser) {
         var vm = this;
 
         console.log(currentUser.getProfile())
@@ -44,6 +44,16 @@
             user.update({ id: getId }, editUserData);
             vm.currentEdit = '';
         };
+
+        vm.searchString = "";
+        vm.search = function () {
+            console.log(vm.searchString);
+            searchUser.query({query: vm.searchString}, function (data) {
+                console.log(data);
+                angular.copy(data, vm.users);
+            });
+        };
+
 
     });
 
