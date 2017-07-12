@@ -73,6 +73,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Users/Query/Greta
+		[HttpGet]
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Query/{query}")]
 		public IHttpActionResult GetUsersByQuery(string query = "") {
@@ -166,6 +167,33 @@ namespace WebAPI_Pure.Controllers {
 					vm = new UserViewModel();
 				}
 				return Ok(vm);
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
+
+		// GET: api/Users/District/1001/2002
+		[HttpGet]
+		[ResponseType(typeof(UserViewModel))]
+		[Route("api/Users/District/{min}/{max}")]
+		public IHttpActionResult GetRange(int min, int max) {
+
+			if ( min > max ) min = min ^ max ^ ( max = min );
+
+			try {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
+					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new UserViewModel {
+						Id = x.Id,
+						Name = x.Name,
+						Address = x.Address,
+						PostalCode = x.PostalCode,
+						County = x.County,
+						Email = x.Email,
+						DistrictNumber = x.DistrictNumber,
+						DeliveryOrderNumber = x.DeliveryOrderNumber
+					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
+				return Ok(users);
+
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
