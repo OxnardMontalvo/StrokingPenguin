@@ -198,7 +198,7 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		// GET: api/Users/District/1001/2002
+		// GET: api/Users/Districts/8008-8019
 		[HttpGet]
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Districts/{query?}")]
@@ -206,14 +206,14 @@ namespace WebAPI_Pure.Controllers {
 			int max = int.MaxValue, min = int.MinValue;
 			if ( !string.IsNullOrWhiteSpace(query) ) {
 				var trimSplit = new[] { ' ', '-', ':', '*', '+', '!', ',', '.' };
-				var SearchQuery = new string(query.Trim(trimSplit).ToLower().Where(c => char.IsDigit(c) || char.IsWhiteSpace(c) || c == '-').ToArray()).Split(trimSplit);
+				var SearchQuery = new string(query.Trim(trimSplit).ToLower().Where(c => char.IsDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == ',' || c == '.').ToArray()).Split(trimSplit);
 				if ( SearchQuery.Length == 1 ) {
 					int.TryParse(SearchQuery[0], out max);
 					min = max;
 				} else if ( SearchQuery.Length > 1 ) {
 					int.TryParse(SearchQuery[0], out min);
 					int.TryParse(SearchQuery[SearchQuery.Length - 1], out max);
-
+					if ( min > max ) min = min ^ max ^ ( max = min );
 				}
 			}
 
