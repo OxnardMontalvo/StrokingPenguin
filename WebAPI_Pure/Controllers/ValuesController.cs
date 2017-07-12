@@ -198,7 +198,7 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		// GET: api/Users/District/1001/2002
+		// GET: api/Users/Districts/8008-8019
 		[HttpGet]
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Districts/{query?}")]
