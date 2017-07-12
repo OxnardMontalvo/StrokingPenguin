@@ -6,6 +6,13 @@
     .controller("adminCtrl", function (user, currentUser, searchUser) {
         var vm = this;
 
+        var dbUsers;
+
+        user.query(function (data) {
+            angular.copy(data.length, dbUsers);
+        });
+        
+        console.log(dbUsers);
         console.log(currentUser.getProfile())
 
         // Getting users and display them.
@@ -13,6 +20,7 @@
         vm.getUsers = function () {
             user.query(function (data) {
                 angular.copy(data, vm.users);
+                //angular.copy(data.length, dbUsers);
             });
         };
 
@@ -48,7 +56,16 @@
         vm.searchString = "";
         vm.search = function () {
             console.log(vm.searchString);
-            searchUser.query({query: vm.searchString}, function (data) {
+            searchUser.stringSearch.query({query: vm.searchString}, function (data) {
+                console.log(data);
+                angular.copy(data, vm.users);
+            });
+        };
+        vm.searchMin = null;
+        vm.searchMax = null;
+        vm.searchDistrict = function () {
+            console.log(vm.searchString);
+            searchUser.districtSearch.query({ min: vm.searchMin, max: vm.searchMax }, function (data) {
                 console.log(data);
                 angular.copy(data, vm.users);
             });

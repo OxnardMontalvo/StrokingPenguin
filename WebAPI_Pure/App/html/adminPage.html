@@ -8,11 +8,22 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12 col-md-3">
-        <form ng-submit="vm.search()">
-            <input type="search", placeholder="Sök" ng-model="vm.searchString" />
-            <input type="submit", value="Sök" />
+<div class="row ma-main">
+    <div class="col-xs-12 col-md-6">
+        <form class="form-inline" ng-submit="vm.search()">
+            <div class="form-group">
+                <input class="form-control input-group-lg" type="search" , placeholder="Sök" ng-model="vm.searchString" style="width: 100%;" />
+            </div>
+            <input class="btn btn-sm" type="submit", value="Sök" />
+        </form>
+    </div>
+    <div class="col-xs-12 col-md-push-3">
+        <form class="form-inline" ng-submit="vm.searchDistrict()">
+            <div class="form-group">
+                <input class="form-control input-group-lg" type="search" , placeholder="Sök" ng-model="vm.searchMin" style="width: 6em;" />
+                <input class="form-control input-group-lg" type="search" , placeholder="Sök" ng-model="vm.searchMax" style="width: 6em;" />
+            </div>
+            <input class="btn btn-sm" type="submit" , value="Sök Distrikt" style="width: 7em;" />
         </form>
     </div>
 </div>

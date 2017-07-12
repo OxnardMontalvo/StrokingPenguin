@@ -32,14 +32,23 @@
         });
     }])
 
-    .factory("searchUser", ["$resource", "appSettings", function ($resource, appsetting) {
-        return $resource(appsetting.serverPath + "api/Users/Query/:query", {}, {
-            'query': {
-                method: 'GET',
-                isArray: true,
-                headers: { "Authorization": tokenHeader }
-            }
-        });
+    .factory("searchUser", ["$resource", "appSettings", function ($resource, appSetting) {
+        return {
+            stringSearch: $resource(appSetting.serverPath + "api/Users/Query/:query", {}, {
+                'query': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: { "Authorization": tokenHeader }
+                }
+            }),
+            districtSearch: $resource(appSetting.serverPath + "api/Users/District/:min/:max", {}, {
+                'query': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: { "Authorization": tokenHeader }
+                }
+            })
+        };
     }]);
 
     function tokenHeader() {

@@ -3,7 +3,7 @@
 
     angular.module("app")
         // The start controller for displaying the info and getting the user information.
-    .controller("startCtrl", function (user) {
+    .controller("startCtrl", function ($scope, user) {
         var vm = this;
 
         vm.show = true;
@@ -21,6 +21,8 @@
             });
 
             vm.formData = {};
+            //$scope.signUpForm.$setUntouched();
+            $scope.signUpForm.$setPristine();
         };
 
     });
