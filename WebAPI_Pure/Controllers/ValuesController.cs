@@ -175,10 +175,47 @@ namespace WebAPI_Pure.Controllers {
 		// GET: api/Users/District/1001/2002
 		[HttpGet]
 		[ResponseType(typeof(UserViewModel))]
-		[Route("api/Users/District/{min}/{max}")]
-		public IHttpActionResult GetRange(int min, int max) {
-
+		[Route("api/Users/District/{min?}/{max?}")]
+		public IHttpActionResult GetRange(int min = int.MinValue, int max = int.MaxValue) {
 			if ( min > max ) min = min ^ max ^ ( max = min );
+
+			try {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
+					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new UserViewModel {
+						Id = x.Id,
+						Name = x.Name,
+						Address = x.Address,
+						PostalCode = x.PostalCode,
+						County = x.County,
+						Email = x.Email,
+						DistrictNumber = x.DistrictNumber,
+						DeliveryOrderNumber = x.DeliveryOrderNumber
+					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
+				return Ok(users);
+
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
+
+		// GET: api/Users/District/1001/2002
+		[HttpGet]
+		[ResponseType(typeof(UserViewModel))]
+		[Route("api/Users/Districts/{query?}")]
+		public IHttpActionResult GetRanges(string query = null) {
+			int max = int.MaxValue, min = int.MinValue;
+			if ( !string.IsNullOrWhiteSpace(query) ) {
+				var trimSplit = new[] { ' ', '-', ':', '*', '+', '!', ',', '.' };
+				var SearchQuery = new string(query.Trim(trimSplit).ToLower().Where(c => char.IsDigit(c) || char.IsWhiteSpace(c) || c == '-').ToArray()).Split(trimSplit);
+				if ( SearchQuery.Length == 1 ) {
+					int.TryParse(SearchQuery[0], out max);
+					min = max;
+				} else if ( SearchQuery.Length > 1 ) {
+					int.TryParse(SearchQuery[0], out min);
+					int.TryParse(SearchQuery[SearchQuery.Length - 1], out max);
+
+				}
+			}
 
 			try {
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
