@@ -24,11 +24,26 @@
         </thead>
         <tbody>
             <tr ng-repeat="user in vm.users">
-                <td>{{user.Name}}</td>
-                <td>{{user.Address}}</td>
-                <td>{{user.County}}</td>
-                <td>{{user.PostalCode}}</td>
-                <td>{{user.Email}}</td>
+                <td>
+                    <span ng-show="vm.currentEdit != user.Id">{{user.Name}}</span>
+                    <input class="form-control input-sm" ng-model="user.Name" ng-show="vm.currentEdit == user.Id" type="text" />
+                </td>
+                <td>
+                    <span ng-show="vm.currentEdit != user.Id">{{user.Address}}</span>
+                    <input class="form-control input-sm" ng-model="user.Address" ng-show="vm.currentEdit == user.Id" type="text" />
+                </td>
+                <td>
+                    <span ng-show="vm.currentEdit != user.Id">{{user.County}}</span>
+                    <input class="form-control input-sm" ng-model="user.County" ng-show="vm.currentEdit == user.Id" type="text" />
+                </td>
+                <td>
+                    <span ng-show="vm.currentEdit != user.Id">{{user.PostalCode}}</span>
+                    <input class="form-control input-sm" ng-model="user.PostalCode" ng-show="vm.currentEdit == user.Id" type="text" />
+                </td>
+                <td>
+                    <span ng-show="vm.currentEdit != user.Id">{{user.Email}}</span>
+                    <input class="form-control input-sm" ng-model="user.Email" ng-show="vm.currentEdit == user.Id" type="text" />
+                </td>
                 <td>
                     <span ng-show="vm.currentEdit != user.Id">{{user.DistrictNumber}}</span>
                     <input class="form-control input-sm" ng-model="user.DistrictNumber" ng-show="vm.currentEdit == user.Id" type="text" />
