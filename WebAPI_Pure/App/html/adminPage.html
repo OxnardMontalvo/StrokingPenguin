@@ -76,8 +76,10 @@
                     <input class="form-control input-sm" ng-model="user.DeliveryOrderNumber" ng-show="vm.currentEdit == user.Id" type="text" />
                 </td>
                 <td>
-                    <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id"><span class="glyphicon glyphicon-save"></span> Spara</a>
-                    <a ng-click="vm.editUser(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Id"><span class="glyphicon glyphicon-edit"></span> Ändra</a>
+                    <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-success" ng-show="vm.currentEdit == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-save"></span> Spara</a>
+                    <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove-circle"></span> Avbryt</a>
+                    <a ng-click="vm.editUser(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentEdit != user.Id" style="width: 100%;"><span class="glyphicon glyphicon-edit"></span> Ändra</a>
+                    <a ng-click="vm.editUser(user.Id)" class="btn btn-sm btn-danger" ng-show="vm.currentEdit != user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove"></span> Ta bort</a>
                 </td>
             </tr>
         </tbody>

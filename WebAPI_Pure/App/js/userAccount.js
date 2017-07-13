@@ -28,6 +28,11 @@
                 method: 'GET',
                 isArray: true,
                 headers: { "Authorization": tokenHeader }
+            },
+            'delete': {
+                method: 'DELETE',
+                isArray: false,
+                headers: { "Authorization": tokenHeader }
             }
         });
     }])
