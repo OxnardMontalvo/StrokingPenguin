@@ -57,13 +57,6 @@ namespace WebAPI_Pure.Controllers {
 			};
 		}
 
-		// POST api/Account/Logout
-		[Route("Logout")]
-		public IHttpActionResult Logout() {
-			Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-			return Ok();
-		}
-
 		// GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
 		[Route("ManageInfo")]
 		public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false) {
@@ -96,8 +89,7 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest(ModelState);
 			}
 
-			IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-				model.NewPassword);
+			IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
 
 			if ( !result.Succeeded ) {
 				return GetErrorResult(result);
@@ -134,8 +126,7 @@ namespace WebAPI_Pure.Controllers {
 			if ( model.LoginProvider == LocalLoginProvider ) {
 				result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
 			} else {
-				result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
-					new UserLoginInfo(model.LoginProvider, model.ProviderKey));
+				result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(model.LoginProvider, model.ProviderKey));
 			}
 
 			if ( !result.Succeeded ) {

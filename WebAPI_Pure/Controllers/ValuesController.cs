@@ -38,13 +38,6 @@ namespace WebAPI_Pure.Controllers {
 
 	[Authorize(Roles = "Admin")]
 	public class UsersController : BaseApiController {
-		// GET: api/Users/Roles
-		//Built under duress
-		[Route("api/Users/Roles")]
-		public IHttpActionResult GetRoles() {
-			return Json(new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB)).Roles.Select(x => x.Name).ToList());
-		}
-
 		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire
 		[AllowAnonymous]
 		[HttpGet]
@@ -99,7 +92,6 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 		// GET: api/Users
-		//[EnableQuery()]
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users")]
 		public IHttpActionResult Get() {
@@ -261,7 +253,7 @@ namespace WebAPI_Pure.Controllers {
 					Address = vm.Address,
 					UserName = vm.Email,
 					Email = vm.Email,
-					PostalCode = vm.PostalCode,
+					PostalCode = new string(vm.PostalCode.Trim().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = vm.County,
 					Flyers = new Collection<Flyer>() { flyer }
 				};
@@ -280,7 +272,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[Route("api/Users/{id}")]
-		//[ValidateAntiForgeryToken]
 		public async Task<IHttpActionResult> Put(string id, [FromBody]UserViewModel vm) {
 			try {
 				if ( vm == null ) {
@@ -296,7 +287,7 @@ namespace WebAPI_Pure.Controllers {
 				user.Address = vm.Address;
 				user.UserName = vm.Email;
 				user.Email = vm.Email;
-				user.PostalCode = vm.PostalCode;
+				user.PostalCode = new string(vm.PostalCode.Trim().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " ");
 				user.County = vm.County;
 				user.DistrictNumber = vm.DistrictNumber;
 				user.DeliveryOrderNumber = vm.DeliveryOrderNumber;
@@ -366,7 +357,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
 		[ResponseType(typeof(Flyer))]
-		//[Authorize()]
 		[Route("api/UserFlyers/{guid}/{id}")]
 		public IHttpActionResult Get(string guid, int id) {
 			try {
@@ -381,7 +371,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0
-		//[ValidateAntiForgeryToken]
 		[ResponseType(typeof(Flyer))]
 		[Route("api/UserFlyers/{guid}/{id}")]
 		public IHttpActionResult Post(string guid, int id) {
@@ -496,7 +485,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Flyers/5
 		[ResponseType(typeof(Flyer))]
-		//[Authorize()]
 		public IHttpActionResult Get(int id) {
 			try {
 				return Ok(DB.Flyers.Include(x => x.Category).FirstOrDefault(x => x.ID == id));
@@ -506,7 +494,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Flyers
-		//[ValidateAntiForgeryToken]
 		[ResponseType(typeof(Flyer))]
 		public IHttpActionResult Post([FromBody]Flyer flyer) {
 			try {
@@ -590,7 +577,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Cats/5
 		[ResponseType(typeof(Category))]
-		//[Authorize()]
 		public IHttpActionResult Get(int id) {
 			try {
 				return Ok(DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id));
@@ -600,7 +586,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Cats
-		//[ValidateAntiForgeryToken]
 		[ResponseType(typeof(Category))]
 		public IHttpActionResult Post([FromBody]Category category) {
 			try {
