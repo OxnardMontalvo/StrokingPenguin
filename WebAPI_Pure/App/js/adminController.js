@@ -6,15 +6,6 @@
     .controller("adminCtrl", function (user, currentUser, searchUser) {
         var vm = this;
 
-        var dbUsers;
-
-        user.query(function (data) {
-            angular.copy(data.length, dbUsers);
-        });
-        
-        console.log(dbUsers);
-        console.log(currentUser.getProfile())
-
         // Getting users and display them.
         vm.users = [];
         vm.getUsers = function () {
@@ -53,6 +44,7 @@
             vm.currentEdit = '';
         };
 
+        //Search by name, and other.
         vm.searchString = "";
         vm.search = function () {
             console.log(vm.searchString);
@@ -62,6 +54,7 @@
             });
         };
 
+        //Search by district nr sing or by range.
         vm.searchStringDistrict = null;
         vm.searchDistrict = function () {
             console.log(vm.searchString);
@@ -71,6 +64,11 @@
             });
         };
 
+        vm.remove = function (getId) {
+            user.delete({ id: getId }, function (data) {
+                console.log(data);
+            });
+        };
 
     });
 

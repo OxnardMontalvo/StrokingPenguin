@@ -6,7 +6,7 @@
 .ma-border {
     border: .2em solid black;
     border-radius: .5em;
-    min-height: 35em;
+    min-height: 38em;
     background-color: white;
 }
 
@@ -53,12 +53,20 @@
     }
 }
 
-.ma-center {
+.ma-center-text {
     text-align: center;
 }
 
-.ma-center form {
-    display: inline-block;
+.ma-form {
+    width: 21em;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width : 480px) {
+    .ma-form {
+    width: auto;
+    margin: 0 auto;
+}
 }
 
 .ma-wrap-padding {
@@ -91,6 +99,9 @@
     font-size: .75em;
 }
 
+.ma-table-width-8 {
+    width: 8%;
+}
 .ma-table-width-10 {
     width: 10%;
 }
