@@ -72,7 +72,7 @@
             sessionStorage.clear();
             $scope.cUser = "";
             $scope.displayLogOut = false;
-            $location.path("api/Account/Logout");
+            $location.path("/");
         };
 
     });
