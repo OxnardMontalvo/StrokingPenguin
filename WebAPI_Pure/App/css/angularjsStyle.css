@@ -14,10 +14,31 @@
     padding: .5em 1em;
     font-size: 1.5em;
 }
-.ma-btn-lg-w {
+.ma-btn-lg-l {
     padding: .5em 1em;
     font-size: 1.5em;
-    width: 10em;
+    width: 100%;
+    border-radius: 2em 0 0 2em;
+}
+.ma-btn-lg-r {
+    padding: .5em 1em;
+    font-size: 1.5em;
+    width: 100%;
+    border-radius: 0 2em 2em 0;
+}
+@media only screen and (max-width : 768px) {
+    .ma-btn-lg-l {
+        padding: .5em 1em;
+        font-size: 1.5em;
+        width: 100%;
+        border-radius: 0;
+    }
+    .ma-btn-lg-r {
+        padding: .5em 1em;
+        font-size: 1.5em;
+        width: 100%;
+        border-radius: 0;
+    }
 }
 
 .ma-placed-header {
@@ -38,7 +59,7 @@
     margin: 0;
 }
 
-@media only screen and (max-width : 480px) {
+@media only screen and (max-width : 768px) {
     .ma-customHeader {
         position: relative;
         top: .8em;
@@ -62,7 +83,7 @@
     margin: 0 auto;
 }
 
-@media only screen and (max-width : 480px) {
+@media only screen and (max-width : 768px) {
     .ma-form {
     width: auto;
     margin: 0 auto;
@@ -81,7 +102,7 @@
     display: none;
 }
 
-@media only screen and (max-width : 480px) {
+@media only screen and (max-width : 768px) {
     .ma-hidden {
         display: block;
     }
@@ -124,4 +145,9 @@
 .ma-infoTxt span {
     font-weight: 900;
     font-style: normal;
+}
+
+.ma-succssesText {
+    font-size: 2em;
+    margin-top: .25em;
 }
