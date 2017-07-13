@@ -325,7 +325,19 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		// Helper functions
+		[Authorize(Roles = "Admin, User")]
+		[Route("api/Users/ChangePassword")]
+		[HttpPost]
+		public async Task<IHttpActionResult> ChangePassword([FromBody]ChangePasswordBindingModel bm) {
+			var user = User.Identity.GetUserId();
+			if ( !ModelState.IsValid || user == null ) {
+				return BadRequest(ModelState);
+			}
+			var result = await UserManager.ChangePasswordAsync(user, bm.OldPassword, bm.NewPassword);
+			return Ok(result);
+		}
+
+		#region Helpers
 		public string GeneratePassword() {
 			string password = "";
 			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/";
@@ -335,6 +347,7 @@ namespace WebAPI_Pure.Controllers {
 				password += passwordChars.Substring(r.Next(0, passwordChars.Length - 1), 1);
 			return password;
 		}
+		#endregion
 	}
 
 	[Authorize(Roles = "User")]
