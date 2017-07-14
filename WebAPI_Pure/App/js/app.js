@@ -43,10 +43,12 @@
             profile.username = username;
             profile.isLoggedIn = isLoggedIn;
 
+            //sessionStorage.setItem("profile", JSON.stringify(profile));
             sessionStorage.setItem("profile", profile.username);
         };
 
         var getProfile = function () {
+            //return JSON.parse(sessionStorage.getItem("profile"));
             return sessionStorage.getItem("profile", profile);
 
         };
@@ -58,6 +60,7 @@
     })
 
     .controller("userInfo", function (currentUser, $scope, $location) {
+        
         $scope.displayLogOut = false;
         $scope.$watch(function () {
             return currentUser.getProfile();
@@ -67,7 +70,7 @@
                 $scope.displayLogOut = true;
             };
         });
-
+        
         $scope.logOut = function () {
             sessionStorage.clear();
             $scope.cUser = "";
