@@ -14,7 +14,6 @@ using System.Web.Http.OData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity.Migrations;
 
 namespace WebAPI_Pure.Controllers {
 	public class BaseApiController : ApiController {
@@ -260,6 +259,11 @@ namespace WebAPI_Pure.Controllers {
 				var result = await UserManager.CreateAsync(user, GeneratePassword());
 				if ( result.Succeeded ) {
 					await UserManager.AddToRoleAsync(user.Id, "User");
+
+					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
+					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+
 					await DB.SaveChangesAsync();
 					return Ok(result);
 				}
@@ -268,6 +272,38 @@ namespace WebAPI_Pure.Controllers {
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
+		}
+
+		[AllowAnonymous]
+		[Route("ConfirmEmail", Name = "ConfirmEmail")]
+		[HttpGet]
+		public async Task<IHttpActionResult> ConfirmEmail(string userId, string code) {
+			if ( userId == null || code == null ) {
+				return BadRequest("Error");
+			}
+			var result = await UserManager.ConfirmEmailAsync(userId, code);
+			return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
+		}
+
+		[AllowAnonymous]
+		[Route("ForgotPassword")]
+		[HttpGet]
+		public async Task<IHttpActionResult> ForgotPassword(string email) {
+			if ( ModelState.IsValid ) {
+				var user = await UserManager.FindByNameAsync(email);
+				if ( user == null || !( await UserManager.IsEmailConfirmedAsync(user.Id) ) ) {
+					// Don't reveal that the user does not exist or is not confirmed
+					return Ok("ForgotPasswordConfirmation");
+				}
+
+				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+				var callbackUrl = Url.Link("RecoverPassword", new { userId = user.Id, code = code });
+				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+				return Ok("ForgotPasswordConfirmation");
+			}
+
+			// If we got this far, something failed, redisplay form
+			return BadRequest();
 		}
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
@@ -335,6 +371,25 @@ namespace WebAPI_Pure.Controllers {
 			}
 			var result = await UserManager.ChangePasswordAsync(user, bm.OldPassword, bm.NewPassword);
 			return Ok(result);
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		[Route("ResetPassword", Name = "ResetPassword")]
+		public async Task<IHttpActionResult> ResetPassword(ResetPasswordViewModel model) {
+			if ( !ModelState.IsValid ) {
+				return BadRequest(ModelState);
+			}
+			var user = await UserManager.FindByNameAsync(model.Email);
+			if ( user == null ) {
+				// Don't reveal that the user does not exist
+				return Ok();
+			}
+			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+			if ( result.Succeeded ) {
+				return Ok();
+			}
+			return Ok();
 		}
 
 		#region Helpers
