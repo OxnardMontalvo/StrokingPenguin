@@ -74,8 +74,8 @@
                         <input ng-class="{'btn-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg" value="Anmäl dig" />
                     </div>
 				</form>
-				<div ng-show="vm.validMsg">
-					<span class="text-info" style="font-size: 2em; margin-top: .25em;">{{vm.msg}}</span>
+				<div class="ma-center-text" ng-show="vm.validMsg">
+					<span class="text-info ma-succssesText">{{vm.msg}}</span>
 				</div>
 			</div>
 		</div>
@@ -114,9 +114,8 @@
                         <label>Lösenord</label>
                         <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" />
                     </div>
-					<!--<input ng-click="vm.login()" type="submit" class="ma-btn-lg btn-success" value="Logga in" />-->
                     <div class="ma-center-text">
-                        <a ng-click="vm.login()" class="ma-btn-lg btn-success"><span class="glyphicon glyphicon-log-in"></span> Logga in</a>
+                        <button ng-click="vm.login()" class="ma-btn-lg btn-success"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
                     </div>
 				</form>
 			</div>

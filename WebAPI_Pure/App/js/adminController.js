@@ -17,14 +17,14 @@
 
         vm.show = true;
         vm.hide = true;
-        vm.currentEdit = '';
+        vm.currentModifyUser = '';
 
         // Make sure we edit correct user.
         vm.editUser = function (getId) {
-            if (vm.currentEdit == getId) {
-                vm.currentEdit = '';
+            if (vm.currentModifyUser == getId) {
+                vm.currentModifyUser = '';
             } else {
-                vm.currentEdit = getId;
+                vm.currentModifyUser = getId;
             }
             vm.show = false;
             vm.hide = false;
@@ -41,7 +41,7 @@
                 };
             };
             user.update({ id: getId }, editUserData);
-            vm.currentEdit = '';
+            vm.currentModifyUser = '';
         };
 
         //Search by name, and other.
@@ -64,10 +64,25 @@
             });
         };
 
+        //Remove user from DB.
         vm.remove = function (getId) {
+            if (vm.currentModifyUser != getId) {
+                vm.currentModifyUser = '';
+            } else {
+                vm.currentModifyUser = getId;
+            }
             user.delete({ id: getId }, function (data) {
                 console.log(data);
+                vm.getUsers();
             });
+            
+        };
+
+        vm.cancle = function () {
+            vm.show = true;
+            vm.hide = true;
+            vm.currentModifyUser = '';
+            vm.getUsers();
         };
 
     });
