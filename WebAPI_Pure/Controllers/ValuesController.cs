@@ -285,17 +285,19 @@ namespace WebAPI_Pure.Controllers {
 			return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
 		}
 
-		public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordViewModel model) {
+		[AllowAnonymous]
+		[Route("ForgotPassword")]
+		[HttpGet]
+		public async Task<IHttpActionResult> ForgotPassword(string email) {
 			if ( ModelState.IsValid ) {
-				var user = await UserManager.FindByNameAsync(model.Email);
+				var user = await UserManager.FindByNameAsync(email);
 				if ( user == null || !( await UserManager.IsEmailConfirmedAsync(user.Id) ) ) {
 					// Don't reveal that the user does not exist or is not confirmed
 					return Ok("ForgotPasswordConfirmation");
 				}
 
 				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-				var callbackUrl = Url.Link("Default", new { Controller = "Account", Action = "ResetPassword", userId = user.Id, code = code });
-				//var callbackUrl = Url.Link("ResetPassword", "Account", new { UserId = user.Id, code = code }, protocol: Request.Url.Scheme);
+				var callbackUrl = Url.Link("RecoverPassword", new { userId = user.Id, code = code });
 				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
 				return Ok("ForgotPasswordConfirmation");
 			}
@@ -373,7 +375,7 @@ namespace WebAPI_Pure.Controllers {
 
 		[HttpPost]
 		[AllowAnonymous]
-		[Route("ResetPassword")]
+		[Route("ResetPassword", Name = "ResetPassword")]
 		public async Task<IHttpActionResult> ResetPassword(ResetPasswordViewModel model) {
 			if ( !ModelState.IsValid ) {
 				return BadRequest(ModelState);
