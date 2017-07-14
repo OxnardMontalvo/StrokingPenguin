@@ -56,7 +56,7 @@ namespace WebAPI_Pure.Models {
 		[StringLength(128, MinimumLength = 3)]
 		public string Name { get; set; }
 		[Required]
-		[StringLength(128, MinimumLength = 3)]
+		[StringLength(128)]
 		public string Address { get; set; }
 		[Required]
 		[EmailAddress]
@@ -65,7 +65,7 @@ namespace WebAPI_Pure.Models {
 		[StringLength(6, MinimumLength = 5)]
 		public string PostalCode { get; set; }
 		[Required]
-		[StringLength(50)]
+		[StringLength(128)]
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
 		public string DeliveryOrderNumber { get; set; }
@@ -87,5 +87,32 @@ namespace WebAPI_Pure.Models {
 		[Display(Name = "Confirm new password")]
 		[Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
 		public string ConfirmPassword { get; set; }
+	}
+
+	public class ForgotPasswordViewModel {
+		[Required]
+		[EmailAddress]
+		[Display(Name = "Email")]
+		public string Email { get; set; }
+	}
+
+	public class ResetPasswordViewModel {
+		[Required]
+		[EmailAddress]
+		[Display(Name = "Email")]
+		public string Email { get; set; }
+
+		[Required]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+		[DataType(DataType.Password)]
+		[Display(Name = "Password")]
+		public string Password { get; set; }
+
+		[DataType(DataType.Password)]
+		[Display(Name = "Confirm password")]
+		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		public string ConfirmPassword { get; set; }
+
+		public string Code { get; set; }
 	}
 }
