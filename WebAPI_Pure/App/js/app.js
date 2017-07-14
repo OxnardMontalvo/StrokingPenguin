@@ -21,7 +21,18 @@
         .when("/Admin", {
             templateUrl: "App/html/adminPage.html",
             controller: "adminCtrl",
-            controllerAs: "vm"
+            controllerAs: "vm",
+            //resolve: {
+            //    validUser: function (test, $location) {
+            //        if (test.valid === true) {
+            //            console.log("Valid");
+            //            $location.path("/Admin");
+            //        } else {
+            //            console.log("Invalid");
+            //            $location.path("/Login");
+            //        };
+            //    }
+            //}
         })
         .when("/User", {
             templateUrl: "",
@@ -31,6 +42,14 @@
         .otherwise({
             redirectTo: "/"
         });
+    })
+
+    .factory("test", function () {
+        return {
+            valid: function () {
+                return false;
+            }
+        };
     })
 
     .factory("currentUser", function () {
