@@ -18,7 +18,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44399</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -257,6 +258,7 @@
     <Content Include="App\css\printStyle.css" />
     <Content Include="App\html\adminPage.html" />
     <Content Include="App\html\startPage.html" />
+    <Content Include="App\img\Ica-Logo-TU.svg" />
     <Content Include="App\js\adminController.js" />
     <Content Include="App\js\app.js" />
     <Content Include="App\js\commonServices.js" />
