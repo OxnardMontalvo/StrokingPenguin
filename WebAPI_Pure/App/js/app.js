@@ -22,17 +22,16 @@
             templateUrl: "App/html/adminPage.html",
             controller: "adminCtrl",
             controllerAs: "vm",
-            //resolve: {
-            //    validUser: function (test, $location) {
-            //        if (test.valid === true) {
-            //            console.log("Valid");
-            //            $location.path("/Admin");
-            //        } else {
-            //            console.log("Invalid");
-            //            $location.path("/Login");
-            //        };
-            //    }
-            //}
+            resolve: {
+                
+                checkRoleValidation: function (checkRole, $location) {
+                    if (checkRole.getRole().$$state.value == false) {
+                        $location.path("/Login");
+                    } else {
+                        return true;
+                    }
+                }
+            }
         })
         .when("/User", {
             templateUrl: "",
@@ -44,10 +43,17 @@
         });
     })
 
-    .factory("test", function () {
+    .factory("checkRole", function ($q, currentUser) {
         return {
-            valid: function () {
-                return false;
+            getRole: function () {
+                var deferred = $q.defer();
+                if (currentUser.getProfile() != null && currentUser.getProfile().isLoggedIn && currentUser.getProfile().role === "Admin") {
+                    deferred.resolve(true);
+                    return deferred.promise;
+                } else {
+                    deferred.resolve(false);
+                    return deferred.promise;
+                }
             }
         };
     })
@@ -55,20 +61,22 @@
     .factory("currentUser", function () {
         var profile = {
             isLoggedIn: false,
-            username: ""
+            username: "",
+            role: ""
         };
 
-        var setProfile = function (username, isLoggedIn) {
+        var setProfile = function (username, isLoggedIn, role) {
             profile.username = username;
             profile.isLoggedIn = isLoggedIn;
+            profile.role = role;
 
-            //sessionStorage.setItem("profile", JSON.stringify(profile));
-            sessionStorage.setItem("profile", profile.username);
+            sessionStorage.setItem("profile", JSON.stringify(profile));
+            //sessionStorage.setItem("profile", profile.username);
         };
 
         var getProfile = function () {
-            //return JSON.parse(sessionStorage.getItem("profile"));
-            return sessionStorage.getItem("profile", profile);
+            return JSON.parse(sessionStorage.getItem("profile"));
+            //return sessionStorage.getItem("profile", profile);
 
         };
 
@@ -82,7 +90,9 @@
         
         $scope.displayLogOut = false;
         $scope.$watch(function () {
-            return currentUser.getProfile();
+            if (currentUser.getProfile() != null) {
+                return currentUser.getProfile().username;
+            }
         }, function (newValue, oldValue) {
             if (newValue != null) {
                 $scope.cUser = newValue;

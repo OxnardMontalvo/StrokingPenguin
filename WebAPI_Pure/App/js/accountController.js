@@ -25,7 +25,7 @@
             vm.userData.confirmPassword = vm.userData.password;
             vm.userData.userName = vm.userData.email;
             userAccount.loginUser(vm.userData, function (response, headersGetter) {
-                currentUser.setProfile(response.userName, true);
+                currentUser.setProfile(response.userName, true, response.roles);
                 sessionStorage.setItem(tokenKey, response.access_token);
 
                 if (response.roles == "Admin") {
