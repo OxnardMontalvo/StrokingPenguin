@@ -36,6 +36,10 @@
             });
         };
 
+        vm.forgotPassword = function () {
+            $location.path("/forgotPassword");
+        };
+
     });
 
 })();

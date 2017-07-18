@@ -32,6 +32,16 @@
                     }
                 }
             }
+         })
+        .when("/forgotPassword", {
+            templateUrl: "App/html/forgotPasswordPage.html",
+            controller: "",
+            controllerAs: ""
+        })
+        .when("/RestorePassword", {
+            templateUrl: "App/html/restorePasswordPage.html",
+            controller: "",
+            controllerAs: ""
         })
         .when("/User", {
             templateUrl: "",

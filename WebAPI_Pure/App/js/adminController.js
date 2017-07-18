@@ -47,9 +47,9 @@
         //Search by name, and other.
         vm.searchString = "";
         vm.search = function () {
-            console.log(vm.searchString);
+            //console.log(vm.searchString);
             searchUser.stringSearch.query({query: vm.searchString}, function (data) {
-                console.log(data);
+                //console.log(data);
                 angular.copy(data, vm.users);
             });
         };
@@ -57,9 +57,9 @@
         //Search by district nr sing or by range.
         vm.searchStringDistrict = null;
         vm.searchDistrict = function () {
-            console.log(vm.searchString);
+            //console.log(vm.searchString);
             searchUser.districtSearch.query({query: vm.searchStringDistrict }, function (data) {
-                console.log(data);
+                //console.log(data);
                 angular.copy(data, vm.users);
             });
         };
@@ -72,7 +72,7 @@
                 vm.currentModifyUser = getId;
             }
             user.delete({ id: getId }, function (data) {
-                console.log(data);
+                //console.log(data);
                 vm.getUsers();
             });
             
