@@ -25,7 +25,7 @@
             resolve: {
                 
                 checkRoleValidation: function (checkRole, $location) {
-                    if (checkRole.getRole().$$state.value == false) {
+                    if (checkRole.getARole().$$state.value == false) {
                         $location.path("/Login");
                     } else {
                         return true;
@@ -36,12 +36,26 @@
         .when("/forgotPassword", {
             templateUrl: "App/html/forgotPasswordPage.html",
             controller: "",
-            controllerAs: ""
+            controllerAs: "vm"
         })
         .when("/RestorePassword", {
             templateUrl: "App/html/restorePasswordPage.html",
             controller: "",
-            controllerAs: ""
+            controllerAs: "vm"
+        })
+        .when("/ChangePassword", {
+            templateUrl: "App/html/changePasswordPage.html",
+            controller: "changePswCtrl",
+            controllerAs: "vm",
+            resolve: {
+                checkRoleValidation: function (checkRole, $location) {
+                    if (checkRole.getAURole().$$state.value == false) {
+                        $location.path("/Login");
+                    } else {
+                        return true;
+                    }
+                }
+            }
         })
         .when("/User", {
             templateUrl: "",
@@ -55,9 +69,20 @@
 
     .factory("checkRole", function ($q, currentUser) {
         return {
-            getRole: function () {
+            getARole: function () {
                 var deferred = $q.defer();
                 if (currentUser.getProfile() != null && currentUser.getProfile().isLoggedIn && currentUser.getProfile().role === "Admin") {
+                    deferred.resolve(true);
+                    return deferred.promise;
+                } else {
+                    deferred.resolve(false);
+                    return deferred.promise;
+                }
+            },
+
+            getAURole: function () {
+                var deferred = $q.defer();
+                if (currentUser.getProfile() != null && currentUser.getProfile().isLoggedIn && (currentUser.getProfile().role === "Admin" || currentUser.getProfile().role === "User")) {
                     deferred.resolve(true);
                     return deferred.promise;
                 } else {
@@ -115,6 +140,10 @@
             $scope.cUser = "";
             $scope.displayLogOut = false;
             $location.path("/");
+        };
+
+        $scope.changePass = function () {
+            $location.path("/ChangePassword");
         };
 
     });

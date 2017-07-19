@@ -54,6 +54,16 @@
                 }
             })
         };
+        }])
+
+    .factory("changePass", ["$resource", "appSettings", function ($resource, appSetting) {
+        return $resource(appSetting.serverPath + "api/Users/ChangePassword", {}, {
+            'update': {
+                method: 'POST',
+                isArray: false,
+                headers: { "Authorization": tokenHeader }
+            }
+        });
     }]);
 
     function tokenHeader() {

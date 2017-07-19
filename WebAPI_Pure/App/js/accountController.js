@@ -5,7 +5,7 @@
 
     angular.module("app")
     // Register and Login controller, for both users and admin.
-    .controller("registerAndLoginCtrl", function (userAccount, $location, currentUser) {
+    .controller("registerAndLoginCtrl", function (userAccount, changePass, $location, currentUser) {
         var vm = this;
 
         vm.show = false;
@@ -39,6 +39,20 @@
         vm.forgotPassword = function () {
             $location.path("/forgotPassword");
         };
+
+    })
+    .controller("changePswCtrl", function (changePass) {
+        var vm = this;
+
+        vm.formData = {};
+        //vm.msg = "Ditt lösenord är nu ändrat."
+
+        vm.changePassword = function () {
+            console.log(vm.formData);
+            changePass.update(vm.formData, function (response) {
+                console.log(response);
+            });
+        }
 
     });
 

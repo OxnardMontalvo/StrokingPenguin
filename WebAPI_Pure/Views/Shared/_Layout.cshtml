@@ -25,11 +25,21 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>*@
-                <div class="navbar-text pull-right">
-                    <div ng-cloak style="color: orange; font-size: 1.5em;" ng-controller="userInfo">
-                        <span style="margin-right: .5em;">{{cUser}}</span>
-                        <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">
-                        <span class="glyphicon glyphicon-log-out"></span> Logga ut</a>
+                <div ng-cloak ng-controller="userInfo">
+                    <div class="navbar-text">
+                        <div ng-cloak ng-show="displayLogOut">
+                            <ul style="font-size: 1em; list-style-type: none;">
+                                <li><a ng-click="changePass()">Byt lösenord</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="navbar-text pull-right">
+                        <div ng-cloak style="color: orange; font-size: 1.5em;">
+                            <span style="margin-right: .5em;">{{cUser}}</span>
+                            <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">
+                                <span class="glyphicon glyphicon-log-out"></span> Logga ut
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
