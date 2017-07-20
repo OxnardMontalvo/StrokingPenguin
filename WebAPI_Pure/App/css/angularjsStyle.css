@@ -13,6 +13,8 @@
 .ma-btn-lg {
     padding: .5em 1em;
     font-size: 1.5em;
+    width: 100%;
+    border-radius: 0 0 0 0;
 }
 .ma-btn-lg-l {
     padding: .5em 1em;

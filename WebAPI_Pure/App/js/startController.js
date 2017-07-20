@@ -18,11 +18,11 @@
             user.save(vm.formData, function (response) {
                 //console.log(response);
                 vm.validMsg = true;
+
+                vm.formData = {};
+                //$scope.signUpForm.$setUntouched();
+                $scope.signUpForm.$setPristine();
             });
-            
-            vm.formData = {};
-            //$scope.signUpForm.$setUntouched();
-            $scope.signUpForm.$setPristine();
         };
 
     });

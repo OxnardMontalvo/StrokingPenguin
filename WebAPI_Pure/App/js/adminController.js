@@ -22,10 +22,15 @@
         vm.take = 1;
         vm.page = 1;
         vm.showPagenation = false;
+        var hasSearch = false;
 
         vm.getUsersPage = function (take, page) {
-            userPage.query({ take: take, page: page }, function (data) {
-                if (vm.users < 1) {
+            userPage.query({ take: take, page: page }, function(data) {
+                if (hasSearch || vm.users < 1) {
+                    vm.take = 1;
+                    vm.page = 1;
+                    vm.showPagenation = false;
+                    hasSearch = false;
                     //console.log(vm.page);
                     //console.log(data);
                     angular.copy(data, vm.users);
@@ -44,6 +49,18 @@
                 //console.log(vm.page);
             });
         };
+
+        //vm.refreshList = function() {
+        //    vm.users = [];
+        //    console.log("take: " + vm.take + " page: " + vm.page);
+        //    console.log(vm.take);
+        //    var u = [];
+        //    for (var p = 1; p < vm.page; p++) {
+        //        userPage.query({ take: vm.take, page: p }, function(data) {
+        //            console.log(data);
+        //        });
+        //    };
+        //};
 
         vm.show = true;
         vm.hide = true;
@@ -81,6 +98,11 @@
             searchUser.stringSearch.query({query: vm.searchString}, function (data) {
                 //console.log(data);
                 angular.copy(data, vm.users);
+
+                vm.take = 1;
+                vm.page = 1;
+                vm.showPagenation = false;
+                hasSearch = true;
             });
         };
 
@@ -91,6 +113,11 @@
             searchUser.districtSearch.query({query: vm.searchStringDistrict }, function (data) {
                 //console.log(data);
                 angular.copy(data, vm.users);
+
+                vm.take = 1;
+                vm.page = 1;
+                vm.showPagenation = false;
+                hasSearch = true;
             });
         };
 
@@ -103,7 +130,15 @@
             }
             user.delete({ id: getId }, function (data) {
                 //console.log(data);
-                vm.getUsers();
+                //vm.getUsers();
+                //vm.users.remove(data[getId]);
+                var index;
+                for (var i = 0; i < vm.users.length; i++) {
+                    if (vm.users[i].Id == getId) {
+                        index = i;
+                    }
+                }
+                vm.users.splice(index, 1);
             });
             
         };
@@ -112,7 +147,10 @@
             vm.show = true;
             vm.hide = true;
             vm.currentModifyUser = '';
-            vm.getUsers();
+            //vm.getUsers();
+            for (var i = 0; i < vm.users.length; i++) {
+                vm.users[i];
+            }
         };
 
     });
