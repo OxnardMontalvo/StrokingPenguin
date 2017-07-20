@@ -1,7 +1,7 @@
 ﻿
 <div class="row ma-main">
     <div class="col-xs-12 col-md-offset-3 col-md-3" style="padding: .1em;">
-        <button ng-click="vm.getUsers()" class="ma-btn-lg-l" type="button"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</button>
+        <button ng-click="vm.getUsersPage(vm.take, vm.page)" class="ma-btn-lg-l" type="button"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</button>
     </div>
     <div class="col-xs-12 col-md-3" style="padding: .1em;">
         <button onclick="window.print()" class="ma-btn-lg-r" type="button"><span class="glyphicon glyphicon-print"></span> Skriv ut</button>
@@ -46,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="user in vm.users">
+            <tr ng-repeat="user in vm.users track by $index">
                 <td>
                     <span ng-show="vm.currentModifyUser != user.Id">{{user.Name}}</span>
                     <input class="form-control input-sm" ng-model="user.Name" ng-show="vm.currentModifyUser == user.Id" type="text" />
@@ -88,7 +88,7 @@
 
 <div class="row ma-hidden">
     <div class="col-xs-12 ma-mobileMode">
-        <div class="break jumbotron" ng-repeat="user in vm.users">
+        <div class="break jumbotron" ng-repeat="user in vm.users track by $index">
             <p>Namn: <span>{{user.Name}}</span></p>
             <legend></legend>
             <p>Adress: <span>{{user.Address}}</span></p>
@@ -104,4 +104,8 @@
             <p>Gång nr.: <span>{{user.DeliveryOrderNumber}}</span></p>
         </div>
     </div>
+</div>
+
+<div class="ma-center-text" ng-show="vm.showPagenation">
+    <button ng-click="vm.getUsersPage(vm.take, vm.page)">Ladda in fler</button>
 </div>

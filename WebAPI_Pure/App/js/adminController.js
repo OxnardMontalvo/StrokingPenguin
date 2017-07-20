@@ -3,15 +3,45 @@
 
     angular.module("app")
     // Admin controller for displaying admin specific tasks.
-    .controller("adminCtrl", function (user, currentUser, searchUser) {
+    .controller("adminCtrl", function (user, userPage, currentUser, searchUser) {
         var vm = this;
 
         // Getting users and display them.
         vm.users = [];
-        vm.getUsers = function () {
-            user.query(function (data) {
-                angular.copy(data, vm.users);
-                //angular.copy(data.length, dbUsers);
+        //var allUsers;
+        //vm.getUsers = function () {
+        //    user.query(function (data) {
+        //        angular.copy(data.length, allUsers);
+        //        //allUsers = data.length;
+        //        //angular.copy(data.length, dbUsers);
+        //    });
+        //};
+        //vm.getUsers();
+        //console.log(allUsers);
+        
+        vm.take = 1;
+        vm.page = 1;
+        vm.showPagenation = false;
+
+        vm.getUsersPage = function (take, page) {
+            userPage.query({ take: take, page: page }, function (data) {
+                if (vm.users < 1) {
+                    //console.log(vm.page);
+                    //console.log(data);
+                    angular.copy(data, vm.users);
+                    vm.showPagenation = true;
+                    //console.log(vm.users);
+                } else {
+                    //console.log(data);
+                    //console.log(vm.users.length);
+                    for (var i = 0; i < data.length; i++) {
+                        vm.users.push(data[i]);
+                    }
+                    //console.log(vm.users);
+                };
+
+                vm.page += 1;
+                //console.log(vm.page);
             });
         };
 

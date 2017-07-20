@@ -37,6 +37,16 @@
         });
     }])
 
+    .factory("userPage", ["$resource", "appSettings", function ($resource, appSettings) {
+        return $resource(appSettings.serverPath + "api/Users/:take/:page", {}, {
+            'query': {
+                method: 'GET',
+                isArray: true,
+                headers: { "Authorization": tokenHeader }
+            }
+        });
+    }])
+
     .factory("searchUser", ["$resource", "appSettings", function ($resource, appSetting) {
         return {
             stringSearch: $resource(appSetting.serverPath + "api/Users/Query/:query", {}, {
