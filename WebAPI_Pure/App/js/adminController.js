@@ -20,11 +20,14 @@
         //console.log(allUsers);
         
         vm.take = 1;
-        vm.page = 1;
+        var page = 0;
         vm.showPagenation = false;
         var hasSearch = false;
 
-        vm.getUsersPage = function (take, page) {
+        vm.getUsersPage = function (take) {
+            //console.log(page);
+
+            page += 1;
             userPage.query({ take: take, page: page }, function(data) {
                 if (hasSearch || vm.users < 1) {
                     vm.take = 1;
@@ -41,26 +44,51 @@
                     //console.log(vm.users.length);
                     for (var i = 0; i < data.length; i++) {
                         vm.users.push(data[i]);
-                    }
+                    };
+                    // Check if there is a user after the current added.
+                    userPage.query({ take: take, page: page + 1 }, function (data) {
+                        var nextUser = data;
+                        //console.log(nextUser);
+                        if (nextUser.length == 0) {
+                            vm.showPagenation = false;
+                        };
+                    });
                     //console.log(vm.users);
                 };
-
-                vm.page += 1;
-                //console.log(vm.page);
+                //vm.page += 1;
+                console.log(page);
             });
         };
 
-        //vm.refreshList = function() {
-        //    vm.users = [];
-        //    console.log("take: " + vm.take + " page: " + vm.page);
-        //    console.log(vm.take);
-        //    var u = [];
-        //    for (var p = 1; p < vm.page; p++) {
-        //        userPage.query({ take: vm.take, page: p }, function(data) {
-        //            console.log(data);
-        //        });
-        //    };
-        //};
+        vm.refreshList = function () {
+            ////Almost working refresh. cant edit to higher districtnr and then load in more with lower than that.
+            //var byDelivNr = vm.users.slice(0);
+            //byDelivNr.sort(function (a, b) {
+            //    return a.DistrictNumber - b.DistrictNumber;
+            //});
+
+            //for (var i = 0; i < vm.users.length; i++) {
+            //    vm.users[i] = byDelivNr[i];
+            //};
+
+            //console.log(page);
+            //var nrOfu = vm.take * page;
+            //var temp = [];
+            ////vm.users = [];
+            //for (var p = 1; p < page + 1; p++) {
+            //    //console.log(p);
+            //    userPage.query({ take: vm.take, page: p }, function (data) {
+            //        //console.log(data);
+            //        temp.push(data[0]);
+            //    });
+            //};
+            //angular.copy(temp, vm.users);
+            //console.log(temp);
+
+            //for (var i = 0; i < vm.users.length; i++) {
+            //    vm.users[i];
+            //};
+        };
 
         vm.show = true;
         vm.hide = true;
@@ -123,24 +151,28 @@
 
         //Remove user from DB.
         vm.remove = function (getId) {
-            if (vm.currentModifyUser != getId) {
-                vm.currentModifyUser = '';
-            } else {
-                vm.currentModifyUser = getId;
-            }
-            user.delete({ id: getId }, function (data) {
-                //console.log(data);
-                //vm.getUsers();
-                //vm.users.remove(data[getId]);
-                var index;
-                for (var i = 0; i < vm.users.length; i++) {
-                    if (vm.users[i].Id == getId) {
-                        index = i;
+            //if (vm.currentModifyUser != getId) {
+            //    vm.currentModifyUser = '';
+            //} else {
+            //    vm.currentModifyUser = getId;
+            //}
+
+            if (confirm('Vill du verkligen ta bort personen från Databasen?')) {
+                user.delete({ id: getId }, function (data) {
+                    //console.log(data);
+                    //vm.getUsers();
+                    //vm.users.remove(data[getId]);
+                    var index;
+                    for (var i = 0; i < vm.users.length; i++) {
+                        if (vm.users[i].Id == getId) {
+                            index = i;
+                        }
                     }
-                }
-                vm.users.splice(index, 1);
-            });
-            
+                    vm.users.splice(index, 1);
+                });
+            } else {
+                //Do nothing...
+            };
         };
 
         vm.cancle = function () {

@@ -1,7 +1,7 @@
 ﻿
 <div class="row ma-main">
     <div class="col-xs-12 col-md-offset-2 col-md-3" style="padding: .1em;">
-        <button ng-click="vm.getUsersPage(vm.take, vm.page)" class="ma-btn-lg-l" type="button"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</button>
+        <button ng-click="vm.getUsersPage(vm.take)" class="ma-btn-lg-l" type="button"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</button>
     </div>
     <div class="col-xs-12 col-md-3" style="padding: .1em;">
         <button ng-click="vm.refreshList()" class="ma-btn-lg" type="button"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</button>
@@ -109,6 +109,6 @@
     </div>
 </div>
 
-<div class="ma-center-text" ng-show="vm.showPagenation">
-    <button ng-click="vm.getUsersPage(vm.take, vm.page)">Ladda in fler</button>
+<div class="ma-center-text" ng-show="vm.showPagenation" ng-cloak>
+    <button ng-click="vm.getUsersPage(vm.take)">Ladda in fler</button>
 </div>
