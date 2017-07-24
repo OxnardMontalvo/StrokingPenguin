@@ -39,9 +39,23 @@ namespace WebAPI_Pure {
 	public class EmailService : IIdentityMessageService {
 		public Task SendAsync(IdentityMessage message) {
 			// TODO: Plug in your real email service here to send an email.
-			MailMessage o = new MailMessage("frankmanman@gmail.com", message.Destination, message.Subject, message.Body);
-			SmtpClient client = new SmtpClient("aspmx.l.google.com", 25);
-			return client.SendMailAsync(o);
+			try {
+				var mailpath = @"c:\mail\";
+				MailMessage o = new MailMessage("noreply@localhost.com", message.Destination, message.Subject, message.Body);
+				o.IsBodyHtml = true;
+				//SmtpClient client = new SmtpClient("aspmx.l.google.com", 25);
+				SmtpClient client = new SmtpClient();
+				client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+				client.PickupDirectoryLocation = mailpath;
+
+				//Write out the link to a text file for testing
+				System.IO.File.WriteAllText(mailpath + "LatestLink.txt", message.Body);
+
+				return client.SendMailAsync(o);
+
+			} catch ( System.Exception ex ) {
+			}
+			return null;
 		}
 	}
 }

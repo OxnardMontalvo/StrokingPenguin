@@ -262,7 +262,7 @@ namespace WebAPI_Pure.Controllers {
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
-					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
 
 					await DB.SaveChangesAsync();
 					return Ok(result);
