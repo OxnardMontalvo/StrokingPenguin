@@ -114,5 +114,6 @@ namespace WebAPI_Pure.Models {
 		public string ConfirmPassword { get; set; }
 
 		public string Code { get; set; }
+		public string ID { get; set; }
 	}
 }
