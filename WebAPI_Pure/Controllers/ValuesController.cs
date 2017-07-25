@@ -343,9 +343,9 @@ namespace WebAPI_Pure.Controllers {
 		[AllowAnonymous]
 		[Route("ForgotPassword")]
 		[HttpGet]
-		public async Task<IHttpActionResult> ForgotPassword(string email) {
+		public async Task<IHttpActionResult> ForgotPassword([FromBody]ForgotPasswordViewModel vm) {
 			if ( ModelState.IsValid ) {
-				var user = await UserManager.FindByNameAsync(email);
+				var user = await UserManager.FindByNameAsync(vm.Email);
 				if ( user == null || !( await UserManager.IsEmailConfirmedAsync(user.Id) ) ) {
 					// Don't reveal that the user does not exist or is not confirmed
 					return Ok("ForgotPasswordConfirmation");
