@@ -344,7 +344,7 @@ namespace WebAPI_Pure.Controllers {
 		[Route("ForgotPassword")]
 		[HttpGet]
 		public async Task<IHttpActionResult> ForgotPassword([FromBody]ForgotPasswordViewModel vm) {
-			if ( ModelState.IsValid ) {
+			if ( vm != null && ModelState.IsValid ) {
 				var user = await UserManager.FindByNameAsync(vm.Email);
 				if ( user == null || !( await UserManager.IsEmailConfirmedAsync(user.Id) ) ) {
 					// Don't reveal that the user does not exist or is not confirmed
