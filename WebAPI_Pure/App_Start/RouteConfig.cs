@@ -18,8 +18,8 @@ namespace WebAPI_Pure {
 			);
 
 			routes.MapRoute(
-				name: "RecoverPassword",
-				url: ""
+				name: "RecoverPasswordResponse",
+				url: "RecoverPassword"
 			);
 		}
 	}

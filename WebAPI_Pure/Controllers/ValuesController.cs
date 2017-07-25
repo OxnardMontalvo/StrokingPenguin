@@ -297,7 +297,7 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-				var callbackUrl = Url.Link("RecoverPassword", new { userId = user.Id, code = code });
+				var callbackUrl = Url.Link("RecoverPasswordResponse", new { userId = user.Id, code = code });
 				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
 				return Ok("ForgotPasswordConfirmation");
 			}
