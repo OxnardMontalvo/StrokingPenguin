@@ -13,6 +13,9 @@ i18n/
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Secrets
+secrets.config
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

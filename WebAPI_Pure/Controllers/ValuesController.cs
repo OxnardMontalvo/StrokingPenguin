@@ -48,7 +48,7 @@ namespace WebAPI_Pure.Controllers {
 				var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
 				DB.Roles.Add(new IdentityRole { Name = "User" });
 
-				var adminEmail = "admin@local.se";
+				var adminEmail = SecretsManager.AdminEmail;
 				var adminPass = GeneratePassword();
 
 				var user = new AppUser { UserName = adminEmail, Email = adminEmail };
@@ -301,7 +301,6 @@ namespace WebAPI_Pure.Controllers {
 				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
 				return Ok("ForgotPasswordConfirmation");
 			}
-
 			// If we got this far, something failed, redisplay form
 			return BadRequest();
 		}
@@ -404,6 +403,14 @@ namespace WebAPI_Pure.Controllers {
 		}
 		#endregion
 	}
+	#region Helpers
+
+	public static class SecretsManager {
+		public static string AdminEmail {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["adminEmail"]; }
+		}
+	}
+	#endregion
 
 	[Authorize(Roles = "User")]
 	public class UserFlyersController : BaseApiController {
