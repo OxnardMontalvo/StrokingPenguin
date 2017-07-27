@@ -6,7 +6,8 @@
     "use strict";
 
     angular.module("app", ["ngRoute", "services"])
-    .config(function ($routeProvider) {
+        .config(function ($routeProvider, $qProvider) {
+        //$qProvider.errorOnUnhandledRejections(false);
         $routeProvider
         .when("/", {
             templateUrl: "App/html/startPage.html",
@@ -35,12 +36,12 @@
          })
         .when("/forgotPassword", {
             templateUrl: "App/html/forgotPasswordPage.html",
-            controller: "",
+            controller: "forgotPassCtrl",
             controllerAs: "vm"
         })
-        .when("/RestorePassword", {
+            .when("/RecoverPassword", {
             templateUrl: "App/html/restorePasswordPage.html",
-            controller: "",
+            controller: "recoverPassCtrl",
             controllerAs: "vm"
         })
         .when("/ChangePassword", {

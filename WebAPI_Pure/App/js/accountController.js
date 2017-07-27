@@ -54,6 +54,24 @@
             });
         }
 
+    })
+    .controller("forgotPassCtrl", function (fp) {
+        var vm = this;
+
+        vm.formData = {};
+
+        vm.send = function () {
+            console.log(vm.formData);
+            fp.get(vm.formData, function (response) {
+                console.log(response);
+            });
+        };
+
+    })
+    .controller("recoverPassCtrl", function (rp) {
+        var vm = this;
+
+
     });
 
 })();

@@ -60,6 +60,7 @@
             });
         };
 
+        // Försök hitta en lösning till detta!!!
         vm.refreshList = function () {
             ////Almost working refresh. cant edit to higher districtnr and then load in more with lower than that.
             //var byDelivNr = vm.users.slice(0);

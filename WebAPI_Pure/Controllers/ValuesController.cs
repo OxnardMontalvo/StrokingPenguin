@@ -343,7 +343,8 @@ namespace WebAPI_Pure.Controllers {
 		[AllowAnonymous]
 		[Route("ForgotPassword")]
 		[HttpGet]
-		public async Task<IHttpActionResult> ForgotPassword([FromBody]ForgotPasswordViewModel vm) {
+        // Change from [FromBody] to [FromUri] to send info thru url.
+		public async Task<IHttpActionResult> ForgotPassword([FromUri]ForgotPasswordViewModel vm) {
 			if ( ModelState.IsValid ) {
 				var user = await UserManager.FindByNameAsync(vm.Email);
 				if ( user == null || !( await UserManager.IsEmailConfirmedAsync(user.Id) ) ) {
