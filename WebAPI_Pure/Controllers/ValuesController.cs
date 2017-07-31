@@ -243,7 +243,7 @@ namespace WebAPI_Pure.Controllers {
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
 				if ( flyer == null ) {
-					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.AdminEmail });
+					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.DefaultFlyer });
 					//return BadRequest("No flyers available");
 				}
 
@@ -353,8 +353,8 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                code = code.Replace('/', '_').Replace('+', '!');
-                string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code}";
+				code = code.Replace('/', '_').Replace('+', '!');
+				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code}";
 				//var callbackUrl = Url.Link("RecoverPasswordResponse", new { userId = user.Id, code = code });
 				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
 				return Ok("ForgotPasswordConfirmation");
@@ -382,9 +382,9 @@ namespace WebAPI_Pure.Controllers {
 			if ( !ModelState.IsValid ) {
 				return BadRequest(ModelState);
 			}
-            model.Code = model.Code.Replace('_', '/').Replace('!', '+');
-            var user = await UserManager.FindByNameAsync(model.Email);
-			if ( user == null || user.Id != model.ID) {
+			model.Code = model.Code.Replace('_', '/').Replace('!', '+');
+			var user = await UserManager.FindByNameAsync(model.Email);
+			if ( user == null || user.Id != model.ID ) {
 				// Don't reveal that the user does not exist
 				return Ok();
 			}
