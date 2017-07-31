@@ -50,7 +50,7 @@
         vm.changePassword = function () {
             console.log(vm.formData);
             changePass.update(vm.formData, function (response) {
-                console.log(response);
+                //console.log(response);
             });
         }
 
@@ -63,14 +63,32 @@
         vm.send = function () {
             console.log(vm.formData);
             fp.get(vm.formData, function (response) {
-                console.log(response);
+                //console.log(response);
             });
         };
 
     })
-    .controller("recoverPassCtrl", function (rp) {
+    .controller("recoverPassCtrl", function (rp, $routeParams, $location) {
         var vm = this;
+        //console.log($routeParams.userId + "\n" + $routeParams.code);
+        //var code = $routeParams.code;
+        //console.log($routeParams.userId + "\n" + $routeParams.code);
 
+        vm.formData = {
+            'ID': $routeParams.userId,
+            'Code': $routeParams.code,
+            'Email': "",
+            'Password': "",
+            'ConfirmPassword': ""
+        }
+
+        vm.confirmNewPass = function () {
+            console.log(vm.formData);
+            rp.post(vm.formData, function (response) {
+                //console.log(response);
+                $location.path("/Login");
+            });
+        };
 
     });
 

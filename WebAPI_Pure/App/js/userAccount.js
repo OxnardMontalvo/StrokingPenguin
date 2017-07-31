@@ -75,7 +75,10 @@
         }])
 
         .factory("rp", ["$resource", "appSettings", function ($resources, appSettings) {
-            return $resources(appSettings.serverPath + "RecoverPassword", {}, {
+            return $resources(appSettings.serverPath + "ResetPassword", {}, {
+                'post': {
+                    method: 'POST'
+                }
             });
         }])
 

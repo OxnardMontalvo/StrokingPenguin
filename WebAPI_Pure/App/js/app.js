@@ -39,7 +39,7 @@
             controller: "forgotPassCtrl",
             controllerAs: "vm"
         })
-            .when("/RecoverPassword", {
+        .when("/RecoverPassword/:userId/:code", {
             templateUrl: "App/html/restorePasswordPage.html",
             controller: "recoverPassCtrl",
             controllerAs: "vm"
