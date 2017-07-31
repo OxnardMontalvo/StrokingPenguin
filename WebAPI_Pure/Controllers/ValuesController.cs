@@ -44,7 +44,7 @@ namespace WebAPI_Pure.Controllers {
 		public async Task<IHttpActionResult> CheckAdminAndRoles() {
 			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
 
-			if ( await DB.Roles.CountAsync() == 0 ) {
+			if ( !DB.Database.Exists() || await DB.Roles.CountAsync() == 0 ) {
 				var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
 				DB.Roles.Add(new IdentityRole { Name = "User" });
 
@@ -343,7 +343,7 @@ namespace WebAPI_Pure.Controllers {
 		[AllowAnonymous]
 		[Route("ForgotPassword")]
 		[HttpGet]
-        // Change from [FromBody] to [FromUri] to send info thru url.
+		// Change from [FromBody] to [FromUri] to send info thru url.
 		public async Task<IHttpActionResult> ForgotPassword([FromUri]ForgotPasswordViewModel vm) {
 			if ( ModelState.IsValid ) {
 				var user = await UserManager.FindByNameAsync(vm.Email);
@@ -395,7 +395,7 @@ namespace WebAPI_Pure.Controllers {
 		#region Helpers
 		public string GeneratePassword() {
 			string password = "";
-			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/";
+			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/@";
 			Random r = new Random();
 			int length = r.Next(20, 32);
 			for ( int i = 0; i <= length; i++ )
