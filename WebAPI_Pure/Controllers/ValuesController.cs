@@ -243,7 +243,7 @@ namespace WebAPI_Pure.Controllers {
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
 				if ( flyer == null ) {
-					flyer = DB.Flyers.Add(new Flyer { Name = "DEFAULT" });
+					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.AdminEmail });
 					//return BadRequest("No flyers available");
 				}
 
@@ -381,7 +381,7 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest(ModelState);
 			}
 			var user = await UserManager.FindByNameAsync(model.Email);
-			if ( user == null || user.Id != model.ID) {
+			if ( user == null || user.Id != model.ID ) {
 				// Don't reveal that the user does not exist
 				return Ok();
 			}
@@ -395,21 +395,28 @@ namespace WebAPI_Pure.Controllers {
 		#region Helpers
 		public string GeneratePassword() {
 			string password = "";
-			string passwordChars = "abcdefghijklmnopqrstuvwxyzåäöæøå0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÆØÅ_*$?&=!%{}()/@";
+			string passwordChars = @" !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃ";
 			Random r = new Random();
-			int length = r.Next(20, 32);
+			int length = r.Next(128, 256);
 			for ( int i = 0; i <= length; i++ )
 				password += passwordChars.Substring(r.Next(0, passwordChars.Length - 1), 1);
+
+			var mailpath = @"c:\mail\";
+			System.IO.File.WriteAllText(mailpath + "Password.txt", password);
+
 			return password;
 		}
 		#endregion
 	}
 
-	#region Helpers
+	#region SecretsManager
 
 	public static class SecretsManager {
 		public static string AdminEmail {
 			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["adminEmail"]; }
+		}
+		public static string DefaultFlyer {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["defaultFlyer"]; }
 		}
 	}
 	#endregion
