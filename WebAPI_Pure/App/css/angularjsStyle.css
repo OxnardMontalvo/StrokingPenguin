@@ -17,7 +17,6 @@
     border-radius: 0 0 0 0;
 }
 .ma-btn-lg-l {
-    padding: .5em 1em;
     font-size: 1.5em;
     width: 100%;
     border-radius: 2em 0 0 2em;
@@ -28,6 +27,7 @@
     width: 100%;
     border-radius: 0 2em 2em 0;
 }
+
 @media only screen and (max-width : 768px) {
     .ma-btn-lg-l {
         padding: .5em 1em;

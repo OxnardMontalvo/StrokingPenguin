@@ -45,12 +45,15 @@
         var vm = this;
 
         vm.formData = {};
-        //vm.msg = "Ditt lösenord är nu ändrat."
 
         vm.changePassword = function () {
             console.log(vm.formData);
             changePass.update(vm.formData, function (response) {
                 //console.log(response);
+                if (response.Succeeded) {
+                    vm.formData = {};
+                    vm.msg = "Lösenordet ändrat."
+                };
             });
         }
 
