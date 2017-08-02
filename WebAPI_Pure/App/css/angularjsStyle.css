@@ -32,6 +32,12 @@
     font-size: 1.5em;
     border-radius: 0;
 }
+.ma-btn-c-success {
+    background-color: #5cb85c;
+    padding: .5em 1em;
+    font-size: 1.5em;
+    border-radius: 0;
+}
 .ma-btn-r {
     background-color: lightgray;
     padding: .5em 1em;
