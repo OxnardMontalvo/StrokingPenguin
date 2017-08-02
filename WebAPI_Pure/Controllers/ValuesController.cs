@@ -429,13 +429,10 @@ namespace WebAPI_Pure.Controllers {
 		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
-		[Route("api/UserFlyers/{guid}")]
-		public IHttpActionResult Get(string guid) {
+		[Route("api/UserFlyers")]
+		public IHttpActionResult Get() {
 			try {
-				if ( User.Identity.GetUserId() != guid ) {
-					return BadRequest("User do not match.");
-				}
-				return Ok(DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid).Flyers);
+				return Ok(DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId()).Flyers);
 
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
@@ -444,13 +441,10 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
 		[ResponseType(typeof(Flyer))]
-		[Route("api/UserFlyers/{guid}/{id}")]
-		public IHttpActionResult Get(string guid, int id) {
+		[Route("api/UserFlyers/{id}")]
+		public IHttpActionResult Get(int id) {
 			try {
-				if ( User.Identity.GetUserId() != guid ) {
-					return BadRequest("User do not match.");
-				}
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
 				return Ok(user.Flyers.FirstOrDefault(x => x.ID == id));
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
@@ -459,21 +453,10 @@ namespace WebAPI_Pure.Controllers {
 
 		// POST: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[ResponseType(typeof(Flyer))]
-		[Route("api/UserFlyers/{guid}/{id}")]
-		public IHttpActionResult Post(string guid, int id) {
+		[Route("api/UserFlyers/{id}")]
+		public IHttpActionResult Post(int id) {
 			try {
-				if ( id <= 0 || string.IsNullOrEmpty(guid) ) {
-					return BadRequest("Id's cannot be invalid");
-				}
-
-				if ( User.Identity.GetUserId() != guid ) {
-					return BadRequest("User do not match.");
-				}
-
-				if ( !ModelState.IsValid ) {
-					return BadRequest(ModelState);
-				}
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
 				var flyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
 
 				if ( user == null || flyer == null ) {
@@ -494,52 +477,17 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		// DELETE: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[Route("api/UserFlyers/{guid}")]
-		public IHttpActionResult Delete(string guid) {
-			try {
-				if ( string.IsNullOrEmpty(guid) ) {
-					return BadRequest("Id's cannot be invalid");
-				}
-
-				if ( User.Identity.GetUserId() != guid ) {
-					return BadRequest("User do not match.");
-				}
-
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
-				if ( user == null ) {
-					return NotFound();
-				}
-
-				user.Flyers.Clear();
-				if ( DB.SaveChanges() == 0 ) {
-					return NotFound();
-				}
-				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
-			}
-		}
-
 		// DELETE: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
-		[Route("api/UserFlyers/{guid}/{id}")]
-		public IHttpActionResult Delete(string guid, int id) {
+		[Route("api/UserFlyers/{id}")]
+		public IHttpActionResult Delete(int id) {
 			try {
-				if ( id <= 0 || string.IsNullOrEmpty(guid) ) {
-					return BadRequest("Id's cannot be invalid");
-				}
-
-				if ( User.Identity.GetUserId() != guid ) {
-					return BadRequest("User do not match.");
-				}
-
 				var flyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
 
 				if ( flyer == null ) {
 					return NotFound();
 				}
 
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
 				if ( user == null || flyer == null ) {
 					return NotFound();
 				}
