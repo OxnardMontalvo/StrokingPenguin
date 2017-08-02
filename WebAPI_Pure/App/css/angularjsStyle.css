@@ -10,37 +10,33 @@
     background-color: white;
 }
 
-.ma-btn-lg {
-    padding: .5em 1em;
-    font-size: 1.5em;
-    width: 100%;
-    border-radius: 0 0 0 0;
-}
-.ma-btn-lg-l {
-    font-size: 1.5em;
-    width: 100%;
-    border-radius: 2em 0 0 2em;
-}
-.ma-btn-lg-r {
-    padding: .5em 1em;
-    font-size: 1.5em;
-    width: 100%;
-    border-radius: 0 2em 2em 0;
+.ma-mid-pad {
+    padding: 0 .125em;
 }
 
-@media only screen and (max-width : 768px) {
-    .ma-btn-lg-l {
-        padding: .5em 1em;
-        font-size: 1.5em;
-        width: 100%;
-        border-radius: 0;
-    }
-    .ma-btn-lg-r {
-        padding: .5em 1em;
-        font-size: 1.5em;
-        width: 100%;
-        border-radius: 0;
-    }
+.ma-btn-lg {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.ma-btn-l {
+    background-color: lightgray;
+    padding: .5em 1em;
+    font-size: 1.5em;
+    border-radius: 2em 0 0 2em;
+}
+.ma-btn-c {
+    background-color: lightgray;
+    padding: .5em 1em;
+    font-size: 1.5em;
+    border-radius: 0;
+}
+.ma-btn-r {
+    background-color: lightgray;
+    padding: .5em 1em;
+    font-size: 1.5em;
+    border-radius: 0 2em 2em 0;
 }
 
 .ma-placed-header {
@@ -61,21 +57,6 @@
     margin: 0;
 }
 
-@media only screen and (max-width : 768px) {
-    .ma-customHeader {
-        position: relative;
-        top: .8em;
-        left: 1em;
-        width: auto;
-        max-width: 70%;
-        background-color: white;
-        font-size: 1.3em;
-        font-weight: bold;
-        padding: 0 0 0 1em;
-        margin: 0;
-    }
-}
-
 .ma-center-text {
     text-align: center;
 }
@@ -83,13 +64,6 @@
 .ma-form {
     width: 21em;
     margin: 0 auto;
-}
-
-@media only screen and (max-width : 768px) {
-    .ma-form {
-    width: auto;
-    margin: 0 auto;
-}
 }
 
 .ma-wrap-padding {
@@ -104,22 +78,9 @@
     display: none;
 }
 
-@media only screen and (max-width : 768px) {
-    .ma-hidden {
-        display: block;
-    }
-    .ma-show {
-        display: none;
-    }
-}
-
-.ma-mobileMode p {
+.ma-mobileMode {
     font-weight: bold;
-    font-size: .75em;
-}
-.ma-mobileMode p span {
-    font-style: italic;
-    font-size: .75em;
+    font-size: 9pt;
 }
 
 .ma-table-width-8 {
@@ -156,4 +117,58 @@
 
 .footerLogoImg {
     padding: 0 .25em;
+}
+
+
+
+@media only screen and (max-width : 768px) {
+    .ma-customHeader {
+        position: relative;
+        top: .8em;
+        left: 1em;
+        width: auto;
+        max-width: 70%;
+        background-color: white;
+        font-size: 1.3em;
+        font-weight: bold;
+        padding: 0 0 0 1em;
+        margin: 0;
+    }
+
+    .ma-form {
+        width: auto;
+        margin: 0 auto;
+    }
+
+    .ma-mid-pad {
+        padding: 0;
+    }
+
+    .ma-btn-lg {
+        margin: .125em 0;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .ma-btn-l {
+        background-color: lightgray;
+        padding: .5em 1em;
+        font-size: 1.5em;
+        border-radius: 0;
+    }
+
+    .ma-btn-r {
+        background-color: lightgray;
+        padding: .5em 1em;
+        font-size: 1.5em;
+        border-radius: 0;
+    }
+
+    .ma-hidden {
+        display: block;
+    }
+
+    .ma-show {
+        display: none;
+    }
 }
