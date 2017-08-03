@@ -254,7 +254,7 @@ namespace WebAPI_Pure.Controllers {
 					Email = vm.Email,
 					PostalCode = new string(vm.PostalCode.Trim().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = vm.County,
-					Flyers = new Collection<Flyer>() { flyer }
+					Flyers = new HashSet<Flyer>() { flyer }
 				};
 				var result = await UserManager.CreateAsync(user, GeneratePassword());
 				if ( result.Succeeded ) {
@@ -424,16 +424,15 @@ namespace WebAPI_Pure.Controllers {
 	}
 	#endregion
 
-	[Authorize(Roles = "User")]
+	//[Authorize(Roles = "User")]
+	[Authorize] // For testing
 	public class UserFlyersController : BaseApiController {
 		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[EnableQuery()]
 		[ResponseType(typeof(Flyer))]
 		[Route("api/UserFlyers")]
 		public IHttpActionResult Get() {
 			try {
 				return Ok(DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId()).Flyers);
-
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
@@ -446,6 +445,44 @@ namespace WebAPI_Pure.Controllers {
 			try {
 				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
 				return Ok(user.Flyers.FirstOrDefault(x => x.ID == id));
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
+
+		// GET: api/UserFlyers/GetByCats/1
+		[ResponseType(typeof(Category))]
+		[Route("api/UserFlyers/GetAllCats")]
+		[HttpGet]
+		public IHttpActionResult GetAllCats(int id) {
+			try {
+				return Ok(DB.Categories.ToList());
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
+
+		// GET: api/UserFlyers/GetByCats/1
+		[Route("api/UserFlyers/GetByCats/{id}")]
+		[HttpGet]
+		public IHttpActionResult GetByCats(int id) {
+			try {
+
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var cat = DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id);
+
+				if ( user == null || cat == null ) {
+					return NotFound();
+				}
+
+				var result = cat.Flyers.Select(x => new UserFlyersViewModel { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
+
+				return Ok(result);
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
@@ -599,11 +636,11 @@ namespace WebAPI_Pure.Controllers {
 	[Authorize(Roles = "Admin")]
 	public class CatsController : BaseApiController {
 		// GET: api/Cats
-		[EnableQuery()]
 		[ResponseType(typeof(Category))]
 		public IHttpActionResult Get() {
 			try {
-				return Ok(DB.Categories.Include(x => x.Flyers).ToList());
+				return Ok(DB.Categories.Include(x => x.Flyers));
+				//return Ok(DB.Categories.Include(x => x.Flyers.Select(z => z.Users)));
 
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);

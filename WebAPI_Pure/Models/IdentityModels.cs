@@ -23,7 +23,7 @@ namespace WebAPI_Pure.Models {
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
 		public string DeliveryOrderNumber { get; set; }
-		public ICollection<Flyer> Flyers { get; set; }
+		public HashSet<Flyer> Flyers { get; set; }
 	}
 
 	public class AppDB : IdentityDbContext<AppUser> {
@@ -41,13 +41,24 @@ namespace WebAPI_Pure.Models {
 		public int ID { get; set; }
 		public string Name { get; set; }
 		public Category Category { get; set; }
-		public ICollection<AppUser> Users { get; set; }
+		public HashSet<AppUser> Users { get; set; }
 	}
 
 	public class Category {
 		public int ID { get; set; }
 		public string Name { get; set; }
-		public ICollection<Flyer> Flyers { get; set; }
+		public HashSet<Flyer> Flyers { get; set; }
+	}
+
+
+	// VMs
+	public class UserFlyersViewModel {
+		[Required]
+		public int ID { get; set; }
+		[Required]
+		public string Name { get; set; }
+		[Required]
+		public bool Selected { get; set; }
 	}
 
 	public class UserViewModel {
