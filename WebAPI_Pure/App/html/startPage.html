@@ -71,7 +71,7 @@
 						</div>
 					</div>
                     <div class="ma-center-text">
-                        <input ng-class="{'btn-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg" value="Anmäl dig" />
+                        <input ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c" value="Anmäl dig" />
                     </div>
 				</form>
 				<div class="ma-center-text" ng-show="vm.validMsg">
@@ -118,7 +118,7 @@
                         <input disabled class="form-control input-lg" type="text" placeholder="Repetera ditt lösenord" />
                     </div>
                     <div class="ma-center-text">
-                        <input disabled ng-click="" type="submit" class="ma-btn-lg btn-success" value="Registrera dig" />
+                        <input disabled ng-click="" type="submit" class="ma-btn-lg ma-btn-c btn-default" value="Registrera dig" />
                     </div>
 				</form>
 			</div>
@@ -127,18 +127,27 @@
 	<div class="col-xs-12 col-md-6">
 		<div class="ma-border">
 			<div class="ma-center ma-wrap-padding">
-				<form class="ma-form">
-					<div class="form-group">
+				<form class="ma-form" ng-submit="vm.login()" name="loginForm">
+					<div class="form-group" ng-form="Email">
                         <label>Epost</label>
-						<input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" />
+						<input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" ng-required="true" />
+                        <div ng-show="Email.$invalid && Email.$dirty">
+                            <span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
+                            <span class="text-danger" ng-show="Email.$error.pattern">Fyll i en giltig e-post.</span>
+                        </div>
 					</div>
-                    <div class="form-group">
+                    <div class="form-group" ng-form="P">
                         <label>Lösenord</label>
                         <span><a style="cursor: pointer; margin-left: 9em;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
-                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" />
+                        <input ng-class="{'ma-has-error-border': P.$invalid && P.$dirty}" ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
+                        <div ng-show="P.$invalid && P.$dirty">
+                            <span class="text-danger" ng-show="P.$error.required">Fältet måste vara ifyllt!</span>
+                            <span class="text-danger" ng-show="P.$error.minlength">Namnet måste innehålla minst 6 tecken!</span>
+                            <span class="text-danger" ng-show="P.$error.maxlength">Namnet kan inte överstiga 256 tecken!</span>
+                        </div>
                     </div>
                     <div class="ma-center-text">
-                        <button ng-click="vm.login()" class="ma-btn-lg btn-success"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
+                        <button ng-class="{'ma-btn-c-success': loginForm.$valid}" ng-disabled="loginForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
                     </div>
 				</form>
 			</div>

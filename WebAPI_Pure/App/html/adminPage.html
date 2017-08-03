@@ -1,18 +1,18 @@
 ﻿
-<div class="row ma-main">
-    <div class="col-xs-12 col-md-offset-2 col-md-3" style="padding: .1em;">
-        <button ng-click="vm.getUsersPage(vm.take)" class="ma-btn-lg-l" type="button"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</button>
+<div class="row ma-main ma-show">
+    <div class="col-sm-12 col-md-4" style="padding: 0;">
+        <a ng-click="vm.getUsersPage(vm.take)" class="ma-btn-lg ma-btn-l ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</a>
     </div>
-    <div class="col-xs-12 col-md-3" style="padding: .1em;">
-        <button ng-click="vm.refreshList()" class="ma-btn-lg" type="button"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</button>
+    <div class="col-sm-12 col-md-4 ma-mid-pad">
+        <a ng-click="vm.refreshList()" class="ma-btn-lg ma-btn-c ma-center-text"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</a>
     </div>
-    <div class="col-xs-12 col-md-3" style="padding: .1em;">
-        <button onclick="window.print()" class="ma-btn-lg-r" type="button"><span class="glyphicon glyphicon-print"></span> Skriv ut</button>
+    <div class="col-sm-12 col-md-4" style="padding: 0;">
+        <a onclick="window.print()" class="ma-btn-lg ma-btn-r ma-center-text"><span class="glyphicon glyphicon-print"></span> Skriv ut</a>
     </div>
 </div>
 
-<div class="row ma-main">
-    <div class="col-xs-12 col-md-8">
+<div class="row ma-main ma-show">
+    <div class="col-sm-12 col-md-8">
         <form class="form-inline" ng-submit="vm.search()">
             <div class="form-group">
                 <div class="input-group">
@@ -22,7 +22,7 @@
             </div>
         </form>
     </div>
-    <div class="col-xs-12 col-md-4">
+    <div class="col-sm-12 col-md-4">
         <form class="form-inline" ng-submit="vm.searchDistrict()">
             <div class="form-group">
                 <div class="input-group">
@@ -90,22 +90,21 @@
 </div>
 
 <div class="row ma-hidden">
-    <div class="col-xs-12 ma-mobileMode">
-        <div class="break jumbotron" ng-repeat="user in vm.users track by $index">
-            <p>Namn: <span>{{user.Name}}</span></p>
-            <legend></legend>
-            <p>Adress: <span>{{user.Address}}</span></p>
-            <legend></legend>
-            <p>Ort: <span>{{user.County}}</span></p>
-            <legend></legend>
-            <p>Post nr.: <span>{{user.PostalCode}}</span></p>
-            <legend></legend>
-            <p>Email: <span>{{user.Email}}</span></p>
-            <legend></legend>
-            <p>Distrikt nr.: <span>{{user.DistrictNumber}}</span></p>
-            <legend></legend>
-            <p>Gång nr.: <span>{{user.DeliveryOrderNumber}}</span></p>
+    <div class="col-sm-12 ma-mobileMode">
+        <div class="break panel panel-primary" ng-repeat="user in vm.users track by $index">
+            <div class="panel-heading">
+                <span>Namn: {{user.Name}}</span><span class="pull-right">  Adress: {{user.Address}}</span>
+            </div>
+            <div class="panel-body">
+                <span>Post #: {{user.PostalCode}}</span><span>  Ort: {{user.County}}</span>
+                <p>Email: <span>{{user.Email}}</span></p>
+                <span>Distrikt #: {{user.DistrictNumber}}</></span><span>   Gång #: {{user.DeliveryOrderNumber}}</span>
+            </div>
+            <div class="panel-footer">
+                <span>{{$index + 1}}</span>
+            </div>
         </div>
+
     </div>
 </div>
 
