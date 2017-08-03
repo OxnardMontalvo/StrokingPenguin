@@ -57,6 +57,11 @@ namespace WebAPI_Pure.Controllers {
 				if ( result.Succeeded ) {
 					await UserManager.AddToRoleAsync(user.Id, adminRole.Name);
 					await DB.SaveChangesAsync();
+
+					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
+					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
+
 					return Ok(result);
 				}
 			}
