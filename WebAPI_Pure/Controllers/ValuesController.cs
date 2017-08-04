@@ -60,7 +60,8 @@ namespace WebAPI_Pure.Controllers {
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
-					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
+					await UserManager.SendEmailAsync(user.Id, "Bekräfta er konto", "Vänligt bekräfta erat konto genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
+					//await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
 
 					return Ok(result);
 				}
@@ -247,8 +248,12 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var flyer = await DB.Flyers.FirstOrDefaultAsync();
+				var cat = await DB.Categories.FirstOrDefaultAsync();
+
 				if ( flyer == null ) {
-					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.DefaultFlyer });
+					if ( cat == null )
+						cat = DB.Categories.Add(new Category { Name = SecretsManager.DefaultCat, Active = true });
+					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.DefaultFlyer, Active = true, Category = cat });
 					//return BadRequest("No flyers available");
 				}
 
@@ -261,13 +266,14 @@ namespace WebAPI_Pure.Controllers {
 					County = vm.County,
 					Flyers = new HashSet<Flyer>() { flyer }
 				};
+
 				var result = await UserManager.CreateAsync(user, GeneratePassword());
 				if ( result.Succeeded ) {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
-					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
+					await UserManager.SendEmailAsync(user.Id, "Bekräfta er konto", "Vänligt bekräfta erat konto genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
 
 					await DB.SaveChangesAsync();
 					return Ok(result);
@@ -426,6 +432,10 @@ namespace WebAPI_Pure.Controllers {
 		public static string DefaultFlyer {
 			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["defaultFlyer"]; }
 		}
+		public static string DefaultCat {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["defaultCat"]; }
+		}
+
 	}
 	#endregion
 
@@ -459,7 +469,7 @@ namespace WebAPI_Pure.Controllers {
 		[ResponseType(typeof(Category))]
 		[Route("api/UserFlyers/GetAllCats")]
 		[HttpGet]
-		public IHttpActionResult GetAllCats(int id) {
+		public IHttpActionResult GetAllCats() {
 			try {
 				return Ok(DB.Categories.ToList());
 			} catch ( Exception ex ) {
@@ -488,6 +498,46 @@ namespace WebAPI_Pure.Controllers {
 				var result = cat.Flyers.Select(x => new UserFlyersViewModel { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
 
 				return Ok(result);
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
+			}
+		}
+
+		// GET: api/UserFlyers/GetByCats
+		[Route("api/UserFlyers/GetByCats")]
+		[HttpGet]
+		public IHttpActionResult GetByCats() {
+			try {
+
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var cats = DB.Categories.Include(x => x.Flyers).Where(x => x.Active == true && x.Flyers.Count > 0);
+
+				if ( user == null || cats == null ) {
+					return NotFound();
+				}
+
+				int value;
+				int.TryParse(new String(user.PostalCode.Where(Char.IsDigit).ToArray()), out value);
+
+				var result = new HashSet<UserFlyersCategoryVM>();
+				foreach ( var c in cats ) {
+					result.Add(new UserFlyersCategoryVM {
+						Name = c.Name,
+						Flyers = new HashSet<UserFlyersViewModel>(
+							c.Flyers.Where(z => z.Range.Min <= value && z.Range.Max >= value && z.Active == true).Select(x => new UserFlyersViewModel {
+								ID = x.ID,
+								Name = x.Name,
+								Selected = user.Flyers.Contains(x)
+							}))
+					});
+				}
+
+				return Ok(result.Where(x=>x.Flyers.Count > 0));
 			} catch ( Exception ex ) {
 				return InternalServerError(ex);
 			}
