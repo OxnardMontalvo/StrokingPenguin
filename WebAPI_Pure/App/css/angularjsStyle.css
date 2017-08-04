@@ -33,6 +33,7 @@
     border-radius: 0;
 }
 .ma-btn-c-success {
+    color: white;
     background-color: #5cb85c;
     padding: .5em 1em;
     font-size: 1.5em;
