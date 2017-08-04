@@ -59,8 +59,8 @@ namespace WebAPI_Pure.Controllers {
 					await DB.SaveChangesAsync();
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
-					await UserManager.SendEmailAsync(user.Id, "Bekräfta er konto", "Vänligt bekräfta erat konto genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
+					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
+					await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
 					//await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
 
 					return Ok(result);
@@ -272,8 +272,9 @@ namespace WebAPI_Pure.Controllers {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-					var callbackUrl = Url.Link("ConfirmEmail", new { userId = user.Id, code = code });
-					await UserManager.SendEmailAsync(user.Id, "Bekräfta er konto", "Vänligt bekräfta erat konto genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
+					code = code.Replace('/', '_').Replace('+', '!');
+					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code}";
+					await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
 
 					await DB.SaveChangesAsync();
 					return Ok(result);
@@ -366,7 +367,6 @@ namespace WebAPI_Pure.Controllers {
 				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
 				code = code.Replace('/', '_').Replace('+', '!');
 				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code}";
-				//var callbackUrl = Url.Link("RecoverPasswordResponse", new { userId = user.Id, code = code });
 				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
 				return Ok("ForgotPasswordConfirmation");
 			}
