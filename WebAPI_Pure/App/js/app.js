@@ -7,7 +7,6 @@
 
     angular.module("app", ["ngRoute", "services"])
         .config(function ($routeProvider, $qProvider) {
-        //$qProvider.errorOnUnhandledRejections(false);
         $routeProvider
         .when("/", {
             templateUrl: "App/html/startPage.html",
@@ -107,12 +106,10 @@
             profile.role = role;
 
             sessionStorage.setItem("profile", JSON.stringify(profile));
-            //sessionStorage.setItem("profile", profile.username);
         };
 
         var getProfile = function () {
             return JSON.parse(sessionStorage.getItem("profile"));
-            //return sessionStorage.getItem("profile", profile);
 
         };
 

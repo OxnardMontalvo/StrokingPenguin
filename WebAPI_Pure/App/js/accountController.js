@@ -12,7 +12,6 @@
         vm.phaseOneHide = false;
 
         //Logging in code.
-
         vm.userData = {
             userName: '',
             email: '',
@@ -47,9 +46,7 @@
         vm.formData = {};
 
         vm.changePassword = function () {
-            console.log(vm.formData);
             changePass.update(vm.formData, function (response) {
-                //console.log(response);
                 if (response.Succeeded) {
                     vm.formData = {};
                     vm.msg = "Lösenordet ändrat."
@@ -64,19 +61,13 @@
         vm.formData = {};
 
         vm.send = function () {
-            console.log(vm.formData);
             fp.get(vm.formData, function (response) {
-                //console.log(response);
             });
         };
 
     })
     .controller("recoverPassCtrl", function (rp, $routeParams, $location) {
         var vm = this;
-        //console.log($routeParams.userId + "\n" + $routeParams.code);
-        //var code = $routeParams.code;
-        //console.log($routeParams.userId + "\n" + $routeParams.code);
-
         vm.formData = {
             'ID': $routeParams.userId,
             'Code': $routeParams.code,
@@ -86,9 +77,7 @@
         }
 
         vm.confirmNewPass = function () {
-            console.log(vm.formData);
             rp.post(vm.formData, function (response) {
-                //console.log(response);
                 $location.path("/Login");
             });
         };

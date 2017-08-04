@@ -16,7 +16,6 @@
         vm.submitForm = function () {
 
             user.save(vm.formData, function (response) {
-                //console.log(response);
                 vm.validMsg = true;
 
                 vm.formData = {};

@@ -8,16 +8,6 @@
 
         // Getting users and display them.
         vm.users = [];
-        //var allUsers;
-        //vm.getUsers = function () {
-        //    user.query(function (data) {
-        //        angular.copy(data.length, allUsers);
-        //        //allUsers = data.length;
-        //        //angular.copy(data.length, dbUsers);
-        //    });
-        //};
-        //vm.getUsers();
-        //console.log(allUsers);
         
         vm.take = 1;
         var page = 0;
@@ -25,8 +15,7 @@
         var hasSearch = false;
 
         vm.getUsersPage = function (take) {
-            //console.log(page);
-
+            
             page += 1;
             userPage.query({ take: take, page: page }, function(data) {
                 if (hasSearch || vm.users < 1) {
@@ -34,29 +23,20 @@
                     vm.page = 1;
                     vm.showPagenation = false;
                     hasSearch = false;
-                    //console.log(vm.page);
-                    //console.log(data);
                     angular.copy(data, vm.users);
                     vm.showPagenation = true;
-                    //console.log(vm.users);
                 } else {
-                    //console.log(data);
-                    //console.log(vm.users.length);
                     for (var i = 0; i < data.length; i++) {
                         vm.users.push(data[i]);
                     };
                     // Check if there is a user after the current added.
                     userPage.query({ take: take, page: page + 1 }, function (data) {
                         var nextUser = data;
-                        //console.log(nextUser);
                         if (nextUser.length == 0) {
                             vm.showPagenation = false;
                         };
                     });
-                    //console.log(vm.users);
                 };
-                //vm.page += 1;
-                console.log(page);
             });
         };
 
@@ -123,9 +103,7 @@
         //Search by name, and other.
         vm.searchString = "";
         vm.search = function () {
-            //console.log(vm.searchString);
             searchUser.stringSearch.query({query: vm.searchString}, function (data) {
-                //console.log(data);
                 angular.copy(data, vm.users);
 
                 vm.take = 1;
@@ -138,9 +116,7 @@
         //Search by district nr sing or by range.
         vm.searchStringDistrict = null;
         vm.searchDistrict = function () {
-            //console.log(vm.searchString);
             searchUser.districtSearch.query({query: vm.searchStringDistrict }, function (data) {
-                //console.log(data);
                 angular.copy(data, vm.users);
 
                 vm.take = 1;
@@ -152,17 +128,8 @@
 
         //Remove user from DB.
         vm.remove = function (getId) {
-            //if (vm.currentModifyUser != getId) {
-            //    vm.currentModifyUser = '';
-            //} else {
-            //    vm.currentModifyUser = getId;
-            //}
-
             if (confirm('Vill du verkligen ta bort personen från Databasen?')) {
                 user.delete({ id: getId }, function (data) {
-                    //console.log(data);
-                    //vm.getUsers();
-                    //vm.users.remove(data[getId]);
                     var index;
                     for (var i = 0; i < vm.users.length; i++) {
                         if (vm.users[i].Id == getId) {
@@ -180,10 +147,87 @@
             vm.show = true;
             vm.hide = true;
             vm.currentModifyUser = '';
-            //vm.getUsers();
             for (var i = 0; i < vm.users.length; i++) {
                 vm.users[i];
             }
+        };
+    })
+    .controller("newAdminCtrl", function (user, userPage, currentUser, searchUser) {
+        var vm = this;
+
+        vm.take = 1;
+        var page = 1;
+
+        function checkForMoreUsers(take) {
+            userPage.query({ take: take, page: page + 1 }, function (data) {
+                if (data.length > 0) {
+                    vm.displayLoadMore = true;
+                } else {
+                    vm.displayLoadMore = false;
+                };
+            });
+        };
+        function saveEdits() {
+            for (var i = 0; i < vm.users.length; i++) {
+                var cUser = {};
+                cUser = vm.users[i];
+                user.update({ id: vm.users[i].Id }, cUser, function (data) {
+                });
+            };
+            vm.selUser = '';
+        };
+
+        vm.users = [];
+
+        vm.firstUsers = function (take) {
+            page = 1;
+            userPage.query({ take: take, page: page }, function (data) {
+                angular.copy(data, vm.users);
+            });
+            checkForMoreUsers(take);
+        };
+        vm.firstUsers(vm.take);
+
+        vm.loadMoreUsers = function (take) {
+            page += 1;
+            userPage.query({ take: take, page: page }, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    vm.users.push(data[i]);
+                };
+            });
+            checkForMoreUsers(take);
+        };
+
+        vm.selectUser = function (id) {
+            for (var i = 0; i < vm.users.length; i++) {
+                if (vm.users[i].Id == id) {
+                    vm.selUser = vm.users[i];
+                };
+            };
+            console.log(vm.selUser);
+        };
+        vm.cancleUserEdit = function () {
+            vm.selUser = "";
+        };
+        vm.saveUserEdit = function (id) {
+            vm.selUser = "";
+        };
+
+        vm.refreshUserList = function (take) {
+            console.log(vm.users);
+            saveEdits();
+
+            vm.users = [];
+            var _temp = [];
+            for (var i = 1; i < (page + 1) ; i++) {
+                console.log(page);
+                userPage.query({ take: take, page: i }, function (data) {
+                    console.log(data);
+                    _temp.push(data[0]);
+                });
+            };
+            angular.copy(_temp, vm.users);
+            
         };
 
     });
