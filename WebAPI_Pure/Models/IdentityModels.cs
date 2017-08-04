@@ -40,6 +40,8 @@ namespace WebAPI_Pure.Models {
 	public class Flyer {
 		public int ID { get; set; }
 		public string Name { get; set; }
+		public bool Active { get; set; }
+		public Range Range { get; set; } = new Range();
 		public Category Category { get; set; }
 		public HashSet<AppUser> Users { get; set; }
 	}
@@ -47,11 +49,26 @@ namespace WebAPI_Pure.Models {
 	public class Category {
 		public int ID { get; set; }
 		public string Name { get; set; }
+		public bool Active { get; set; }
 		public HashSet<Flyer> Flyers { get; set; }
 	}
 
+	// Helpers
+
+	public class Range {
+		public int Min { get; set; } = int.MinValue;
+		public int Max { get; set; } = int.MaxValue;
+	}
 
 	// VMs
+
+	public class UserFlyersCategoryVM {
+		[Required]
+		public string Name { get; set; }
+		[Required]
+		public HashSet<UserFlyersViewModel> Flyers { get; set; }
+	}
+
 	public class UserFlyersViewModel {
 		[Required]
 		public int ID { get; set; }
