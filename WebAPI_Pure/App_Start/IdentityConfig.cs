@@ -53,7 +53,7 @@ namespace WebAPI_Pure {
 
 				return client.SendMailAsync(o);
 
-			} catch ( System.Exception ex ) {
+			} catch {
 			}
 			return null;
 		}
