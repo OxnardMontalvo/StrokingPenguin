@@ -272,8 +272,7 @@ namespace WebAPI_Pure.Controllers {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-					code = code.Replace('/', '_').Replace('+', '!');
-					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code}";
+					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
 					await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
 
 					await DB.SaveChangesAsync();
@@ -293,7 +292,7 @@ namespace WebAPI_Pure.Controllers {
 			if ( userId == null || code == null ) {
 				return BadRequest("Error");
 			}
-			var result = await UserManager.ConfirmEmailAsync(userId, code);
+			var result = await UserManager.ConfirmEmailAsync(userId, code.Replace('/', '_').Replace('+', '!'));
 			return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
 		}
 
@@ -365,9 +364,8 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-				code = code.Replace('/', '_').Replace('+', '!');
-				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code}";
-				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
+				await UserManager.SendEmailAsync(user.Id, "Återställning av Lösenord", "Återställ ert lösenord genom att klicka på länken: <a href=\"" + callbackUrl + "\">länk</a>");
 				return Ok("ForgotPasswordConfirmation");
 			}
 			// If we got this far, something failed, redisplay form
@@ -393,13 +391,13 @@ namespace WebAPI_Pure.Controllers {
 			if ( !ModelState.IsValid ) {
 				return BadRequest(ModelState);
 			}
-			model.Code = model.Code.Replace('_', '/').Replace('!', '+');
+
 			var user = await UserManager.FindByNameAsync(model.Email);
 			if ( user == null || user.Id != model.ID ) {
 				// Don't reveal that the user does not exist
 				return Ok();
 			}
-			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code.Replace('_', '/').Replace('!', '+'), model.Password);
 			if ( result.Succeeded ) {
 				return Ok();
 			}
