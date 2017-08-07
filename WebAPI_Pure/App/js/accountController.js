@@ -36,7 +36,7 @@
         };
 
         vm.forgotPassword = function () {
-            $location.path("/forgotPassword");
+            $location.path("/ForgotPassword");
         };
 
     })
@@ -68,6 +68,7 @@
     })
     .controller("recoverPassCtrl", function (rp, $routeParams, $location) {
         var vm = this;
+
         vm.formData = {
             'ID': $routeParams.userId,
             'Code': $routeParams.code,
@@ -81,6 +82,14 @@
                 $location.path("/Login");
             });
         };
+
+    })
+    .controller("confirmMailCtrl", function (cm, $routeParams) {
+        var vm = this;
+
+        cm.get({ userId: $routeParams.userId, code: $routeParams.code }, function (response) {
+            console.log(response);
+        });
 
     });
 

@@ -257,6 +257,7 @@
     <Content Include="App\css\printStyle.css" />
     <Content Include="App\html\adminPage.html" />
     <Content Include="App\html\changePasswordPage.html" />
+    <Content Include="App\html\confirmMail.html" />
     <Content Include="App\html\forgotPasswordPage.html" />
     <Content Include="App\html\restorePasswordPage.html" />
     <Content Include="App\html\startPage.html" />

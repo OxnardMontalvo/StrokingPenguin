@@ -29,7 +29,7 @@
                     <div class="navbar-text">
                         <div ng-cloak ng-show="displayLogOut">
                             <ul style="font-size: 1em; list-style-type: none;">
-                                <li><a style="cursor: pointer;" ng-click="changePass()">Byt lösenord</a></li>
+                                <li><a style="cursor: pointer; color: orange;" ng-click="changePass()">Byt lösenord</a></li>
                             </ul>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">
                                 <span class="glyphicon glyphicon-log-out"></span> Logga ut
                             </a>
-                            <span>
+                            <span ng-show="!displayLogOut">
                                 <a style="color: #333333;" ng-href="#!/Login"><span class="glyphicon glyphicon-log-in"></span></a>
                             </span>
                         </div>

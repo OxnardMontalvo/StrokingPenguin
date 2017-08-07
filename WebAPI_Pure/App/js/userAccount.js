@@ -74,6 +74,14 @@
             });
         }])
 
+        .factory("cm", ["$resource", "appSettings", function ($resource, appSettings) {
+            return $resource(appSettings.serverPath + "ConfirmEmail", {}, {
+                'get': {
+                    method: 'GET'
+                }
+            });
+        }])
+
         .factory("rp", ["$resource", "appSettings", function ($resources, appSettings) {
             return $resources(appSettings.serverPath + "ResetPassword", {}, {
                 'post': {

@@ -6,158 +6,13 @@
     .controller("adminCtrl", function (user, userPage, currentUser, searchUser) {
         var vm = this;
 
-        // Getting users and display them.
         vm.users = [];
-        
-        vm.take = 1;
-        var page = 0;
-        vm.showPagenation = false;
-        var hasSearch = false;
-
-        vm.getUsersPage = function (take) {
-            
-            page += 1;
-            userPage.query({ take: take, page: page }, function(data) {
-                if (hasSearch || vm.users < 1) {
-                    vm.take = 1;
-                    vm.page = 1;
-                    vm.showPagenation = false;
-                    hasSearch = false;
-                    angular.copy(data, vm.users);
-                    vm.showPagenation = true;
-                } else {
-                    for (var i = 0; i < data.length; i++) {
-                        vm.users.push(data[i]);
-                    };
-                    // Check if there is a user after the current added.
-                    userPage.query({ take: take, page: page + 1 }, function (data) {
-                        var nextUser = data;
-                        if (nextUser.length == 0) {
-                            vm.showPagenation = false;
-                        };
-                    });
-                };
-            });
-        };
-
-        // Försök hitta en lösning till detta!!!
-        vm.refreshList = function () {
-            ////Almost working refresh. cant edit to higher districtnr and then load in more with lower than that.
-            //var byDelivNr = vm.users.slice(0);
-            //byDelivNr.sort(function (a, b) {
-            //    return a.DistrictNumber - b.DistrictNumber;
-            //});
-
-            //for (var i = 0; i < vm.users.length; i++) {
-            //    vm.users[i] = byDelivNr[i];
-            //};
-
-            //console.log(page);
-            //var nrOfu = vm.take * page;
-            //var temp = [];
-            ////vm.users = [];
-            //for (var p = 1; p < page + 1; p++) {
-            //    //console.log(p);
-            //    userPage.query({ take: vm.take, page: p }, function (data) {
-            //        //console.log(data);
-            //        temp.push(data[0]);
-            //    });
-            //};
-            //angular.copy(temp, vm.users);
-            //console.log(temp);
-
-            //for (var i = 0; i < vm.users.length; i++) {
-            //    vm.users[i];
-            //};
-        };
-
-        vm.show = true;
-        vm.hide = true;
-        vm.currentModifyUser = '';
-
-        // Make sure we edit correct user.
-        vm.editUser = function (getId) {
-            if (vm.currentModifyUser == getId) {
-                vm.currentModifyUser = '';
-            } else {
-                vm.currentModifyUser = getId;
-            }
-            vm.show = false;
-            vm.hide = false;
-        };
-
-        // Saves the edited user.
-        vm.saveEdits = function (getId) {
-
-            var editUserData = {};
-            for (var i = 0; i < vm.users.length; i++) {
-                if (vm.users[i].Id == getId) {
-                    editUserData = vm.users[i];
-                    break;
-                };
-            };
-            user.update({ id: getId }, editUserData);
-            vm.currentModifyUser = '';
-        };
-
-        //Search by name, and other.
-        vm.searchString = "";
-        vm.search = function () {
-            searchUser.stringSearch.query({query: vm.searchString}, function (data) {
-                angular.copy(data, vm.users);
-
-                vm.take = 1;
-                vm.page = 1;
-                vm.showPagenation = false;
-                hasSearch = true;
-            });
-        };
-
-        //Search by district nr sing or by range.
-        vm.searchStringDistrict = null;
-        vm.searchDistrict = function () {
-            searchUser.districtSearch.query({query: vm.searchStringDistrict }, function (data) {
-                angular.copy(data, vm.users);
-
-                vm.take = 1;
-                vm.page = 1;
-                vm.showPagenation = false;
-                hasSearch = true;
-            });
-        };
-
-        //Remove user from DB.
-        vm.remove = function (getId) {
-            if (confirm('Vill du verkligen ta bort personen från Databasen?')) {
-                user.delete({ id: getId }, function (data) {
-                    var index;
-                    for (var i = 0; i < vm.users.length; i++) {
-                        if (vm.users[i].Id == getId) {
-                            index = i;
-                        }
-                    }
-                    vm.users.splice(index, 1);
-                });
-            } else {
-                //Do nothing...
-            };
-        };
-
-        vm.cancle = function () {
-            vm.show = true;
-            vm.hide = true;
-            vm.currentModifyUser = '';
-            for (var i = 0; i < vm.users.length; i++) {
-                vm.users[i];
-            }
-        };
-    })
-    .controller("newAdminCtrl", function (user, userPage, currentUser, searchUser) {
-        var vm = this;
-
-        vm.take = 1;
+        vm.take = 2;
         var page = 1;
+        vm.isRefreshed = true;
+        vm.hasSearch = false;
 
+        // Method for checking if there are more users left in DB. If not we hide load more btn.
         function checkForMoreUsers(take) {
             userPage.query({ take: take, page: page + 1 }, function (data) {
                 if (data.length > 0) {
@@ -167,18 +22,8 @@
                 };
             });
         };
-        function saveEdits() {
-            for (var i = 0; i < vm.users.length; i++) {
-                var cUser = {};
-                cUser = vm.users[i];
-                user.update({ id: vm.users[i].Id }, cUser, function (data) {
-                });
-            };
-            vm.selUser = '';
-        };
 
-        vm.users = [];
-
+        // Runs when starting to load the first users from DB.
         vm.firstUsers = function (take) {
             page = 1;
             userPage.query({ take: take, page: page }, function (data) {
@@ -188,46 +33,97 @@
         };
         vm.firstUsers(vm.take);
 
+        // Load more users with rules for search, refreshed and such. Call the DB for the next users and push them too the array.
+        // Also calls DB once too check if there are more users left after we grabbed ours.
         vm.loadMoreUsers = function (take) {
-            page += 1;
-            userPage.query({ take: take, page: page }, function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    vm.users.push(data[i]);
-                };
-            });
-            checkForMoreUsers(take);
+            if (vm.hasSearch) {
+                vm.firstUsers(take);
+                vm.hasSearch = false;
+            } else {
+                if (!vm.isRefreshed) {
+                    vm.refreshUserList();
+                }
+
+                page += 1;
+                userPage.query({ take: take, page: page }, function (data) {
+                    // Make sure all queries get pushed in to the array.
+                    for (var i = 0; i < data.length; i++) {
+                        vm.users.push(data[i]);
+                    };
+                });
+                checkForMoreUsers(take);
+            };
         };
 
+        // Select a user.
         vm.selectUser = function (id) {
             for (var i = 0; i < vm.users.length; i++) {
                 if (vm.users[i].Id == id) {
                     vm.selUser = vm.users[i];
                 };
             };
-            console.log(vm.selUser);
         };
+
+        // Cancle operation, Not working correctly yet.
         vm.cancleUserEdit = function () {
             vm.selUser = "";
         };
+
+        // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
+            user.update({ id: id }, vm.selUser, function (data) { vm.isRefreshed = false; });
             vm.selUser = "";
         };
 
-        vm.refreshUserList = function (take) {
-            console.log(vm.users);
-            saveEdits();
-
-            vm.users = [];
-            var _temp = [];
-            for (var i = 1; i < (page + 1) ; i++) {
-                console.log(page);
-                userPage.query({ take: take, page: i }, function (data) {
-                    console.log(data);
-                    _temp.push(data[0]);
+        // Remove user from DB.
+        vm.deleteUser = function (id) {
+            if (confirm('Vill du verkligen ta bort personen från Databasen?')) {
+                user.delete({ id: id }, function (data) {
+                    var index;
+                    for (var i = 0; i < vm.users.length; i++) {
+                        if (vm.users[i].Id == id) {
+                            index = i;
+                        };
+                    };
+                    vm.users.splice(index, 1);
                 });
             };
-            angular.copy(_temp, vm.users);
-            
+        };
+
+        // Refresh user list by looping all pages and push the users to the array.
+        vm.refreshUserList = function () {
+            vm.isRefreshed = true;
+            vm.hasSearch = false;
+            vm.users = [];
+            for (var i = 1; i < page + 1; i++) {
+                userPage.query({ take: vm.take, page: i }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        vm.users.push(data[i]);
+                    };
+                    // Make sure the list is sortet correct.
+                    vm.users.sort(function (a, b) { return a.DistrictNumber - b.DistrictNumber; });
+                });
+            };
+        };
+
+        // Search base on a string for name, county mm.
+        vm.searchUser = function (query) {
+            vm.displayLoadMore = false;
+            vm.hasSearch = true;
+            vm.users = [];
+            searchUser.stringSearch.query({ query: query }, function (data) {
+                angular.copy(data, vm.users);
+            });
+        };
+
+        // Search based on district using a range.
+        vm.searchDistrict = function (query) {
+            vm.displayLoadMore = false;
+            vm.hasSearch = true;
+            vm.users = [];
+            searchUser.districtSearch.query({ query: query }, function (data) {
+                angular.copy(data, vm.users);
+            });
         };
 
     });
