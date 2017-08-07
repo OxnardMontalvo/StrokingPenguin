@@ -445,14 +445,14 @@ namespace WebAPI_Pure.Controllers {
 	[Authorize] // For testing
 	public class UserFlyersController : BaseApiController {
 		[Route("api/UserFlyers")]
-		public IHttpActionResult Get() {
+		public async Task<IHttpActionResult> Get() {
 			try {
 				var guid = User.Identity.GetUserId();
 				if ( guid == null ) {
 					return NotFound();
 				}
 
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
 				var cats = DB.Categories.Include(x => x.Flyers).Where(x => x.Active == true && x.Flyers.Count > 0);
 
 				if ( user == null || cats == null || user.PostalCode == null ) {
@@ -482,15 +482,15 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		[Route("api/UserFlyers/{id}")]
-		public IHttpActionResult Get(int id) {
+		public async Task<IHttpActionResult> Get(int id) {
 			try {
 				var guid = User.Identity.GetUserId();
 				if ( guid == null ) {
 					return NotFound();
 				}
 
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
-				var cat = DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id);
+				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
+				var cat = await DB.Categories.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.ID == id);
 
 				if ( user == null || cat == null ) {
 					return NotFound();
@@ -512,7 +512,7 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
 				var flyers = new HashSet<Flyer>(DB.Flyers.Where(x => x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
 
 				if ( user == null || flyers == null ) {
