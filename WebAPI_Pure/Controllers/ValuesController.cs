@@ -290,7 +290,9 @@ namespace WebAPI_Pure.Controllers {
 		[Route("ConfirmEmail", Name = "ConfirmEmail")]
 		[HttpGet]
 		public async Task<IHttpActionResult> ConfirmEmail(string userId, string code) {
-			if ( userId == null || code == null ) {
+            // Added to make sure the code is corrected again.
+            code = code.Replace('_', '/').Replace('!', '+');
+            if ( userId == null || code == null ) {
 				return BadRequest("Error");
 			}
 			var result = await UserManager.ConfirmEmailAsync(userId, code);

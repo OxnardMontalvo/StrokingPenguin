@@ -33,7 +33,7 @@
                 }
             }
          })
-        .when("/forgotPassword", {
+        .when("/ForgotPassword", {
             templateUrl: "App/html/forgotPasswordPage.html",
             controller: "forgotPassCtrl",
             controllerAs: "vm"
@@ -56,6 +56,11 @@
                     }
                 }
             }
+            })
+        .when("/ConfirmEmail/:userId/:code", {
+            templateUrl: "App/html/confirmMail.html",
+            controller: "confirmMailCtrl",
+            controllerAs: "vm"
         })
         .when("/User", {
             templateUrl: "",
