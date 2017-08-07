@@ -35,6 +35,7 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
+
 	[Authorize(Roles = "Admin")]
 	public class UsersController : BaseApiController {
 		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire
@@ -272,8 +273,7 @@ namespace WebAPI_Pure.Controllers {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 
 					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-					code = code.Replace('/', '_').Replace('+', '!');
-					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code}";
+					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
 					await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
 
 					await DB.SaveChangesAsync();
@@ -295,7 +295,7 @@ namespace WebAPI_Pure.Controllers {
             if ( userId == null || code == null ) {
 				return BadRequest("Error");
 			}
-			var result = await UserManager.ConfirmEmailAsync(userId, code);
+			var result = await UserManager.ConfirmEmailAsync(userId, code.Replace('_', '/').Replace('!', '+'));
 			return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
 		}
 
@@ -367,9 +367,8 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-				code = code.Replace('/', '_').Replace('+', '!');
-				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code}";
-				await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
+				await UserManager.SendEmailAsync(user.Id, "Återställning av Lösenord", "Återställ ert lösenord genom att klicka på länken: <a href=\"" + callbackUrl + "\">länk</a>");
 				return Ok("ForgotPasswordConfirmation");
 			}
 			// If we got this far, something failed, redisplay form
@@ -395,13 +394,13 @@ namespace WebAPI_Pure.Controllers {
 			if ( !ModelState.IsValid ) {
 				return BadRequest(ModelState);
 			}
-			model.Code = model.Code.Replace('_', '/').Replace('!', '+');
+
 			var user = await UserManager.FindByNameAsync(model.Email);
 			if ( user == null || user.Id != model.ID ) {
 				// Don't reveal that the user does not exist
 				return Ok();
 			}
-			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code.Replace('_', '/').Replace('!', '+'), model.Password);
 			if ( result.Succeeded ) {
 				return Ok();
 			}
@@ -441,76 +440,13 @@ namespace WebAPI_Pure.Controllers {
 	}
 	#endregion
 
+
 	//[Authorize(Roles = "User")]
 	[Authorize] // For testing
 	public class UserFlyersController : BaseApiController {
-		// GET: api/UserFlyers/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[ResponseType(typeof(Flyer))]
 		[Route("api/UserFlyers")]
 		public IHttpActionResult Get() {
 			try {
-				return Ok(DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId()).Flyers);
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
-			}
-		}
-
-		// GET: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
-		[ResponseType(typeof(Flyer))]
-		[Route("api/UserFlyers/{id}")]
-		public IHttpActionResult Get(int id) {
-			try {
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
-				return Ok(user.Flyers.FirstOrDefault(x => x.ID == id));
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
-			}
-		}
-
-		// GET: api/UserFlyers/GetByCats/1
-		[ResponseType(typeof(Category))]
-		[Route("api/UserFlyers/GetAllCats")]
-		[HttpGet]
-		public IHttpActionResult GetAllCats() {
-			try {
-				return Ok(DB.Categories.ToList());
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
-			}
-		}
-
-		// GET: api/UserFlyers/GetByCats/1
-		[Route("api/UserFlyers/GetByCats/{id}")]
-		[HttpGet]
-		public IHttpActionResult GetByCats(int id) {
-			try {
-
-				var guid = User.Identity.GetUserId();
-				if ( guid == null ) {
-					return NotFound();
-				}
-
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
-				var cat = DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id);
-
-				if ( user == null || cat == null ) {
-					return NotFound();
-				}
-
-				var result = cat.Flyers.Select(x => new UserFlyersViewModel { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
-
-				return Ok(result);
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
-			}
-		}
-
-		// GET: api/UserFlyers/GetByCats
-		[Route("api/UserFlyers/GetByCats")]
-		[HttpGet]
-		public IHttpActionResult GetByCats() {
-			try {
-
 				var guid = User.Identity.GetUserId();
 				if ( guid == null ) {
 					return NotFound();
@@ -519,7 +455,7 @@ namespace WebAPI_Pure.Controllers {
 				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
 				var cats = DB.Categories.Include(x => x.Flyers).Where(x => x.Active == true && x.Flyers.Count > 0);
 
-				if ( user == null || cats == null ) {
+				if ( user == null || cats == null || user.PostalCode == null ) {
 					return NotFound();
 				}
 
@@ -535,68 +471,75 @@ namespace WebAPI_Pure.Controllers {
 								ID = x.ID,
 								Name = x.Name,
 								Selected = user.Flyers.Contains(x)
-							}))
+							}).OrderBy(y => y.Name))
 					});
 				}
 
-				return Ok(result.Where(x=>x.Flyers.Count > 0));
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+				return Ok(result.Where(x => x.Flyers.Count > 0));
+			} catch {
+				return InternalServerError();
 			}
 		}
 
-		// POST: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[ResponseType(typeof(Flyer))]
 		[Route("api/UserFlyers/{id}")]
-		public IHttpActionResult Post(int id) {
+		public IHttpActionResult Get(int id) {
 			try {
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
-				var flyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
-
-				if ( user == null || flyer == null ) {
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
 					return NotFound();
 				}
 
-				if ( user.Flyers.Contains(flyer) ) {
-					return BadRequest("Flyer exists in User");
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var cat = DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id);
+
+				if ( user == null || cat == null ) {
+					return NotFound();
 				}
 
-				user.Flyers.Add(flyer);
-				if ( DB.SaveChanges() == 0 ) {
+				var result = cat.Flyers.Select(x => new UserFlyersViewModel { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
+
+				return Ok(result);
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		[Route("api/UserFlyers")]
+		public async Task<IHttpActionResult> Post([FromBody]HashSet<UserFlyersViewModel> vm) {
+			try {
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == guid);
+				var flyers = new HashSet<Flyer>(DB.Flyers.Where(x => x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
+
+				if ( user == null || flyers == null ) {
+					return NotFound();
+				}
+
+				flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID).Selected != true);
+				user.Flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID).Selected != true);
+
+				foreach ( var f in flyers ) {
+					if ( !user.Flyers.Contains(f) ) {
+						user.Flyers.Add(f);
+					}
+				}
+
+				var result = await DB.SaveChangesAsync();
+
+				if ( result == 0 ) {
 					return Conflict();
 				}
-				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
-			}
-		}
-
-		// DELETE: api/Flyers/5e19bf87-26e4-4f70-9206-ad209634fca0/5
-		[Route("api/UserFlyers/{id}")]
-		public IHttpActionResult Delete(int id) {
-			try {
-				var flyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
-
-				if ( flyer == null ) {
-					return NotFound();
-				}
-
-				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == User.Identity.GetUserId());
-				if ( user == null || flyer == null ) {
-					return NotFound();
-				}
-
-				user.Flyers.Remove(flyer);
-
-				if ( DB.SaveChanges() == 0 ) {
-					return NotFound();
-				}
-				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+				return Ok(user.Flyers);
+			} catch {
+				return InternalServerError();
 			}
 		}
 	}
+
 
 	[Authorize(Roles = "Admin")]
 	public class FlyersController : BaseApiController {
@@ -689,6 +632,7 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 	}
+
 
 	[Authorize(Roles = "Admin")]
 	public class CatsController : BaseApiController {

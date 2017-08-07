@@ -6,20 +6,20 @@
 		<div class="ma-border">
 			<div class="ma-wrap-padding">
 				<p class="ma-infoTxt">
-                    <span>ReklamTack.nu</span> bygger helt och hållet på att du som konsument själv ska välja vilken direktreklam du vill ha.
-                    Först ut är samarbetet med <span>ICA Supermarket i Rottne</span>. När du har registrerat dig så sköter vi resten.
-                    Du behåller din Nej Tack skylt på brevlådan, och får på så sätt bara reklam från ICA Supermarket i Rottne i din brevlåda.
-                    Veckobladet från ICA Rottne, kommer vi att adressera och dela ut till dig i helgen.
-                    Veckan innan bladet börja gälla. Du kan därför i lugn och ro planera dina inköp under helgen.
-                    Det enda du behöver göra är att registrera dig, så fixar vi resten.
+					<span>ReklamTack.nu</span> bygger helt och hållet på att du som konsument själv ska välja vilken direktreklam du vill ha.
+					Först ut är samarbetet med <span>ICA Supermarket i Rottne</span>. När du har registrerat dig så sköter vi resten.
+					Du behåller din Nej Tack skylt på brevlådan, och får på så sätt bara reklam från ICA Supermarket i Rottne i din brevlåda.
+					Veckobladet från ICA Rottne, kommer vi att adressera och dela ut till dig i helgen.
+					Veckan innan bladet börja gälla. Du kan därför i lugn och ro planera dina inköp under helgen.
+					Det enda du behöver göra är att registrera dig, så fixar vi resten.
 				</p>
-                <p class="ma-infoTxt">
-                    För att avsluta ditt "abonnemang" är det bara att skicka ett mail till
-                    <a href="mailto:info@reklamtack.nu"> info@reklamtack.nu</a>
-                </p>
-                <p class="ma-infoTxt">
-                    Inom kort kommer du själv kunna välja på fler intressanta kunder.
-                </p>
+				<p class="ma-infoTxt">
+					För att avsluta ditt "abonnemang" är det bara att skicka ett mail till
+					<a href="mailto:info@reklamtack.nu"> info@reklamtack.nu</a>
+				</p>
+				<p class="ma-infoTxt">
+					Inom kort kommer du själv kunna välja på fler intressanta kunder.
+				</p>
 			</div>
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 			<div class="ma-wrap-padding">
 				<form class="ma-form" ng-submit="vm.submitForm()" name="signUpForm">
 					<div class="form-group" ng-form="Name">
-                        <label>För- & Efternamn</label>
+						<label>För- & Efternamn</label>
 						<input ng-class="{'ma-has-error-border': Name.$invalid && Name.$dirty}" ng-model="vm.formData.Name" class="form-control input-lg" type="text" placeholder="Namn" ng-required="true" ng-minlength="3" ng-maxlength="128" />
 						<div ng-show="Name.$invalid && Name.$dirty">
 							<span class="text-danger" ng-show="Name.$error.required">Fältet måste vara ifyllt!</span>
@@ -40,14 +40,14 @@
 						</div>
 					</div>
 					<div class="form-group" ng-form="Address">
-                        <label>Adress</label>
+						<label>Adress</label>
 						<input ng-class="{'ma-has-error-border': Address.$invalid && Address.$dirty}" ng-model="vm.formData.Address" class="form-control input-lg" type="text" placeholder="Adress" ng-required="true" />
 						<div ng-show="Address.$invalid && Address.$dirty">
 							<span class="text-danger" ng-show="Address.$error.required">Fältet måste vara ifyllt!</span>
 						</div>
 					</div>
 					<div class="form-group" ng-form="County">
-                        <label>Ort</label>
+						<label>Ort</label>
 						<input ng-class="{'ma-has-error-border': County.$invalid && County.$dirty}" ng-model="vm.formData.County" class="form-control input-lg" type="text" placeholder="Ort" ng-required="true" />
 						<div ng-show="County.$invalid && County.$dirty">
 							<span class="text-danger" ng-show="County.$error.required">Fältet måste vara ifyllt!</span>
@@ -55,31 +55,31 @@
 					</div>
 					<div class="form-group" ng-form="PostalCode">
 						<!--/^\d{3}\s\d{2}$/-->
-                        <label>Postnummer</label>
-						<input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^363[ -]?(3[0-9]|4[0-1])$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
+						<label>Postnummer</label>
+						<input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^363[ -]?(3[0-9]|4[0-2]|91)$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
 						<div ng-show="PostalCode.$invalid && PostalCode.$dirty">
 							<span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
-							<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: 363 30 - 41</span>
+							<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: 363 30 - 42 eller 91</span>
 						</div>
 					</div>
 					<div class="form-group" ng-form="Email">
-                        <label>Epost</label>
+						<label>Epost</label>
 						<input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.formData.Email" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" class="form-control input-lg" type="email" placeholder="Epost" ng-required="true" />
 						<div ng-show="Email.$invalid && Email.$dirty">
 							<span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
 							<span class="text-danger" ng-show="Email.$error.pattern">Fyll i en giltig e-post.</span>
 						</div>
 					</div>
-                    <div class="ma-center-text">
-                        <input ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c" value="Anmäl dig" />
-                    </div>
+					<div class="ma-center-text">
+						<input ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c" value="Anmäl dig" />
+					</div>
 				</form>
 				<div class="ma-center-text" ng-show="vm.validMsg">
 					<span class="text-info ma-succssesText">{{vm.msg}}</span>
 				</div>
-                <div class="ma-center-text" ng-show="vm.error">
-                    <span class="text-danger ma-succssesText">{{vm.error}}</span>
-                </div>
+				<div class="ma-center-text" ng-show="vm.error">
+					<span class="text-danger ma-succssesText">{{vm.error}}</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -90,36 +90,36 @@
 			<div class="ma-wrap-padding">
 				<form class="ma-form">
 					<div class="form-group">
-                        <label>För- & Efternamn</label>
+						<label>För- & Efternamn</label>
 						<input disabled class="form-control input-lg" type="text" placeholder="Namn" />
 					</div>
-                    <div class="form-group">
-                        <label>Adress</label>
-                        <input disabled class="form-control input-lg" type="text" placeholder="Adress" />
-                    </div>
-                    <div class="form-group">
-                        <label>Ort</label>
-                        <input disabled class="form-control input-lg" type="text" placeholder="Ort" />
-                    </div>
-                    <div class="form-group">
-                        <label>Post nummer</label>
-                        <input disabled class="form-control input-lg" type="text" placeholder="Post nummer" />
-                    </div>
-                    <div class="form-group">
-                        <label>Epost</label>
-                        <input disabled class="form-control input-lg" type="text" placeholder="Epost" />
-                    </div>
-                    <div class="form-group">
-                        <label>Lösenord</label>
-                        <input disabled class="form-control input-lg" type="text" placeholder="Lösenord" />
-                    </div>
-                    <div class="form-group">
-                        <label>Repetera ditt lösenord</label>
-                        <input disabled class="form-control input-lg" type="text" placeholder="Repetera ditt lösenord" />
-                    </div>
-                    <div class="ma-center-text">
-                        <input disabled ng-click="" type="submit" class="ma-btn-lg ma-btn-c btn-default" value="Registrera dig" />
-                    </div>
+					<div class="form-group">
+						<label>Adress</label>
+						<input disabled class="form-control input-lg" type="text" placeholder="Adress" />
+					</div>
+					<div class="form-group">
+						<label>Ort</label>
+						<input disabled class="form-control input-lg" type="text" placeholder="Ort" />
+					</div>
+					<div class="form-group">
+						<label>Post nummer</label>
+						<input disabled class="form-control input-lg" type="text" placeholder="Post nummer" />
+					</div>
+					<div class="form-group">
+						<label>Epost</label>
+						<input disabled class="form-control input-lg" type="text" placeholder="Epost" />
+					</div>
+					<div class="form-group">
+						<label>Lösenord</label>
+						<input disabled class="form-control input-lg" type="text" placeholder="Lösenord" />
+					</div>
+					<div class="form-group">
+						<label>Repetera ditt lösenord</label>
+						<input disabled class="form-control input-lg" type="text" placeholder="Repetera ditt lösenord" />
+					</div>
+					<div class="ma-center-text">
+						<input disabled ng-click="" type="submit" class="ma-btn-lg ma-btn-c btn-default" value="Registrera dig" />
+					</div>
 				</form>
 			</div>
 		</div>
@@ -129,31 +129,31 @@
 			<div class="ma-center ma-wrap-padding">
 				<form class="ma-form" ng-submit="vm.login()" name="loginForm">
 					<div class="form-group" ng-form="Email">
-                        <label>Epost</label>
+						<label>Epost</label>
 						<input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" ng-required="true" />
-                        <div ng-show="Email.$invalid && Email.$dirty">
-                            <span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
-                            <span class="text-danger" ng-show="Email.$error.pattern">Fyll i en giltig e-post.</span>
-                        </div>
+						<div ng-show="Email.$invalid && Email.$dirty">
+							<span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="Email.$error.pattern">Fyll i en giltig e-post.</span>
+						</div>
 					</div>
-                    <div class="form-group" ng-form="P">
-                        <label>Lösenord</label>
-                        <span><a style="cursor: pointer; margin-left: 9em;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
-                        <input ng-class="{'ma-has-error-border': P.$invalid && P.$dirty}" ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
-                        <div ng-show="P.$invalid && P.$dirty">
-                            <span class="text-danger" ng-show="P.$error.required">Fältet måste vara ifyllt!</span>
-                            <span class="text-danger" ng-show="P.$error.minlength">Namnet måste innehålla minst 6 tecken!</span>
-                            <span class="text-danger" ng-show="P.$error.maxlength">Namnet kan inte överstiga 256 tecken!</span>
-                        </div>
-                    </div>
-                    <div class="ma-center-text">
-                        <button ng-class="{'ma-btn-c-success': loginForm.$valid}" ng-disabled="loginForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
-                    </div>
+					<div class="form-group" ng-form="P">
+						<label>Lösenord</label>
+						<span><a style="cursor: pointer; margin-left: 9em;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
+						<input ng-class="{'ma-has-error-border': P.$invalid && P.$dirty}" ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
+						<div ng-show="P.$invalid && P.$dirty">
+							<span class="text-danger" ng-show="P.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="P.$error.minlength">Namnet måste innehålla minst 6 tecken!</span>
+							<span class="text-danger" ng-show="P.$error.maxlength">Namnet kan inte överstiga 256 tecken!</span>
+						</div>
+					</div>
+					<div class="ma-center-text">
+						<button ng-class="{'ma-btn-c-success': loginForm.$valid}" ng-disabled="loginForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
+					</div>
 				</form>
 			</div>
-            <div class="ma-center-text">
-                
-            </div>
+			<div class="ma-center-text">
+				
+			</div>
 		</div>
 	</div>
 </div>
