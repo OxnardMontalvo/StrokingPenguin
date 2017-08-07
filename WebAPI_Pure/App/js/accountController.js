@@ -32,6 +32,8 @@
                 } else {
                     $location.path("/Login")
                 }
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
 
@@ -51,6 +53,8 @@
                     vm.formData = {};
                     vm.msg = "Lösenordet ändrat."
                 };
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         }
 
@@ -62,6 +66,8 @@
 
         vm.send = function () {
             fp.get(vm.formData, function (response) {
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
 
@@ -80,6 +86,8 @@
         vm.confirmNewPass = function () {
             rp.post(vm.formData, function (response) {
                 $location.path("/Login");
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
 
@@ -88,9 +96,15 @@
         var vm = this;
 
         cm.get({ userId: $routeParams.userId, code: $routeParams.code }, function (response) {
-            console.log(response);
+            console.log(response[0]);
+            if (response[0] == "C") {
+                vm.cmMsg = "Tack, Du har nu bekräftat din email.";
+            } else {
+                vm.cmMsg = "Något gick fel, försök igen.";
+            };
+        }, function (error) {
+            vm.errorMsg = error.statusText;
         });
-
     });
 
 })();

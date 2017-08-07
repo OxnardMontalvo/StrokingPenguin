@@ -11,6 +11,7 @@
         var page = 1;
         vm.isRefreshed = true;
         vm.hasSearch = false;
+        vm.errorMsg = "";
 
         // Method for checking if there are more users left in DB. If not we hide load more btn.
         function checkForMoreUsers(take) {
@@ -20,6 +21,8 @@
                 } else {
                     vm.displayLoadMore = false;
                 };
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
 
@@ -28,6 +31,9 @@
             page = 1;
             userPage.query({ take: take, page: page }, function (data) {
                 angular.copy(data, vm.users);
+            }, function (error) {
+                console.log(error);
+                vm.errorMsg = error.statusText;
             });
             checkForMoreUsers(take);
         };
@@ -50,6 +56,8 @@
                     for (var i = 0; i < data.length; i++) {
                         vm.users.push(data[i]);
                     };
+                }, function (error) {
+                    vm.errorMsg = error.statusText;
                 });
                 checkForMoreUsers(take);
             };
@@ -71,7 +79,11 @@
 
         // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
-            user.update({ id: id }, vm.selUser, function (data) { vm.isRefreshed = false; });
+            user.update({ id: id }, vm.selUser, function (data) {
+                vm.isRefreshed = false;
+            }, function (error) {
+                vm.errorMsg = error.statusText;
+            });
             vm.selUser = "";
         };
 
@@ -86,6 +98,8 @@
                         };
                     };
                     vm.users.splice(index, 1);
+                }, function (error) {
+                    vm.errorMsg = error.statusText;
                 });
             };
         };
@@ -102,6 +116,8 @@
                     };
                     // Make sure the list is sortet correct.
                     vm.users.sort(function (a, b) { return a.DistrictNumber - b.DistrictNumber; });
+                }, function (error) {
+                    vm.errorMsg = error.statusText;
                 });
             };
         };
@@ -113,6 +129,8 @@
             vm.users = [];
             searchUser.stringSearch.query({ query: query }, function (data) {
                 angular.copy(data, vm.users);
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
 
@@ -123,6 +141,8 @@
             vm.users = [];
             searchUser.districtSearch.query({ query: query }, function (data) {
                 angular.copy(data, vm.users);
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
 

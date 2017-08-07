@@ -296,7 +296,7 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest("Error");
 			}
 			var result = await UserManager.ConfirmEmailAsync(userId, code.Replace('_', '/').Replace('!', '+'));
-			return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
+            return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
 		}
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0

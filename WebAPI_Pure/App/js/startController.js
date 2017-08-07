@@ -10,17 +10,22 @@
         vm.phaseOneHide = true;
         vm.validMsg = false;
         vm.msg = "Tack för din anmälan."
+        vm.errorMsg = "";
 
         vm.formData = {};
 
         vm.submitForm = function () {
 
+            vm.waiteForResponse = true;
             user.save(vm.formData, function (response) {
                 vm.validMsg = true;
-
                 vm.formData = {};
                 //$scope.signUpForm.$setUntouched();
                 $scope.signUpForm.$setPristine();
+                vm.waiteForResponse = false;
+            }, function (error) {
+                var statusTxt = error.statusText;
+                vm.errorMsg = statusTxt + ", Försök igen.";
             });
         };
 

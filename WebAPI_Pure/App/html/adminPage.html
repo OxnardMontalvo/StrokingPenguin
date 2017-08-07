@@ -11,6 +11,10 @@
     </div>
 </div>
 
+<div class="ma-center-text" ng-show="vm.errorMsg">
+    <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
+</div>
+
 <div class="row ma-main ma-print-hidden">
     <div class="col-sm-12 col-md-8">
         <form class="form-inline" ng-submit="vm.searchUser(vm.searchString)">
