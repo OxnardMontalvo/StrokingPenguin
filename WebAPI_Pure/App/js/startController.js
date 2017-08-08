@@ -16,6 +16,7 @@
         vm.formData = {};
 
         vm.submitForm = function () {
+            vm.errorMsg = "";
             vm.btnText = "Skickar anmälan..."
             vm.disableDuringLoading = true;
             user.save(vm.formData, function (response) {
@@ -28,6 +29,8 @@
             }, function (error) {
                 var statusTxt = error.statusText;
                 vm.errorMsg = statusTxt + ", Försök igen.";
+                $scope.signUpForm.$setPristine();
+                vm.disableDuringLoading = false;
             });
         };
 

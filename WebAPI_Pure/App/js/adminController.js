@@ -89,11 +89,11 @@
 
         // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
-            vm.disableDuringLoad = true;
-            vm.btnText = "Laddar...";
+            //vm.disableDuringLoad = true;
+            //vm.btnText = "Laddar...";
             user.update({ id: id }, vm.selUser, function (data) {
                 isRefreshed = false;
-                vm.btnText = "Uppdatera & Ladda fler";
+                //vm.btnText = "Uppdatera & Ladda fler";
                 vm.disableDuringLoad = false;
             }, function (error) {
                 vm.errorMsg = error.statusText;
