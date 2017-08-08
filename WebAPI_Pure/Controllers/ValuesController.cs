@@ -35,7 +35,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 	}
 
-
 	[Authorize(Roles = "Admin")]
 	public class UsersController : BaseApiController {
 		// GET: api/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire
@@ -43,32 +42,36 @@ namespace WebAPI_Pure.Controllers {
 		[HttpGet]
 		[Route("api/Users/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire")]
 		public async Task<IHttpActionResult> CheckAdminAndRoles() {
-			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
+			try {
+				var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
 
-			if ( !DB.Database.Exists() || await DB.Roles.CountAsync() == 0 ) {
-				var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
-				DB.Roles.Add(new IdentityRole { Name = "User" });
+				if ( !DB.Database.Exists() || await DB.Roles.CountAsync() == 0 ) {
+					var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
+					DB.Roles.Add(new IdentityRole { Name = "User" });
 
-				var adminEmail = SecretsManager.AdminEmail;
-				var adminPass = GeneratePassword();
+					var adminEmail = SecretsManager.AdminEmail;
+					var adminPass = GeneratePassword();
 
-				var user = new AppUser { UserName = adminEmail, Email = adminEmail };
-				var result = await UserManager.CreateAsync(user, adminPass);
+					var user = new AppUser { UserName = adminEmail, Email = adminEmail };
+					var result = await UserManager.CreateAsync(user, adminPass);
 
-				if ( result.Succeeded ) {
-					await UserManager.AddToRoleAsync(user.Id, adminRole.Name);
-					await DB.SaveChangesAsync();
+					if ( result.Succeeded ) {
+						await UserManager.AddToRoleAsync(user.Id, adminRole.Name);
+						await DB.SaveChangesAsync();
 
-					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
-					await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
-					//await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=" + callbackUrl + ">link</a>");
+						var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+						var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
+						await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
 
-					return Ok(result);
+						return Ok(result);
+					}
 				}
-			}
 
-			return Ok();
+				return Ok();
+
+			} catch {
+				return InternalServerError();
+			}
 		}
 
 		// GET: api/Users/Query/Greta
@@ -76,9 +79,8 @@ namespace WebAPI_Pure.Controllers {
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Query/{query}")]
 		public IHttpActionResult GetUsersByQuery(string query = "") {
-			var SearchQuery = query.Trim().ToLower();
-
 			try {
+				var SearchQuery = query.Trim().ToLower();
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
 				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) ||
 				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new UserViewModel {
@@ -93,12 +95,13 @@ namespace WebAPI_Pure.Controllers {
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 		// GET: api/Users
 		[ResponseType(typeof(UserViewModel))]
+		//[EnableQuery]
 		[Route("api/Users")]
 		public IHttpActionResult Get() {
 			try {
@@ -114,8 +117,8 @@ namespace WebAPI_Pure.Controllers {
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -139,8 +142,8 @@ namespace WebAPI_Pure.Controllers {
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).Skip(take * ( page - 1 )).Take(take).ToList();
 				return Ok(users);
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -165,8 +168,8 @@ namespace WebAPI_Pure.Controllers {
 					vm = new UserViewModel();
 				}
 				return Ok(vm);
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -175,9 +178,8 @@ namespace WebAPI_Pure.Controllers {
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/District/{min?}/{max?}")]
 		public IHttpActionResult GetRange(int min = int.MinValue, int max = int.MaxValue) {
-			if ( min > max ) min = min ^ max ^ ( max = min );
-
 			try {
+				if ( min > max ) min = min ^ max ^ ( max = min );
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
 					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new UserViewModel {
 						Id = x.Id,
@@ -191,8 +193,8 @@ namespace WebAPI_Pure.Controllers {
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -201,21 +203,21 @@ namespace WebAPI_Pure.Controllers {
 		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Districts/{query?}")]
 		public IHttpActionResult GetRanges(string query = null) {
-			int max = int.MaxValue, min = int.MinValue;
-			if ( !string.IsNullOrWhiteSpace(query) ) {
-				var trimSplit = new[] { ' ', '-', ':', '*', '+', '!', ',', '.' };
-				var SearchQuery = new string(query.Trim(trimSplit).ToLower().Where(c => char.IsDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == ',' || c == '.').ToArray()).Split(trimSplit);
-				if ( SearchQuery.Length == 1 ) {
-					int.TryParse(SearchQuery[0], out max);
-					min = max;
-				} else if ( SearchQuery.Length > 1 ) {
-					int.TryParse(SearchQuery[0], out min);
-					int.TryParse(SearchQuery[SearchQuery.Length - 1], out max);
-					if ( min > max ) min = min ^ max ^ ( max = min );
-				}
-			}
-
 			try {
+				int max = int.MaxValue, min = int.MinValue;
+				if ( !string.IsNullOrWhiteSpace(query) ) {
+					var trimSplit = new[] { ' ', '-', ':', '*', '+', '!', ',', '.' };
+					var SearchQuery = new string(query.Trim(trimSplit).ToLower().Where(c => char.IsDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == ',' || c == '.').ToArray()).Split(trimSplit);
+					if ( SearchQuery.Length == 1 ) {
+						int.TryParse(SearchQuery[0], out max);
+						min = max;
+					} else if ( SearchQuery.Length > 1 ) {
+						int.TryParse(SearchQuery[0], out min);
+						int.TryParse(SearchQuery[SearchQuery.Length - 1], out max);
+						if ( min > max ) min = min ^ max ^ ( max = min );
+					}
+				}
+
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
 					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new UserViewModel {
 						Id = x.Id,
@@ -229,8 +231,8 @@ namespace WebAPI_Pure.Controllers {
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -278,11 +280,11 @@ namespace WebAPI_Pure.Controllers {
 
 					await DB.SaveChangesAsync();
 					return Ok(result);
+				} else {
+					return BadRequest();
 				}
-
-				return Created<UserViewModel>(Request.RequestUri + user.Id, vm);
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -290,9 +292,8 @@ namespace WebAPI_Pure.Controllers {
 		[Route("ConfirmEmail", Name = "ConfirmEmail")]
 		[HttpGet]
 		public async Task<IHttpActionResult> ConfirmEmail(string userId, string code) {
-            // Added to make sure the code is corrected again.
-            code = code.Replace('_', '/').Replace('!', '+');
-            if ( userId == null || code == null ) {
+			// Added to make sure the code is corrected again.
+			if ( userId == null || code == null ) {
 				return BadRequest("Error");
 			}
 			var result = await UserManager.ConfirmEmailAsync(userId, code.Replace('_', '/').Replace('!', '+'));
@@ -325,8 +326,8 @@ namespace WebAPI_Pure.Controllers {
 					return Json(HttpStatusCode.NotFound);
 				}
 				return Ok();
-			} catch ( Exception ex ) {
-				return Json(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -349,8 +350,8 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -550,8 +551,8 @@ namespace WebAPI_Pure.Controllers {
 			try {
 				return Ok(DB.Flyers.Include(x => x.Category).ToList());
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -560,8 +561,8 @@ namespace WebAPI_Pure.Controllers {
 		public IHttpActionResult Get(int id) {
 			try {
 				return Ok(DB.Flyers.Include(x => x.Category).FirstOrDefault(x => x.ID == id));
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -582,8 +583,8 @@ namespace WebAPI_Pure.Controllers {
 					return Conflict();
 				}
 				return Created<Flyer>(Request.RequestUri + newFlyer.ID.ToString(), newFlyer);
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -604,8 +605,8 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -627,8 +628,8 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 	}
@@ -643,8 +644,8 @@ namespace WebAPI_Pure.Controllers {
 				return Ok(DB.Categories.Include(x => x.Flyers));
 				//return Ok(DB.Categories.Include(x => x.Flyers.Select(z => z.Users)));
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -653,8 +654,8 @@ namespace WebAPI_Pure.Controllers {
 		public IHttpActionResult Get(int id) {
 			try {
 				return Ok(DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id));
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -675,8 +676,8 @@ namespace WebAPI_Pure.Controllers {
 					return Conflict();
 				}
 				return Created<Category>(Request.RequestUri + newCat.ID.ToString(), newCat);
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -697,8 +698,8 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -720,8 +721,8 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 				return Ok();
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 	}
