@@ -71,7 +71,8 @@
 						</div>
 					</div>
 					<div class="ma-center-text">
-						<input ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid || vm.waiteForResponse" type="submit" class="ma-btn-lg ma-btn-c" value="Anmäl dig" />
+						<input ng-hide="vm.disableDuringLoading" ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c" value="{{vm.btnText}}" />
+                        <a ng-show="vm.disableDuringLoading" class="ma-btn-lg ma-btn-c" style="text-decoration: none; color: grey;">{{vm.btnText}}</a>
 					</div>
 				</form>
 				<div class="ma-center-text" ng-show="vm.validMsg">

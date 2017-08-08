@@ -137,6 +137,16 @@
                 $scope.displayLogOut = true;
             };
         });
+
+        $scope.$watch(function () {
+            if (currentUser.getProfile() != null) {
+                return currentUser.getProfile().role;
+            }
+        }, function (newValue, oldValue) {
+            if (newValue != null) {
+                $scope.currentRole = newValue;
+            };
+        });
         
         $scope.logOut = function () {
             sessionStorage.clear();

@@ -21,16 +21,13 @@
                 @Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                @*<ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                </ul>*@
                 <div ng-cloak ng-controller="userInfo">
                     <div class="navbar-text">
                         <div ng-cloak ng-show="displayLogOut">
-                            <ul style="font-size: 1em; list-style-type: none;">
-                                <li><a style="cursor: pointer; color: orange;" ng-click="changePass()">Byt lösenord</a></li>
-                            </ul>
+                            <div>
+                                <span><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-click="changePass()">Byt lösenord</a></span>
+                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/Admin">Admin Kontroller</a></span>
+                            </div>
                         </div>
                     </div>
                     <div class="navbar-text pull-right">

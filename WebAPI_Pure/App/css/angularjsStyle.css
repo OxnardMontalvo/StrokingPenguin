@@ -1,4 +1,5 @@
 ﻿
+
 .ma-main {
     margin: 2.5em 0 0 0;
 }
@@ -18,6 +19,15 @@
     display: block;
     width: 100%;
     cursor: pointer;
+}
+.ma-btn-sm {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    background-color: lightgray;
+    border: 0;
+    padding: .5em 0;
+    font-size: 14pt;
 }
 
 .ma-btn-l {

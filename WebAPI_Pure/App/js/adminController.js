@@ -7,11 +7,13 @@
         var vm = this;
 
         vm.users = [];
-        vm.take = 2;
+        vm.take = 25;
         var page = 1;
-        vm.isRefreshed = true;
+        var isRefreshed = true;
         vm.hasSearch = false;
         vm.errorMsg = "";
+        vm.btnText = "Ladda fler";
+        vm.disableDuringLoad = true;
 
         // Method for checking if there are more users left in DB. If not we hide load more btn.
         function checkForMoreUsers(take) {
@@ -29,8 +31,12 @@
         // Runs when starting to load the first users from DB.
         vm.firstUsers = function (take) {
             page = 1;
+            vm.disableDuringLoad = true;
+            vm.btnText = "Laddar...";
             userPage.query({ take: take, page: page }, function (data) {
                 angular.copy(data, vm.users);
+                vm.disableDuringLoad = false;
+                vm.btnText = "Ladda fler";
             }, function (error) {
                 console.log(error);
                 vm.errorMsg = error.statusText;
@@ -51,10 +57,14 @@
                 }
 
                 page += 1;
+                vm.disableDuringLoad = true;
+                vm.btnText = "Laddar...";
                 userPage.query({ take: take, page: page }, function (data) {
                     // Make sure all queries get pushed in to the array.
                     for (var i = 0; i < data.length; i++) {
                         vm.users.push(data[i]);
+                        vm.btnText = "Ladda fler";
+                        vm.disableDuringLoad = false;
                     };
                 }, function (error) {
                     vm.errorMsg = error.statusText;
@@ -79,8 +89,12 @@
 
         // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
+            vm.disableDuringLoad = true;
+            vm.btnText = "Laddar...";
             user.update({ id: id }, vm.selUser, function (data) {
-                vm.isRefreshed = false;
+                isRefreshed = false;
+                vm.btnText = "Uppdatera & Ladda fler";
+                vm.disableDuringLoad = false;
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });
@@ -106,13 +120,18 @@
 
         // Refresh user list by looping all pages and push the users to the array.
         vm.refreshUserList = function () {
-            vm.isRefreshed = true;
+            isRefreshed = true;
+            vm.disableDuringLoad = true;
+            vm.btnText = "Ladda fler";
             vm.hasSearch = false;
             vm.users = [];
             for (var i = 1; i < page + 1; i++) {
+                vm.btnText = "Laddar...";
                 userPage.query({ take: vm.take, page: i }, function (data) {
                     for (var i = 0; i < data.length; i++) {
                         vm.users.push(data[i]);
+                        vm.btnText = "Ladda fler";
+                        vm.disableDuringLoad = false;
                     };
                     // Make sure the list is sortet correct.
                     vm.users.sort(function (a, b) { return a.DistrictNumber - b.DistrictNumber; });
@@ -125,10 +144,13 @@
         // Search base on a string for name, county mm.
         vm.searchUser = function (query) {
             vm.displayLoadMore = false;
+            vm.disableDuringLoad = true;
             vm.hasSearch = true;
             vm.users = [];
+            vm.btnText = "Laddar...";
             searchUser.stringSearch.query({ query: query }, function (data) {
                 angular.copy(data, vm.users);
+                vm.disableDuringLoad = false;
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });
@@ -137,10 +159,13 @@
         // Search based on district using a range.
         vm.searchDistrict = function (query) {
             vm.displayLoadMore = false;
+            vm.disableDuringLoad = true;
             vm.hasSearch = true;
             vm.users = [];
+            vm.btnText = "Laddar...";
             searchUser.districtSearch.query({ query: query }, function (data) {
                 angular.copy(data, vm.users);
+                vm.disableDuringLoad = false;
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });

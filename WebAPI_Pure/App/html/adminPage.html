@@ -14,6 +14,9 @@
 <div class="ma-center-text" ng-show="vm.errorMsg">
     <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
 </div>
+<div class="ma-center-text" ng-show="vm.disableDuringLoad">
+    <p class="text-danger ma-succssesText">{{vm.btnText}}</p>
+</div>
 
 <div class="row ma-main ma-print-hidden">
     <div class="col-sm-12 col-md-8">
@@ -37,61 +40,6 @@
         </form>
     </div>
 </div>
-
-<!--<div class="row ma-show">
-    <table class="table table-responsive table-striped">
-        <thead>
-            <tr>
-                <th class="ma-table-width-15">Namn</th>
-                <th class="ma-table-width-20">Adress</th>
-                <th class="ma-table-width-15">Ort</th>
-                <th class="ma-table-width-15">Post nr.</th>
-                <th class="ma-table-width-15">Email</th>
-                <th class="ma-table-width-10">Distrikt nr.</th>
-                <th class="ma-table-width-10">Gång nr.</th>
-                <th>Kontroll</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="user in vm.users track by $index">
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.Name}}</span>
-                    <input class="form-control input-sm" ng-model="user.Name" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.Address}}</span>
-                    <input class="form-control input-sm" ng-model="user.Address" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.County}}</span>
-                    <input class="form-control input-sm" ng-model="user.County" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.PostalCode}}</span>
-                    <input class="form-control input-sm" ng-model="user.PostalCode" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.Email}}</span>
-                    <input class="form-control input-sm" ng-model="user.Email" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.DistrictNumber}}</span>
-                    <input class="form-control input-sm" ng-model="user.DistrictNumber" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <span ng-show="vm.currentModifyUser != user.Id">{{user.DeliveryOrderNumber}}</span>
-                    <input class="form-control input-sm" ng-model="user.DeliveryOrderNumber" ng-show="vm.currentModifyUser == user.Id" type="text" />
-                </td>
-                <td>
-                    <a ng-click="vm.saveEdits(user.Id)" class="btn btn-sm btn-success" ng-show="vm.currentModifyUser == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-save"></span> Spara</a>
-                    <a ng-click="vm.cancle()" class="btn btn-sm btn-info" ng-show="vm.currentModifyUser == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove-circle"></span> Avbryt</a>
-                    <a ng-click="vm.editUser(user.Id)" class="btn btn-sm btn-info" ng-show="vm.currentModifyUser != user.Id" style="width: 100%;"><span class="glyphicon glyphicon-edit"></span> Ändra</a>
-                    <a ng-click="vm.remove(user.Id)" class="btn btn-sm btn-danger" ng-show="vm.currentModifyUser != user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove"></span> Ta bort</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>-->
 
 <div class="row ma-show">
     <table class="table table-responsive table-striped">
@@ -168,6 +116,6 @@
 </div>
 
 <div class="ma-center-text" ng-show="vm.displayLoadMore" ng-cloak>
-    <button ng-show="vm.isRefreshed" ng-click="vm.loadMoreUsers(vm.take)">Ladda fler</button>
-    <button ng-hide="vm.isRefreshed" ng-click="vm.loadMoreUsers(vm.take)">Uppdatera och ladda in</button>
+    <a class="ma-btn-sm" ng-hide="vm.disableDuringLoad" ng-click="vm.loadMoreUsers(vm.take)">{{vm.btnText}}</a>
+    <a class="ma-btn-sm" ng-show="vm.disableDuringLoad" ng-click="">{{vm.btnText}}</a>
 </div>

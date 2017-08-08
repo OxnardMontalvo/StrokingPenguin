@@ -5,7 +5,7 @@
 
     angular.module("app")
     // Register and Login controller, for both users and admin.
-    .controller("registerAndLoginCtrl", function (userAccount, changePass, $location, currentUser) {
+        .controller("registerAndLoginCtrl", function (userAccount, changePass, $location, currentUser) {
         var vm = this;
 
         vm.show = false;
@@ -59,13 +59,19 @@
         }
 
     })
-    .controller("forgotPassCtrl", function (fp) {
+    .controller("forgotPassCtrl", function ($scope, fp) {
         var vm = this;
 
         vm.formData = {};
+        vm.msg = "";
+        vm.validMsg = false;
 
         vm.send = function () {
             fp.get(vm.formData, function (response) {
+                vm.msg = "Länken är nu skickad till angivna mailen.";
+                vm.validMsg = true;
+                vm.formData = {};
+                $scope.forgotForm.$setPristine();
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });

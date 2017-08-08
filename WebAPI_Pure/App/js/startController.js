@@ -11,18 +11,20 @@
         vm.validMsg = false;
         vm.msg = "Tack för din anmälan."
         vm.errorMsg = "";
+        vm.btnText = "Anmäl dig";
 
         vm.formData = {};
 
         vm.submitForm = function () {
-
-            vm.waiteForResponse = true;
+            vm.btnText = "Skickar anmälan..."
+            vm.disableDuringLoading = true;
             user.save(vm.formData, function (response) {
+                console.log(response);
                 vm.validMsg = true;
+                vm.btnText = "Anmäl dig";
+                vm.disableDuringLoading = false;
                 vm.formData = {};
-                //$scope.signUpForm.$setUntouched();
                 $scope.signUpForm.$setPristine();
-                vm.waiteForResponse = false;
             }, function (error) {
                 var statusTxt = error.statusText;
                 vm.errorMsg = statusTxt + ", Försök igen.";
