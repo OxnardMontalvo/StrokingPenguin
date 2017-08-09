@@ -142,7 +142,7 @@
 						<span><a style="cursor: pointer; margin-left: 9em;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
 						<input ng-class="{'ma-has-error-border': P.$invalid && P.$dirty}" ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
 						<div ng-show="P.$invalid && P.$dirty">
-							<span class="text-danger" ng-show="P.$error.required">Fältet måste vara ifyllt.!</span>
+							<span class="text-danger" ng-show="P.$error.required">Fältet måste vara ifyllt!</span>
 							<span class="text-danger" ng-show="P.$error.minlength">Namnet måste innehålla minst 6 tecken!</span>
 							<span class="text-danger" ng-show="P.$error.maxlength">Namnet kan inte överstiga 256 tecken!</span>
 						</div>
