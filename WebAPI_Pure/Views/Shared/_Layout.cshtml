@@ -63,14 +63,28 @@
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
-    <script src="~/App/js/app.js"></script>
+    @*
+        Keeping These for now, will remove before launch!!!
+    *@
+    @*<script src="~/App/js/app.js"></script>
 
     <script src="~/App/js/commonServices.js"></script>
     <script src="~/App/js/userAccount.js"></script>
 
     <script src="~/App/js/accountController.js"></script>
     <script src="~/App/js/startController.js"></script>
-    <script src="~/App/js/adminController.js"></script>
+    <script src="~/App/js/adminController.js"></script>*@
+
+
+    <script src="~/App/js/_minify/app.js"></script>
+
+    <script src="~/App/js/_minify/commonServices.js"></script>
+    <script src="~/App/js/_minify/userAccount.js"></script>
+
+    <script src="~/App/js/_minify/accountController.js"></script>
+    <script src="~/App/js/_minify/startController.js"></script>
+    <script src="~/App/js/_minify/adminController.js"></script>
+
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
