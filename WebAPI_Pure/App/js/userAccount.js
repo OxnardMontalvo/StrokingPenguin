@@ -66,6 +66,17 @@
             };
         }])
 
+        .factory("adminCreate", ["$resource", "appSettings", function ($resource, appSettings) {
+            return {
+                createCat: $resource(appSettings.serverPath + "", {}, {
+
+                }),
+                createFlyer: $resource(appSettings.serverPath + "api/Flyers/{id}", {}, {
+
+                })
+            };
+        }])
+
         .factory("fp", ["$resource", "appSettings", function ($resource, appSettings) {
             return $resource(appSettings.serverPath + "ForgotPassword", {}, {
                 'get': {

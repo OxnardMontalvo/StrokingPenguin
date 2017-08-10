@@ -33,6 +33,11 @@
                 }
             }
          })
+        .when("/AdminCreate", {
+            templateUrl: "App/html/adminCreate.html",
+            controller: "adminCreateCtrl",
+            controllerAs: "vm"
+        })
         .when("/ForgotPassword", {
             templateUrl: "App/html/forgotPasswordPage.html",
             controller: "forgotPassCtrl",
