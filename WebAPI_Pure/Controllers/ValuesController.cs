@@ -257,7 +257,6 @@ namespace WebAPI_Pure.Controllers {
 					if ( cat == null )
 						cat = DB.Categories.Add(new Category { Name = SecretsManager.DefaultCat, Active = true });
 					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.DefaultFlyer, Active = true, Category = cat });
-					//return BadRequest("No flyers available");
 				}
 
 				var user = new AppUser {
@@ -297,7 +296,7 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest("Error");
 			}
 			var result = await UserManager.ConfirmEmailAsync(userId, code.Replace('_', '/').Replace('!', '+'));
-            return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
+			return Ok(result.Succeeded ? "ConfirmEmail" : "Error");
 		}
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
@@ -546,10 +545,18 @@ namespace WebAPI_Pure.Controllers {
 	public class FlyersController : BaseApiController {
 		// GET: api/Flyers
 		[EnableQuery()]
-		[ResponseType(typeof(Flyer))]
+		[Route("api/Flyers")]
 		public IHttpActionResult Get() {
 			try {
-				return Ok(DB.Flyers.Include(x => x.Category).ToList());
+				var flyers = DB.Flyers.Include(x => x.Category).Select(x => new FlyerViewModel {
+					Name = x.Name,
+					Active = x.Active,
+					Category = x.Category,
+					ID = x.ID,
+					RangeMax = x.Range.Max.ToString(),
+					RangeMin = x.Range.Max.ToString()
+				});
+				return Ok(flyers);
 
 			} catch {
 				return InternalServerError();
@@ -557,18 +564,26 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Flyers/5
-		[ResponseType(typeof(Flyer))]
+		[Route("api/Flyers/{id}")]
 		public IHttpActionResult Get(int id) {
 			try {
-				return Ok(DB.Flyers.Include(x => x.Category).FirstOrDefault(x => x.ID == id));
+				var flyer = DB.Flyers.Include(x => x.Category).Select(x => new FlyerViewModel {
+					Name = x.Name,
+					Active = x.Active,
+					Category = x.Category,
+					ID = x.ID,
+					RangeMax = x.Range.Max.ToString(),
+					RangeMin = x.Range.Max.ToString()
+				}).FirstOrDefault(x => x.ID == id);
+				return Ok(flyer);
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// POST: api/Flyers
-		[ResponseType(typeof(Flyer))]
-		public IHttpActionResult Post([FromBody]Flyer flyer) {
+		[Route("api/Flyers")]
+		public async Task<IHttpActionResult> Post([FromBody]FlyerViewModel flyer) {
 			try {
 				if ( flyer == null ) {
 					return BadRequest("Flyer cannot be null");
@@ -578,18 +593,29 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var newFlyer = DB.Flyers.Add(flyer);
-				if ( DB.SaveChanges() == 0 ) {
+				int rangeMax = int.MaxValue, rangeMin = int.MinValue;
+				int.TryParse(flyer.RangeMax.Trim().Where(c => char.IsDigit(c)) as string, out rangeMax);
+				int.TryParse(flyer.RangeMin.Trim().Where(c => char.IsDigit(c)) as string, out rangeMin);
+				var range = new Range { Max = rangeMax, Min = rangeMin };
+
+				var newFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = flyer.Category, Range = range };
+
+				DB.Flyers.Add(newFlyer);
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
 					return Conflict();
+				} else {
+					return Ok("Flyer created.");
 				}
-				return Created<Flyer>(Request.RequestUri + newFlyer.ID.ToString(), newFlyer);
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// PUT: api/Flyers/5
-		public IHttpActionResult Put(int id, [FromBody]Flyer flyer) {
+		[Route("api/Flyers/{id}")]
+		public async Task<IHttpActionResult> Put(int id, [FromBody]FlyerViewModel flyer) {
 			try {
 				if ( flyer == null ) {
 					return BadRequest("Flyer cannot be null");
@@ -599,19 +625,28 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
+				int rangeMax = int.MaxValue, rangeMin = int.MinValue;
+				int.TryParse(flyer.RangeMax.Trim().Where(c => char.IsDigit(c)) as string, out rangeMax);
+				int.TryParse(flyer.RangeMin.Trim().Where(c => char.IsDigit(c)) as string, out rangeMin);
+				var range = new Range { Max = rangeMax, Min = rangeMin };
+
 				var getFlyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
-				getFlyer = flyer; // TODO Check if this works. Otherwise change it.
-				if ( DB.SaveChanges() == 0 ) {
-					return NotFound();
+				getFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = flyer.Category, Range = range };
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok("Flyer updated.");
 				}
-				return Ok();
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// DELETE: api/Flyers/5
-		public IHttpActionResult Delete(int id) {
+		[Route("api/Flyers/{id}")]
+		public async Task<IHttpActionResult> Delete(int id) {
 			try {
 				if ( id <= 0 ) {
 					return BadRequest("ID must be valid");
@@ -624,10 +659,12 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				DB.Flyers.Remove(flyer);
-				if ( DB.SaveChanges() == 0 ) {
-					return NotFound();
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok("Flyer updated.");
 				}
-				return Ok();
 			} catch {
 				return InternalServerError();
 			}
