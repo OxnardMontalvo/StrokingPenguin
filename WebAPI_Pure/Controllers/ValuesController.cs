@@ -548,13 +548,12 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/Flyers")]
 		public IHttpActionResult Get() {
 			try {
-				var flyers = DB.Flyers.Include(x => x.Category).Select(x => new FlyerViewModel {
+				var flyers = DB.Flyers.Include(x => x.Category).Select(x => new {
 					Name = x.Name,
 					Active = x.Active,
-					Category = x.Category,
+					Category = new { ID = x.Category.ID, Name = x.Category.Name, Active = x.Category.Active },
 					ID = x.ID,
-					RangeMax = x.Range.Max.ToString(),
-					RangeMin = x.Range.Max.ToString()
+					Range = new { Max = ( x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString() ), Min = ( x.Range.Min == int.MinValue ? "" : x.Range.Min.ToString() ) }
 				});
 				return Ok(flyers);
 
@@ -565,16 +564,15 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Flyers/5
 		[Route("api/Flyers/{id}")]
-		public IHttpActionResult Get(int id) {
+		public async Task<IHttpActionResult> Get(int id) {
 			try {
-				var flyer = DB.Flyers.Include(x => x.Category).Select(x => new FlyerViewModel {
+				var flyer = await DB.Flyers.Include(x => x.Category).Select(x => new {
 					Name = x.Name,
 					Active = x.Active,
-					Category = x.Category,
+					Category = new { ID = x.Category.ID, Name = x.Category.Name, Active = x.Category.Active },
 					ID = x.ID,
-					RangeMax = x.Range.Max.ToString(),
-					RangeMin = x.Range.Max.ToString()
-				}).FirstOrDefault(x => x.ID == id);
+					Range = new { Max = ( x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString() ), Min = ( x.Range.Min == int.MinValue ? "" : x.Range.Min.ToString() ) }
+				}).FirstOrDefaultAsync(x => x.ID == id);
 				return Ok(flyer);
 			} catch {
 				return InternalServerError();
@@ -594,11 +592,24 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				int rangeMax = int.MaxValue, rangeMin = int.MinValue;
-				int.TryParse(flyer.RangeMax.Trim().Where(c => char.IsDigit(c)) as string, out rangeMax);
-				int.TryParse(flyer.RangeMin.Trim().Where(c => char.IsDigit(c)) as string, out rangeMin);
+				if ( !string.IsNullOrWhiteSpace(flyer.RangeMax) ) {
+					int.TryParse(new string(flyer.RangeMax.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMax);
+					if ( rangeMax == 0 ) {
+						rangeMax = int.MaxValue;
+					}
+				}
+				if ( !string.IsNullOrWhiteSpace(flyer.RangeMin) ) {
+					int.TryParse(new string(flyer.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
+					if ( rangeMin == 0 ) {
+						rangeMin = int.MinValue;
+					}
+				}
+
+				if ( rangeMin > rangeMax ) rangeMin = rangeMin ^ rangeMax ^ ( rangeMax = rangeMin );
 				var range = new Range { Max = rangeMax, Min = rangeMin };
 
-				var newFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = flyer.Category, Range = range };
+				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == flyer.CategoryID);
+				var newFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = cat, Range = range };
 
 				DB.Flyers.Add(newFlyer);
 
@@ -606,7 +617,7 @@ namespace WebAPI_Pure.Controllers {
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok("Flyer created.");
+					return Ok($"Flyer {newFlyer.Name} created.");
 				}
 			} catch {
 				return InternalServerError();
@@ -625,19 +636,33 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				int rangeMax = int.MaxValue, rangeMin = int.MinValue;
-				int.TryParse(flyer.RangeMax.Trim().Where(c => char.IsDigit(c)) as string, out rangeMax);
-				int.TryParse(flyer.RangeMin.Trim().Where(c => char.IsDigit(c)) as string, out rangeMin);
+				var getFlyer = await DB.Flyers.FirstOrDefaultAsync(x => x.ID == id);
+
+				int rangeMax = getFlyer.Range.Max, rangeMin = getFlyer.Range.Min;
+				if ( !string.IsNullOrWhiteSpace(flyer.RangeMax) ) {
+					int.TryParse(new string(flyer.RangeMax.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMax);
+					if ( rangeMax == 0 ) {
+						rangeMax = getFlyer.Range.Max;
+					}
+				}
+				if ( !string.IsNullOrWhiteSpace(flyer.RangeMin) ) {
+					int.TryParse(new string(flyer.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
+					if ( rangeMin == 0 ) {
+						rangeMin = getFlyer.Range.Min;
+					}
+				}
+
+				if ( rangeMin > rangeMax ) rangeMin = rangeMin ^ rangeMax ^ ( rangeMax = rangeMin );
 				var range = new Range { Max = rangeMax, Min = rangeMin };
 
-				var getFlyer = DB.Flyers.FirstOrDefault(x => x.ID == id);
-				getFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = flyer.Category, Range = range };
+				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == flyer.CategoryID);
+				getFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = cat, Range = range };
 
 				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok("Flyer updated.");
+					return Ok($"Flyer {getFlyer.Name} updated.");
 				}
 			} catch {
 				return InternalServerError();
@@ -663,7 +688,7 @@ namespace WebAPI_Pure.Controllers {
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok("Flyer updated.");
+					return Ok($"Flyer {flyer.Name} deleted.");
 				}
 			} catch {
 				return InternalServerError();
