@@ -464,7 +464,7 @@ namespace WebAPI_Pure.Controllers {
 
 				var result = cats.Select(c => new {
 					Name = c.Name,
-					Flyers = ( c.Flyers.Where(z => z.Range.Min <= value && z.Range.Max >= value && z.Active == true).Select(x => new UserFlyersViewModel {
+					Flyers = ( c.Flyers.Where(z => z.Range.Min <= value && z.Range.Max >= value && z.Active == true).Select(x => new {
 						ID = x.ID,
 						Name = x.Name,
 						Selected = user.Flyers.Contains(x)
@@ -492,7 +492,7 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 
-				var result = cat.Flyers.Select(x => new UserFlyersViewModel { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
+				var result = cat.Flyers.Select(x => new { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
 
 				return Ok(result);
 			} catch {
@@ -652,7 +652,10 @@ namespace WebAPI_Pure.Controllers {
 				var range = new Range { Max = rangeMax, Min = rangeMin };
 
 				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == vm.CategoryID);
-				flyer = new Flyer { Name = vm.Name, Active = vm.Active, Category = cat, Range = range };
+				flyer.Name = vm.Name;
+				flyer.Active = vm.Active;
+				flyer.Category = cat;
+				flyer.Range = range;
 
 				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
@@ -755,7 +758,7 @@ namespace WebAPI_Pure.Controllers {
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok($"Category {cat.Name} updated.");
+					return Ok($"Category {cat.Name} created.");
 				}
 			} catch {
 				return InternalServerError();
@@ -774,8 +777,9 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var cat = DB.Categories.FirstOrDefault(x => x.ID == id);
-				cat = new Category { ID = cat.ID, Name = vm.Name, Active = vm.Active };
+				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == id);
+				cat.Name = vm.Name;
+				cat.Active = vm.Active;
 
 				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
