@@ -68,11 +68,39 @@
 
         .factory("adminCreate", ["$resource", "appSettings", function ($resource, appSettings) {
             return {
-                createCat: $resource(appSettings.serverPath + "", {}, {
-
+                cats: $resource(appSettings.serverPath + "api/Cats/:id", {}, {
+                    'create': {
+                        method: 'POST',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    },
+                    'get': {
+                        method: 'GET',
+                        isArray: true,
+                        headers: { "Authorization": tokenHeader }
+                    },
+                    'update': {
+                        method: 'PUT',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    }
                 }),
-                createFlyer: $resource(appSettings.serverPath + "api/Flyers/{id}", {}, {
-
+                flyers: $resource(appSettings.serverPath + "api/Flyers/:id", {}, {
+                    'create': {
+                        method: 'POST',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    },
+                    'get': {
+                        method: 'GET',
+                        isArray: true,
+                        headers: { "Authorization": tokenHeader }
+                    },
+                    'update': {
+                        method: 'PUT',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    }
                 })
             };
         }])

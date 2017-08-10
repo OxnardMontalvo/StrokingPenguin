@@ -4,16 +4,20 @@
             <div class="panel-heading">
                 <h2 class="ma-center-text">Skapa kategori</h2>
             </div>
-            <div class="panel-body" style="min-height: 17em;">
-                <form class="form-group">
-                    <label>Kategorins namn</label>
-                    <input class="form-control" type="text" placeholder="Namn" />
-                    <label>Aktiverad/Avaktiverad</label>
-                    <input class="form-control" type="checkbox" checked />
+            <div class="panel-body" style="min-height: 25em;">
+                <form>
+                    <div class="form-group">
+                        <label>Kategorins namn</label>
+                        <input class="form-control" ng-model="vm.formDataCat.Name" type="text" placeholder="Namn" />
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-right: .5em;">Aktiverad</label>
+                        <input class="checkbox-inline" ng-model="vm.formDataCat.Active" type="checkbox" ng-checked="vm.activeCat" />
+                    </div>
                 </form>
             </div>
             <div class="panel-footer clearfix">
-                <span><a class="pull-right btn btn-success">Spara</a></span>
+                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormCat()">Spara</a></span>
             </div>
         </div>
     </div>
@@ -22,23 +26,104 @@
             <div class="panel-heading">
                 <h2 class="ma-center-text">Skapa reklamblad</h2>
             </div>
-            <div class="panel-body" style="min-height: 17em;">
-                <form class="form-group">
-                    <label>Flygbladets namn</label>
-                    <input class="form-control" type="text" placeholder="Namn" />
-                    <label>Aktiverad/Avaktiverad</label>
-                    <input class="form-control" type="checkbox" checked />
-                    <label>Kategori</label>
-                    <select class="form-control dropdown">
-                        <option>Mat</option>
-                        <option>IT</option>
-                        <option>Vitvaror</option>
-                    </select>
+            <div class="panel-body" style="min-height: 25em;">
+                <form>
+                    <div class="form-group">
+                        <label>Flygbladets namn</label>
+                        <input class="form-control" ng-model="vm.formDataFlyer.Name" type="text" placeholder="Namn" />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Postnummer från</label>
+                        <input class="form-control" ng-model="vm.formDataFlyer.RangeMin" type="text" placeholder="giltigt postnummer från (min)" />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Postnummer till</label>
+                        <input class="form-control" ng-model="vm.formDataFlyer.RangeMax" type="text" placeholder="giltigt postnummer till (max)" />
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-right: .5em;">Aktiverad</label>
+                        <input class="checkbox checkbox-inline" ng-model="vm.formDataFlyer.Active" type="checkbox" ng-checked="vm.activeFlyer" />
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select class="form-control dropdown" ng-model="vm.selectedCat" ng-options="c.Name for c in vm.cats track by c.ID"></select>
+                    </div>
                 </form>
             </div>
             <div class="panel-footer clearfix">
-                <span><a class="pull-right btn btn-success">Spara</a></span>
+                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormFlyer(vm.formDataFlyer.Name, vm.formDataFlyer.RangeMax, vm.formDataFlyer.RangeMin)">Spara</a></span>
             </div>
         </div>
+    </div>
+</div>
+
+<legend></legend>
+
+<div class="row">
+    <div class="ma-center-text text-primary">
+        <h2>Ändra Kategorier & Reklamblad</h2>
+    </div>
+    <div class="row ma-main">
+        <div class="col-sm-12 col-md-offset-2 col-md-4" style="padding: 0; margin-right: .25em">
+            <a ng-click="vm.catClick()" class="ma-btn-lg ma-btn-l ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista kategorier</a>
+        </div>
+        <div class="col-sm-12 col-md-4" style="padding: 0;">
+            <a onclick="window.print()" class="ma-btn-lg ma-btn-r ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista reklamblad</a>
+        </div>
+    </div>
+
+    <div ng-show="vm.displayCats && !vm.displayFlyers">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Aktiverad</th>
+                    <th>Kontroll</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cats in vm.cats">
+                    <td>
+                        <span ng-hide="vm.selCat.ID == cats.ID">{{cats.Name}}</span>
+                        <input ng-show="vm.selCat.ID == cats.ID" ng-model="cats.Name" class="form-control input-sm" value="{{cats.Name}}" />
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selCat.ID == cats.ID" ng-if="cats.Active" class="glyphicon glyphicon-ok"> {{cats.Active}}</span>
+                        <span ng-hide="vm.selCat.ID == cats.ID" ng-if="!cats.Active" class="glyphicon glyphicon-remove"> {{cats.Active}}</span>
+                        <input ng-show="vm.selCat.ID == cats.ID" ng-model="cats.Active" class="checkbox checkbox-inline" type="checkbox" ng-checked="cats.Active" />
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-info" ng-click="vm.editCats(cats.ID)">Ändra</a></span>
+                        <span ng-hide="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-danger">Ta bort</a></span>
+                        <span ng-show="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveCatEdits(cats.ID)">Spara</a></span>
+                        <span ng-show="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-danger">Avbryt</a></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-show="vm.displayFlyers && !vm.displayCats">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Aktiverad</th>
+                    <th>Post nummer från</th>
+                    <th>Post nummer till</th>
+                    <th>Kategori</th>
+                    <th>Kontroll</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="flyers in vm.flyers">
+                    <td>Namn</td>
+                    <td>Aktiverad</td>
+                    <td>Post nummer från</td>
+                    <td>Post nummer till</td>
+                    <td>Kategori</td>
+                    <td>Kontroller</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

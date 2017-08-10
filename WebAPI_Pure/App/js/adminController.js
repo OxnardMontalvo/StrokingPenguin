@@ -171,6 +171,107 @@
             });
         };
 
+    })
+    .controller("adminCreateCtrl", function (adminCreate) {
+        var vm = this;
+
+        vm.activeCat = true;
+        vm.formDataCat = {
+            ID: 0,
+            Active: vm.activeCat
+        };
+
+        // Save cats form function.
+        vm.saveFormCat = function () {
+            //console.log(vm.formDataCat);
+
+            // Save cat form to DB
+            adminCreate.cats.create(vm.formDataCat, function (data) {
+                console.log(data);
+
+                // Get cats from DB as relode. Give us all cats in drop down.
+                adminCreate.cats.get(function (data) {
+                    //console.log(data);
+                    angular.copy(data, vm.cats);
+                    //console.log(vm.cats);
+                });
+
+                // Zero out cat form.
+                vm.formDataCat = {
+                    ID: 0,
+                    Active: vm.activeCat
+                };
+            });
+        };
+
+        // Load the cats from DB to display in drop down.
+        vm.cats = [];
+        adminCreate.cats.get(function (data) {
+            //console.log(data);
+            angular.copy(data, vm.cats);
+            //console.log(vm.cats);
+        });
+
+        vm.activeFlyer = true;
+        // drop down start ID and model.
+        vm.selectedCat = {
+            ID: 1
+        };
+
+        vm.formDataFlyer = {
+            ID: 0,
+            Active: vm.activeFlyer
+        };
+
+        // Save flyer form function.
+        vm.saveFormFlyer = function () {
+            vm.formDataFlyer.CategoryID = vm.selectedCat.ID;
+
+            //console.log(vm.formDataFlyer);
+            //console.log(vm.selectedCat);
+
+            // Save flyer form to DB.
+            adminCreate.flyers.create(vm.formDataFlyer, function (data) {
+                //console.log(data);
+
+                // Zero out flyer form.
+                vm.formDataFlyer = {
+                    ID: 0,
+                    Active: vm.activeFlyer
+                };
+            });
+        };
+
+        //vm.flyers = [];
+        //adminCreate.flyers.get(function (data) {
+        //    console.log(data);
+        //});
+
+        vm.displayCats = false;
+        vm.displayFlyers = false;
+        vm.editMode = false;
+
+        vm.catClick = function () {
+            vm.displayCats = true;
+        };
+
+        vm.editCats = function (id) {
+            vm.editMode = true;
+            for (var i = 0; i < vm.cats.length; i++) {
+                if (vm.cats[i].ID == id) {
+                    vm.selCat = vm.cats[i];
+                };
+            };
+        };
+
+        vm.saveCatEdits = function (id) {
+            console.log(vm.selCat)
+            adminCreate.cats.update({ id: id }, vm.selCat, function (data) {
+                vm.editMode = false;
+            });
+            vm.selCat = "";
+        };
+
     });
 
 })();

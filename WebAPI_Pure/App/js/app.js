@@ -36,7 +36,17 @@
         .when("/AdminCreate", {
             templateUrl: "App/html/adminCreate.html",
             controller: "adminCreateCtrl",
-            controllerAs: "vm"
+            controllerAs: "vm",
+            resolve: {
+
+                checkRoleValidation: function (checkRole, $location) {
+                    if (checkRole.getARole().$$state.value == false) {
+                        $location.path("/Login");
+                    } else {
+                        return true;
+                    }
+                }
+            }
         })
         .when("/ForgotPassword", {
             templateUrl: "App/html/forgotPasswordPage.html",
