@@ -62,6 +62,19 @@ namespace WebAPI_Pure.Models {
 
 	// VMs
 
+
+	public class FlyerViewModel {
+		public int ID { get; set; }
+		[Required]
+		public string Name { get; set; }
+		[Required]
+		public bool Active { get; set; }
+		public string RangeMax { get; set; }
+		public string RangeMin { get; set; }
+		[Required]
+		public Category Category { get; set; }
+	}
+
 	public class UserFlyersCategoryVM {
 		[Required]
 		public string Name { get; set; }
