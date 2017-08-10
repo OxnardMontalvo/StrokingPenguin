@@ -62,6 +62,7 @@ namespace WebAPI_Pure.Models {
 
 	// VMs
 	public class CategoryViewModel {
+		[Required]
 		public int ID { get; set; }
 		[Required]
 		public string Name { get; set; }
@@ -70,6 +71,7 @@ namespace WebAPI_Pure.Models {
 	}
 
 	public class FlyerViewModel {
+		[Required]
 		public int ID { get; set; }
 		[Required]
 		public string Name { get; set; }
@@ -79,13 +81,6 @@ namespace WebAPI_Pure.Models {
 		public string RangeMin { get; set; }
 		[Required]
 		public int CategoryID { get; set; }
-	}
-
-	public class UserFlyersCategoryVM {
-		[Required]
-		public string Name { get; set; }
-		[Required]
-		public HashSet<UserFlyersViewModel> Flyers { get; set; }
 	}
 
 	public class UserFlyersViewModel {

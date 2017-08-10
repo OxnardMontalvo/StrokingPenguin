@@ -390,17 +390,17 @@ namespace WebAPI_Pure.Controllers {
 		[HttpPost]
 		[AllowAnonymous]
 		[Route("ResetPassword", Name = "ResetPassword")]
-		public async Task<IHttpActionResult> ResetPassword([FromBody]ResetPasswordViewModel model) {
+		public async Task<IHttpActionResult> ResetPassword([FromBody]ResetPasswordViewModel vm) {
 			if ( !ModelState.IsValid ) {
 				return BadRequest(ModelState);
 			}
 
-			var user = await UserManager.FindByNameAsync(model.Email);
-			if ( user == null || user.Id != model.ID ) {
+			var user = await UserManager.FindByNameAsync(vm.Email);
+			if ( user == null || user.Id != vm.ID ) {
 				// Don't reveal that the user does not exist
 				return Ok();
 			}
-			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code.Replace('_', '/').Replace('!', '+'), model.Password);
+			var result = await UserManager.ResetPasswordAsync(user.Id, vm.Code.Replace('_', '/').Replace('!', '+'), vm.Password);
 			if ( result.Succeeded ) {
 				return Ok();
 			}
@@ -441,8 +441,8 @@ namespace WebAPI_Pure.Controllers {
 	#endregion
 
 
-	//[Authorize(Roles = "User")]
 	[Authorize] // For testing
+				//[Authorize(Roles = "User")]
 	public class UserFlyersController : BaseApiController {
 		[Route("api/UserFlyers")]
 		public async Task<IHttpActionResult> Get() {
@@ -462,20 +462,16 @@ namespace WebAPI_Pure.Controllers {
 				int value;
 				int.TryParse(new String(user.PostalCode.Where(Char.IsDigit).ToArray()), out value);
 
-				var result = new HashSet<UserFlyersCategoryVM>();
-				foreach ( var c in cats ) {
-					result.Add(new UserFlyersCategoryVM {
-						Name = c.Name,
-						Flyers = new HashSet<UserFlyersViewModel>(
-							c.Flyers.Where(z => z.Range.Min <= value && z.Range.Max >= value && z.Active == true).Select(x => new UserFlyersViewModel {
-								ID = x.ID,
-								Name = x.Name,
-								Selected = user.Flyers.Contains(x)
-							}).OrderBy(y => y.Name))
-					});
-				}
+				var result = cats.Select(c => new {
+					Name = c.Name,
+					Flyers = ( c.Flyers.Where(z => z.Range.Min <= value && z.Range.Max >= value && z.Active == true).Select(x => new UserFlyersViewModel {
+						ID = x.ID,
+						Name = x.Name,
+						Selected = user.Flyers.Contains(x)
+					}).OrderBy(y => y.Name) )
+				});
 
-				return Ok(result.Where(x => x.Flyers.Count > 0));
+				return Ok(result.Where(x => x.Flyers.Count() > 0));
 			} catch {
 				return InternalServerError();
 			}
@@ -581,9 +577,9 @@ namespace WebAPI_Pure.Controllers {
 
 		// POST: api/Flyers
 		[Route("api/Flyers")]
-		public async Task<IHttpActionResult> Post([FromBody]FlyerViewModel flyer) {
+		public async Task<IHttpActionResult> Post([FromBody]FlyerViewModel vm) {
 			try {
-				if ( flyer == null ) {
+				if ( vm == null ) {
 					return BadRequest("Flyer cannot be null");
 				}
 
@@ -592,14 +588,14 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				int rangeMax = int.MaxValue, rangeMin = int.MinValue;
-				if ( !string.IsNullOrWhiteSpace(flyer.RangeMax) ) {
-					int.TryParse(new string(flyer.RangeMax.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMax);
+				if ( !string.IsNullOrWhiteSpace(vm.RangeMax) ) {
+					int.TryParse(new string(vm.RangeMax.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMax);
 					if ( rangeMax == 0 ) {
 						rangeMax = int.MaxValue;
 					}
 				}
-				if ( !string.IsNullOrWhiteSpace(flyer.RangeMin) ) {
-					int.TryParse(new string(flyer.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
+				if ( !string.IsNullOrWhiteSpace(vm.RangeMin) ) {
+					int.TryParse(new string(vm.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
 					if ( rangeMin == 0 ) {
 						rangeMin = int.MinValue;
 					}
@@ -608,16 +604,16 @@ namespace WebAPI_Pure.Controllers {
 				if ( rangeMin > rangeMax ) rangeMin = rangeMin ^ rangeMax ^ ( rangeMax = rangeMin );
 				var range = new Range { Max = rangeMax, Min = rangeMin };
 
-				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == flyer.CategoryID);
-				var newFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = cat, Range = range };
+				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == vm.CategoryID);
+				var flyer = new Flyer { Name = vm.Name, Active = vm.Active, Category = cat, Range = range };
 
-				DB.Flyers.Add(newFlyer);
+				DB.Flyers.Add(flyer);
 
 				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok($"Flyer {newFlyer.Name} created.");
+					return Ok($"Flyer {flyer.Name} created.");
 				}
 			} catch {
 				return InternalServerError();
@@ -626,9 +622,9 @@ namespace WebAPI_Pure.Controllers {
 
 		// PUT: api/Flyers/5
 		[Route("api/Flyers/{id}")]
-		public async Task<IHttpActionResult> Put(int id, [FromBody]FlyerViewModel flyer) {
+		public async Task<IHttpActionResult> Put(int id, [FromBody]FlyerViewModel vm) {
 			try {
-				if ( flyer == null ) {
+				if ( vm == null ) {
 					return BadRequest("Flyer cannot be null");
 				}
 
@@ -636,33 +632,33 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var getFlyer = await DB.Flyers.FirstOrDefaultAsync(x => x.ID == id);
+				var flyer = await DB.Flyers.FirstOrDefaultAsync(x => x.ID == id);
 
-				int rangeMax = getFlyer.Range.Max, rangeMin = getFlyer.Range.Min;
-				if ( !string.IsNullOrWhiteSpace(flyer.RangeMax) ) {
-					int.TryParse(new string(flyer.RangeMax.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMax);
+				int rangeMax = flyer.Range.Max, rangeMin = flyer.Range.Min;
+				if ( !string.IsNullOrWhiteSpace(vm.RangeMax) ) {
+					int.TryParse(new string(vm.RangeMax.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMax);
 					if ( rangeMax == 0 ) {
-						rangeMax = getFlyer.Range.Max;
+						rangeMax = flyer.Range.Max;
 					}
 				}
-				if ( !string.IsNullOrWhiteSpace(flyer.RangeMin) ) {
-					int.TryParse(new string(flyer.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
+				if ( !string.IsNullOrWhiteSpace(vm.RangeMin) ) {
+					int.TryParse(new string(vm.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
 					if ( rangeMin == 0 ) {
-						rangeMin = getFlyer.Range.Min;
+						rangeMin = flyer.Range.Min;
 					}
 				}
 
 				if ( rangeMin > rangeMax ) rangeMin = rangeMin ^ rangeMax ^ ( rangeMax = rangeMin );
 				var range = new Range { Max = rangeMax, Min = rangeMin };
 
-				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == flyer.CategoryID);
-				getFlyer = new Flyer { Name = flyer.Name, Active = flyer.Active, Category = cat, Range = range };
+				var cat = await DB.Categories.FirstOrDefaultAsync(x => x.ID == vm.CategoryID);
+				flyer = new Flyer { Name = vm.Name, Active = vm.Active, Category = cat, Range = range };
 
 				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok($"Flyer {getFlyer.Name} updated.");
+					return Ok($"Flyer {flyer.Name} updated.");
 				}
 			} catch {
 				return InternalServerError();
@@ -700,32 +696,52 @@ namespace WebAPI_Pure.Controllers {
 	[Authorize(Roles = "Admin")]
 	public class CatsController : BaseApiController {
 		// GET: api/Cats
-		[ResponseType(typeof(Category))]
+		[Route("api/Cats")]
 		public IHttpActionResult Get() {
 			try {
-				return Ok(DB.Categories.Include(x => x.Flyers));
-				//return Ok(DB.Categories.Include(x => x.Flyers.Select(z => z.Users)));
-
+				var cats = DB.Categories.Include(x => x.Flyers).Select(x => new {
+					Name = x.Name,
+					Active = x.Active,
+					ID = x.ID,
+					Flyers = ( x.Flyers.Select(y => new {
+						ID = y.ID,
+						Name = y.Name,
+						Active = y.Active,
+						Range = new { Max = ( y.Range.Max == int.MaxValue ? "" : y.Range.Max.ToString() ), Min = ( y.Range.Min == int.MinValue ? "" : y.Range.Min.ToString() ) }
+					}) )
+				});
+				return Ok(cats);
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// GET: api/Cats/5
-		[ResponseType(typeof(Category))]
-		public IHttpActionResult Get(int id) {
+		[Route("api/Cats/{id}")]
+		public async Task<IHttpActionResult> Get(int id) {
 			try {
-				return Ok(DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id));
+				var cat = await DB.Categories.Include(x => x.Flyers).Select(x => new {
+					Name = x.Name,
+					Active = x.Active,
+					ID = x.ID,
+					Flyers = ( x.Flyers.Select(y => new {
+						ID = y.ID,
+						Name = y.Name,
+						Active = y.Active,
+						Range = new { Max = ( y.Range.Max == int.MaxValue ? "" : y.Range.Max.ToString() ), Min = ( y.Range.Min == int.MinValue ? "" : y.Range.Min.ToString() ) }
+					}) )
+				}).FirstOrDefaultAsync(x => x.ID == id);
+				return Ok(cat);
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// POST: api/Cats
-		[ResponseType(typeof(Category))]
-		public IHttpActionResult Post([FromBody]Category category) {
+		[Route("api/Cats")]
+		public async Task<IHttpActionResult> Post([FromBody]CategoryViewModel vm) {
 			try {
-				if ( category == null ) {
+				if ( vm == null ) {
 					return BadRequest("Category cannot be null");
 				}
 
@@ -733,20 +749,24 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var newCat = DB.Categories.Add(category);
-				if ( DB.SaveChanges() == 0 ) {
+				var cat = DB.Categories.Add(new Category { Name = vm.Name, Active = vm.Active });
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
 					return Conflict();
+				} else {
+					return Ok($"Category {cat.Name} updated.");
 				}
-				return Created<Category>(Request.RequestUri + newCat.ID.ToString(), newCat);
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// PUT: api/Cats/5
-		public IHttpActionResult Put(int id, [FromBody]Category category) {
+		[Route("api/Cats/{id}")]
+		public async Task<IHttpActionResult> Put(int id, [FromBody]CategoryViewModel vm) {
 			try {
-				if ( category == null ) {
+				if ( vm == null ) {
 					return BadRequest("Category cannot be null");
 				}
 
@@ -754,35 +774,41 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var getCat = DB.Categories.FirstOrDefault(x => x.ID == id);
-				getCat = category; // TODO Check if this works. Otherwise change it.
-				if ( DB.SaveChanges() == 0 ) {
-					return NotFound();
+				var cat = DB.Categories.FirstOrDefault(x => x.ID == id);
+				cat = new Category { ID = cat.ID, Name = vm.Name, Active = vm.Active };
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok($"Category {cat.Name} updated.");
 				}
-				return Ok();
 			} catch {
 				return InternalServerError();
 			}
 		}
 
 		// DELETE: api/Cats/5
-		public IHttpActionResult Delete(int id) {
+		[Route("api/Cats/{id}")]
+		public async Task<IHttpActionResult> Delete(int id) {
 			try {
 				if ( id <= 0 ) {
 					return BadRequest("ID must be valid");
 				}
 
-				var cats = DB.Categories.FirstOrDefault(x => x.ID == id);
+				var cat = DB.Categories.FirstOrDefault(x => x.ID == id);
 
-				if ( cats == null ) {
+				if ( cat == null ) {
 					return NotFound();
 				}
 
-				DB.Categories.Remove(cats);
-				if ( DB.SaveChanges() == 0 ) {
-					return NotFound();
+				DB.Categories.Remove(cat);
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok($"Category {cat.Name} deleted.");
 				}
-				return Ok();
 			} catch {
 				return InternalServerError();
 			}
