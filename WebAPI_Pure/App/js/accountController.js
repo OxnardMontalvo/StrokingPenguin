@@ -28,9 +28,9 @@
                 sessionStorage.setItem(tokenKey, response.access_token);
 
                 if (response.roles == "Admin") {
-                    $location.path("/Admin")
+                    $location.path("/Admin");
                 } else {
-                    $location.path("/Login")
+                    $location.path("/Login");
                 }
             }, function (error) {
                 vm.errorMsg = error.statusText;
@@ -42,7 +42,7 @@
         };
 
     })
-    .controller("changePswCtrl", function (changePass) {
+    .controller("changePswCtrl", function ($scope, changePass) {
         var vm = this;
 
         vm.formData = {};
@@ -51,6 +51,7 @@
             changePass.update(vm.formData, function (response) {
                 if (response.Succeeded) {
                     vm.formData = {};
+                    $scope.changeForm.$setPristine();
                     vm.msg = "Lösenordet ändrat."
                 };
             }, function (error) {
@@ -68,7 +69,7 @@
 
         vm.send = function () {
             fp.get(vm.formData, function (response) {
-                vm.msg = "Länken är nu skickad till angivna mailen.";
+                vm.msg = "Länken är nu skickad till den angivna eposten.";
                 vm.validMsg = true;
                 vm.formData = {};
                 $scope.forgotForm.$setPristine();
@@ -104,7 +105,7 @@
         cm.get({ userId: $routeParams.userId, code: $routeParams.code }, function (response) {
             console.log(response[0]);
             if (response[0] == "C") {
-                vm.cmMsg = "Tack, Du har nu bekräftat din email.";
+                vm.cmMsg = "Tack, Du har nu bekräftat din epost.";
             } else {
                 vm.cmMsg = "Något gick fel, försök igen.";
             };
