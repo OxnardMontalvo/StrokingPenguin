@@ -432,8 +432,8 @@ namespace WebAPI_Pure.Controllers {
 	#endregion
 
 
-	[Authorize] // For testing
-				//[Authorize(Roles = "User")]
+	//[Authorize] // For testing
+	[Authorize(Roles = "User")]
 	public class UserFlyersController : BaseApiController {
 		[Route("api/UserFlyers")]
 		public async Task<IHttpActionResult> Get() {
