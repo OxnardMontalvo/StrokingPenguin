@@ -63,16 +63,12 @@ namespace WebAPI_Pure.Models {
 	// VMs
 	public class CategoryViewModel {
 		[Required]
-		public int ID { get; set; }
-		[Required]
 		public string Name { get; set; }
 		[Required]
 		public bool Active { get; set; }
 	}
 
 	public class FlyerViewModel {
-		[Required]
-		public int ID { get; set; }
 		[Required]
 		public string Name { get; set; }
 		[Required]
