@@ -267,3 +267,4 @@ __pycache__/
 *.pyc
 /WebAPI_Pure/Scripts/i18n
 /WebAPI_Pure/Properties/PublishProfiles/CustomProfile.pubxml
+/WebAPI_Pure/Properties/PublishProfiles

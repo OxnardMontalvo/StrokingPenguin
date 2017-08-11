@@ -107,6 +107,16 @@ namespace WebAPI_Pure.Models {
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
 		public string DeliveryOrderNumber { get; set; }
+		[Required]
+		[StringLength(512, MinimumLength = 6)]
+		[DataType(DataType.Password)]
+		[Display(Name = "Password")]
+		public string Password { get; set; }
+
+		[DataType(DataType.Password)]
+		[Display(Name = "Confirm new password")]
+		[Compare("NewPassword")]
+		public string ConfirmPassword { get; set; }
 	}
 
 	public class ChangePasswordBindingModel {
@@ -123,7 +133,7 @@ namespace WebAPI_Pure.Models {
 
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm new password")]
-		[Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+		[Compare("NewPassword")]
 		public string ConfirmPassword { get; set; }
 	}
 

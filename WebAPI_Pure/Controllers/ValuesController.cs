@@ -250,15 +250,6 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
-				var flyer = await DB.Flyers.FirstOrDefaultAsync();
-				var cat = await DB.Categories.FirstOrDefaultAsync();
-
-				if ( flyer == null ) {
-					if ( cat == null )
-						cat = DB.Categories.Add(new Category { Name = SecretsManager.DefaultCat, Active = true });
-					flyer = DB.Flyers.Add(new Flyer { Name = SecretsManager.DefaultFlyer, Active = true, Category = cat });
-				}
-
 				var user = new AppUser {
 					Name = vm.Name,
 					Address = vm.Address,
@@ -266,10 +257,10 @@ namespace WebAPI_Pure.Controllers {
 					Email = vm.Email,
 					PostalCode = new string(vm.PostalCode.Trim().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = vm.County,
-					Flyers = new HashSet<Flyer>() { flyer }
+					Flyers = new HashSet<Flyer>()
 				};
 
-				var result = await UserManager.CreateAsync(user, GeneratePassword());
+				var result = await UserManager.CreateAsync(user, vm.Password);
 				if ( result.Succeeded ) {
 					await UserManager.AddToRoleAsync(user.Id, "User");
 
@@ -441,8 +432,8 @@ namespace WebAPI_Pure.Controllers {
 	#endregion
 
 
-	[Authorize] // For testing
-				//[Authorize(Roles = "User")]
+	//[Authorize] // For testing
+	[Authorize(Roles = "User")]
 	public class UserFlyersController : BaseApiController {
 		[Route("api/UserFlyers")]
 		public async Task<IHttpActionResult> Get() {
