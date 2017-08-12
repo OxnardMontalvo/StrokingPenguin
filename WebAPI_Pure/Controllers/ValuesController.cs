@@ -437,6 +437,23 @@ namespace WebAPI_Pure.Controllers {
 			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["defaultCat"]; }
 		}
 
+
+		public static string SMTPServer {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["smtpServer"]; }
+		}
+		public static string SMTPServerPort {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["smtpServerPort"]; }
+		}
+		public static string SendUserName {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["sendUserName"]; }
+		}
+		public static string SendPassword {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["endPassword"]; }
+		}
+		public static string SendMail {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["sendMail"]; }
+		}
+
 	}
 	#endregion
 

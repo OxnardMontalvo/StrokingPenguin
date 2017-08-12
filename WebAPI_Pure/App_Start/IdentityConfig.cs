@@ -51,6 +51,22 @@ namespace WebAPI_Pure {
 				//Write out the link to a text file for testing
 				System.IO.File.WriteAllText(mailpath + "LatestLink.txt", message.Body);
 
+
+				/*
+					string emailid = "";
+					string password = "";
+					string host = "";
+
+					SmtpClient smtpclient = new System.Net.Mail.SmtpClient();
+					smtpclient.Host = host;
+					smtpclient.EnableSsl = true;
+					smtpclient.Port = 25;
+
+					smtpclient.UseDefaultCredentials = false;
+					smtpclient.Credentials = new System.Net.NetworkCredential(emailid, password);
+					smtpclient.Send(o);
+				*/
+
 				return client.SendMailAsync(o);
 
 			} catch {
