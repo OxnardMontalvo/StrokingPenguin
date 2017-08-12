@@ -5,19 +5,23 @@
 
     angular.module("app")
     // Register and Login controller, for both users and admin.
-        .controller("registerAndLoginCtrl", function (userAccount, changePass, $location, currentUser) {
+        .controller("registerAndLoginCtrl", function (user, userAccount, changePass, $scope, $location, currentUser) {
         var vm = this;
 
         vm.show = false;
         vm.phaseOneHide = false;
 
-        //Logging in code.
-        vm.userData = {
-            userName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
+        vm.formData = {};
+        vm.regForm = function () {
+            user.save(vm.formData, function (response) {
+                console.log(response);
+                vm.formData = {};
+                $scope.regForm.$setPristine();
+            });
         };
+
+        //Logging in code.
+        vm.userData = {};
 
         vm.login = function () {
             vm.userData.grant_type = "password";
@@ -29,9 +33,11 @@
 
                 if (response.roles == "Admin") {
                     $location.path("/Admin");
+                } else if (response.roles = "User") {
+                    $location.path("/User");
                 } else {
                     $location.path("/Login");
-                }
+                };
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });

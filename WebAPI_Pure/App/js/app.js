@@ -10,7 +10,7 @@
         $routeProvider
         .when("/", {
             templateUrl: "App/html/startPage.html",
-            controller: "startCtrl",
+            controller: "registerAndLoginCtrl",
             controllerAs: "vm"
         })
         .when("/Login", {
@@ -71,7 +71,7 @@
                     }
                 }
             }
-            })
+        })
         .when("/ConfirmEmail/:userId/:code", {
             templateUrl: "App/html/confirmMail.html",
             controller: "confirmMailCtrl",
@@ -80,7 +80,16 @@
         .when("/User", {
             templateUrl: "App/html/userPage.html",
             controller: "userCtrl",
-            controllerAs: "vm"
+            controllerAs: "vm",
+            resolve: {
+                checkRoleValidation: function (checkRole, $location) {
+                    if (checkRole.getAURole().$$state.value == false) {
+                        $location.path("/Login");
+                    } else {
+                        return true;
+                    }
+                }
+            }
         })
         .otherwise({
             redirectTo: "/"

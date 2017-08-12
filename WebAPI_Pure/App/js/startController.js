@@ -33,13 +33,6 @@
                 vm.disableDuringLoading = false;
             });
         };
-
-        vm.regForm = function () {
-            user.save(vm.formData, function (response) {
-                console.log(response);
-            });
-        };
-
     });
 
 })();

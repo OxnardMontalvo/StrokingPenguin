@@ -115,7 +115,7 @@ namespace WebAPI_Pure.Models {
 
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm new password")]
-		[Compare("NewPassword")]
+		[Compare("Password")]
 		public string ConfirmPassword { get; set; }
 	}
 
