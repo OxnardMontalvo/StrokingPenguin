@@ -86,6 +86,7 @@
                     if (checkRole.getAURole().$$state.value == false) {
                         $location.path("/Login");
                     } else {
+                        console.log(true);
                         return true;
                     }
                 }

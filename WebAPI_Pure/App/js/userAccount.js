@@ -115,6 +115,17 @@
             };
         }])
 
+        .factory("userInfo", ["$resource", "appSettings", function ($resource, appSettings) {
+            return $resource(appSettings.serverPath + "api/UserFlyers/:id", {}, {
+                'get': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: { "Authorization": tokenHeader }
+                },
+
+            });
+        }])
+
         .factory("fp", ["$resource", "appSettings", function ($resource, appSettings) {
             return $resource(appSettings.serverPath + "ForgotPassword", {}, {
                 'get': {

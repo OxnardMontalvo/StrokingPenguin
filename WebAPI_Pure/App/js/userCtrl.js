@@ -3,16 +3,25 @@
 
     angular.module("app")
         // The start controller for displaying the info and getting the user information.
-        .controller("userCtrl", function (user, adminCreate) {
+        .controller("userCtrl", function (user, userInfo) {
             var vm = this;
 
             vm.maxRow = 4;
 
             vm.cats = [];
-            adminCreate.cats.get(function (data) {
+            userInfo.get(function (data) {
                 console.log(data);
                 angular.copy(data, vm.cats);
             });
+
+            vm.checkChange = function () {
+                
+            };
+
+            //adminCreate.cats.get(function (data) {
+            //    console.log(data);
+            //    angular.copy(data, vm.cats);
+            //});
 
         }).directive("userDir", function () {
             return {
