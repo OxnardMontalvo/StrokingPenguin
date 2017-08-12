@@ -458,8 +458,8 @@ namespace WebAPI_Pure.Controllers {
 	#endregion
 
 
-	[Authorize] // For testing
-				//[Authorize(Roles = "User")]
+	//[Authorize] // For testing
+	[Authorize(Roles = "User")]
 	public class UserFlyersController : BaseApiController {
 		[Route("api/UserFlyers")]
 		public async Task<IHttpActionResult> Get() {
@@ -798,9 +798,11 @@ namespace WebAPI_Pure.Controllers {
 				cat.Name = vm.Name;
 				cat.Active = vm.Active;
 
-				var result = await DB.SaveChangesAsync();
+				var t = new System.Threading.CancellationToken();
+
+				var result = await DB.SaveChangesAsync(t);
 				if ( result == 0 ) {
-					return Conflict();
+					return Ok("No changes made.");
 				} else {
 					return Ok($"Category {cat.Name} updated.");
 				}
