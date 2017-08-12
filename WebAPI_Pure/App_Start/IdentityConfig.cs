@@ -3,8 +3,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using WebAPI_Pure.Models;
 using System.Net.Mail;
+using WebAPI_Pure.Models;
+using WebAPI_Pure.Controllers;
 
 namespace WebAPI_Pure {
 	// Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
@@ -30,7 +31,7 @@ namespace WebAPI_Pure {
 			manager.EmailService = new EmailService();
 			var dataProtectionProvider = options.DataProtectionProvider;
 			if ( dataProtectionProvider != null ) {
-				manager.UserTokenProvider = new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+				manager.UserTokenProvider = new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("Happiness so hard to find. We'll never win this game. And tomorrow will be the same"));
 			}
 			return manager;
 		}
@@ -40,19 +41,30 @@ namespace WebAPI_Pure {
 		public Task SendAsync(IdentityMessage message) {
 			// TODO: Plug in your real email service here to send an email.
 			try {
-				var mailpath = @"c:\mail\";
-				MailMessage o = new MailMessage("noreply@localhost.com", message.Destination, message.Subject, message.Body);
-				o.IsBodyHtml = true;
-				//SmtpClient client = new SmtpClient("aspmx.l.google.com", 25);
+				MailMessage mMessage = new MailMessage(SecretsManager.SendMail, message.Destination, message.Subject, message.Body);
+				mMessage.IsBodyHtml = true;
 				SmtpClient client = new SmtpClient();
+
+				#region REMOVE
+				var mailpath = @"c:\mail\";
 				client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
 				client.PickupDirectoryLocation = mailpath;
 
 				//Write out the link to a text file for testing
 				System.IO.File.WriteAllText(mailpath + "LatestLink.txt", message.Body);
+				#endregion
 
-				return client.SendMailAsync(o);
 
+				/*
+					client.Host = SecretsManager.SMTPServer;
+					client.EnableSsl = true;
+					client.Port = 25;
+
+					client.UseDefaultCredentials = false;
+					client.Credentials = new System.Net.NetworkCredential(SecretsManager.SendUserName, SecretsManager.SendPassword);
+				*/
+
+				return client.SendMailAsync(mMessage);
 			} catch {
 			}
 			return null;
