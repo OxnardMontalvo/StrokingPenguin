@@ -83,7 +83,7 @@ namespace WebAPI_Pure.Controllers {
 				var SearchQuery = query.Trim().ToLower();
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
 				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) ||
-				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new UserViewModel {
+				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
@@ -91,7 +91,14 @@ namespace WebAPI_Pure.Controllers {
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber
+					DeliveryOrderNumber = x.DeliveryOrderNumber,
+					Flyers = ( x.Flyers.Where(z =>
+						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Active == true).Select(y => new {
+							ID = y.ID,
+							Name = y.Name
+						}).OrderBy(y => y.Name) )
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -105,7 +112,7 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/Users")]
 		public IHttpActionResult Get() {
 			try {
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new UserViewModel {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
@@ -113,8 +120,16 @@ namespace WebAPI_Pure.Controllers {
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber
+					DeliveryOrderNumber = x.DeliveryOrderNumber,
+					Flyers = ( x.Flyers.Where(z =>
+						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Active == true).Select(y => new {
+							ID = y.ID,
+							Name = y.Name
+						}).OrderBy(y => y.Name) )
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
+
 				return Ok(users);
 
 			} catch {
@@ -130,7 +145,7 @@ namespace WebAPI_Pure.Controllers {
 				return BadRequest("Invalid");
 			}
 			try {
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new UserViewModel {
+				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
@@ -138,7 +153,14 @@ namespace WebAPI_Pure.Controllers {
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber
+					DeliveryOrderNumber = x.DeliveryOrderNumber,
+					Flyers = ( x.Flyers.Where(z =>
+						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Active == true).Select(y => new {
+							ID = y.ID,
+							Name = y.Name
+						}).OrderBy(y => y.Name) )
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).Skip(take * ( page - 1 )).Take(take).ToList();
 				return Ok(users);
 
@@ -152,22 +174,29 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/Users/{id}")]
 		public IHttpActionResult Get(string id) {
 			try {
-				UserViewModel vm;
-				if ( id.Length > 0 ) {
-					vm = DB.Users.Include(x => x.Flyers).Where(x => x.Id == id).Select(x => new UserViewModel {
-						Id = x.Id,
-						Name = x.Name,
-						Address = x.Address,
-						PostalCode = x.PostalCode,
-						County = x.County,
-						Email = x.Email,
-						DistrictNumber = x.DistrictNumber,
-						DeliveryOrderNumber = x.DeliveryOrderNumber
-					}).FirstOrDefault();
-				} else {
-					vm = new UserViewModel();
+				if ( string.IsNullOrWhiteSpace(id) ) {
+					return BadRequest("ID not found");
 				}
-				return Ok(vm);
+
+				var user = DB.Users.Include(x => x.Flyers).Where(x => x.Id == id && UserManager.IsInRole(x.Id, "User")).Select(x => new {
+					Id = x.Id,
+					Name = x.Name,
+					Address = x.Address,
+					PostalCode = x.PostalCode,
+					County = x.County,
+					Email = x.Email,
+					DistrictNumber = x.DistrictNumber,
+					DeliveryOrderNumber = x.DeliveryOrderNumber,
+					Flyers = ( x.Flyers.Where(z =>
+						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+						z.Active == true).Select(y => new {
+							ID = y.ID,
+							Name = y.Name
+						}).OrderBy(y => y.Name) )
+				}).FirstOrDefault();
+
+				return Ok(user);
 			} catch {
 				return InternalServerError();
 			}
@@ -181,7 +210,7 @@ namespace WebAPI_Pure.Controllers {
 			try {
 				if ( min > max ) min = min ^ max ^ ( max = min );
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
-					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new UserViewModel {
+					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new {
 						Id = x.Id,
 						Name = x.Name,
 						Address = x.Address,
@@ -189,7 +218,14 @@ namespace WebAPI_Pure.Controllers {
 						County = x.County,
 						Email = x.Email,
 						DistrictNumber = x.DistrictNumber,
-						DeliveryOrderNumber = x.DeliveryOrderNumber
+						DeliveryOrderNumber = x.DeliveryOrderNumber,
+						Flyers = ( x.Flyers.Where(z =>
+							z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+							z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+							z.Active == true).Select(y => new {
+								ID = y.ID,
+								Name = y.Name
+							}).OrderBy(y => y.Name) )
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -219,7 +255,7 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
-					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new UserViewModel {
+					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new {
 						Id = x.Id,
 						Name = x.Name,
 						Address = x.Address,
@@ -227,7 +263,14 @@ namespace WebAPI_Pure.Controllers {
 						County = x.County,
 						Email = x.Email,
 						DistrictNumber = x.DistrictNumber,
-						DeliveryOrderNumber = x.DeliveryOrderNumber
+						DeliveryOrderNumber = x.DeliveryOrderNumber,
+						Flyers = ( x.Flyers.Where(z =>
+							z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+							z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+							z.Active == true).Select(y => new {
+								ID = y.ID,
+								Name = y.Name
+							}).OrderBy(y => y.Name) )
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
