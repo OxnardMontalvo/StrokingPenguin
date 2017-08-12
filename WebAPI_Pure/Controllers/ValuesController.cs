@@ -76,7 +76,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/Query/Greta
 		[HttpGet]
-		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Query/{query}")]
 		public IHttpActionResult GetUsersByQuery(string query = "") {
 			try {
@@ -107,8 +106,6 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 		// GET: api/Users
-		[ResponseType(typeof(UserViewModel))]
-		//[EnableQuery]
 		[Route("api/Users")]
 		public IHttpActionResult Get() {
 			try {
@@ -138,7 +135,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Users/5/2
-		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/{take}/{page}")]
 		public IHttpActionResult Get(int take, int page = 0) {
 			if ( take < 1 || page < 1 ) {
@@ -170,7 +166,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// GET: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
-		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/{id}")]
 		public IHttpActionResult Get(string id) {
 			try {
@@ -178,25 +173,34 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest("ID not found");
 				}
 
-				var user = DB.Users.Include(x => x.Flyers).Where(x => x.Id == id && UserManager.IsInRole(x.Id, "User")).Select(x => new {
-					Id = x.Id,
-					Name = x.Name,
-					Address = x.Address,
-					PostalCode = x.PostalCode,
-					County = x.County,
-					Email = x.Email,
-					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z =>
-						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
+				var user = DB.Users.Include(x => x.Flyers).FirstOrDefault(x => x.Id == id);
+
+				if ( !UserManager.IsInRole(user.Id, "User") ) {
+					return BadRequest("User is not in user role.");
+				}
+
+				int value = int.Parse(new string(user.PostalCode.Where(Char.IsDigit).ToArray()));
+
+
+				var o = new {
+					Id = user.Id,
+					Name = user.Name,
+					Address = user.Address,
+					PostalCode = user.PostalCode,
+					County = user.County,
+					Email = user.Email,
+					DistrictNumber = user.DistrictNumber,
+					DeliveryOrderNumber = user.DeliveryOrderNumber,
+					Flyers = ( user.Flyers.Where(z =>
+						z.Range.Min <= value &&
+						z.Range.Max >= value &&
 						z.Active == true).Select(y => new {
 							ID = y.ID,
 							Name = y.Name
 						}).OrderBy(y => y.Name) )
-				}).FirstOrDefault();
+				};
 
-				return Ok(user);
+				return Ok(o);
 			} catch {
 				return InternalServerError();
 			}
@@ -204,7 +208,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/District/1001/2002
 		[HttpGet]
-		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/District/{min?}/{max?}")]
 		public IHttpActionResult GetRange(int min = int.MinValue, int max = int.MaxValue) {
 			try {
@@ -236,7 +239,6 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/Districts/8008-8019
 		[HttpGet]
-		[ResponseType(typeof(UserViewModel))]
 		[Route("api/Users/Districts/{query?}")]
 		public IHttpActionResult GetRanges(string query = null) {
 			try {
@@ -280,7 +282,6 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		// POST: api/Users
-		[ResponseType(typeof(UserViewModel))]
 		[AllowAnonymous]
 		[Route("api/Users")]
 		public async Task<IHttpActionResult> Post([FromBody]UserViewModel vm) {
