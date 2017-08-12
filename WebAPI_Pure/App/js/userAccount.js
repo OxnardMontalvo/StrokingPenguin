@@ -83,6 +83,11 @@
                         method: 'PUT',
                         isArray: false,
                         headers: { "Authorization": tokenHeader }
+                    },
+                    'delete': {
+                        method: 'DELETE',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
                     }
                 }),
                 flyers: $resource(appSettings.serverPath + "api/Flyers/:id", {}, {
@@ -98,6 +103,11 @@
                     },
                     'update': {
                         method: 'PUT',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    },
+                    'delete': {
+                        method: 'DELETE',
                         isArray: false,
                         headers: { "Authorization": tokenHeader }
                     }

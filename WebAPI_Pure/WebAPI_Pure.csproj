@@ -262,6 +262,7 @@
     <Content Include="App\html\forgotPasswordPage.html" />
     <Content Include="App\html\restorePasswordPage.html" />
     <Content Include="App\html\startPage.html" />
+    <Content Include="App\html\userPage.html" />
     <Content Include="App\img\Ica-Logo-TU.svg" />
     <Content Include="App\js\adminController.js" />
     <Content Include="App\js\app.js" />
@@ -270,6 +271,7 @@
     <Content Include="App\js\startController.js" />
     <Content Include="App\js\userAccount.js" />
     <Non Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="App\js\userCtrl.js" />
     <Content Include="App\js\_minify\accountController.js" />
     <Content Include="App\js\_minify\adminController.js" />
     <Content Include="App\js\_minify\app.js" />

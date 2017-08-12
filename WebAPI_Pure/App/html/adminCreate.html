@@ -51,7 +51,7 @@
                 </form>
             </div>
             <div class="panel-footer clearfix">
-                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormFlyer(vm.formDataFlyer.Name, vm.formDataFlyer.RangeMax, vm.formDataFlyer.RangeMin)">Spara</a></span>
+                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormFlyer()">Spara</a></span>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
             <a ng-click="vm.catClick()" class="ma-btn-lg ma-btn-l ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista kategorier</a>
         </div>
         <div class="col-sm-12 col-md-4" style="padding: 0;">
-            <a onclick="window.print()" class="ma-btn-lg ma-btn-r ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista reklamblad</a>
+            <a ng-click="vm.flyerClick()" class="ma-btn-lg ma-btn-r ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista reklamblad</a>
         </div>
     </div>
 
@@ -82,21 +82,21 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="cats in vm.cats">
+                <tr ng-repeat="cat in vm.cats">
                     <td>
-                        <span ng-hide="vm.selCat.ID == cats.ID">{{cats.Name}}</span>
-                        <input ng-show="vm.selCat.ID == cats.ID" ng-model="cats.Name" class="form-control input-sm" value="{{cats.Name}}" />
+                        <span ng-hide="vm.selCat.ID == cat.ID">{{cat.Name}}</span>
+                        <input ng-show="vm.selCat.ID == cat.ID" ng-model="cat.Name" class="form-control input-sm" value="{{cat.Name}}" />
                     </td>
                     <td>
-                        <span ng-hide="vm.selCat.ID == cats.ID" ng-if="cats.Active" class="glyphicon glyphicon-ok"> {{cats.Active}}</span>
-                        <span ng-hide="vm.selCat.ID == cats.ID" ng-if="!cats.Active" class="glyphicon glyphicon-remove"> {{cats.Active}}</span>
-                        <input ng-show="vm.selCat.ID == cats.ID" ng-model="cats.Active" class="checkbox checkbox-inline" type="checkbox" ng-checked="cats.Active" />
+                        <span ng-hide="vm.selCat.ID == cat.ID" ng-if="cat.Active" class="glyphicon glyphicon-ok"> {{cat.Active}}</span>
+                        <span ng-hide="vm.selCat.ID == cat.ID" ng-if="!cat.Active" class="glyphicon glyphicon-remove"> {{cat.Active}}</span>
+                        <input ng-show="vm.selCat.ID == cat.ID" ng-model="cat.Active" class="checkbox checkbox-inline" type="checkbox" ng-checked="cat.Active" />
                     </td>
                     <td>
-                        <span ng-hide="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-info" ng-click="vm.editCats(cats.ID)">Ändra</a></span>
-                        <span ng-hide="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-danger">Ta bort</a></span>
-                        <span ng-show="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveCatEdits(cats.ID)">Spara</a></span>
-                        <span ng-show="vm.selCat.ID == cats.ID"><a class="btn btn-sm btn-danger">Avbryt</a></span>
+                        <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.editCats(cat.ID)">Ändra</a></span>
+                        <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteCat(cat.ID)">Ta bort</a></span>
+                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveCatEdits(cat.ID)">Spara</a></span>
+                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleCat()">Avbryt</a></span>
                     </td>
                 </tr>
             </tbody>
@@ -115,13 +115,34 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="flyers in vm.flyers">
-                    <td>Namn</td>
-                    <td>Aktiverad</td>
-                    <td>Post nummer från</td>
-                    <td>Post nummer till</td>
-                    <td>Kategori</td>
-                    <td>Kontroller</td>
+                <tr ng-repeat="flyer in vm.flyers">
+                    <td>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Name}}</span>
+                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Name" class="form-control input-sm" value="{{flyer.Name}}" />
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID" ng-if="flyer.Active" class="glyphicon glyphicon-ok"> {{flyer.Active}}</span>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID" ng-if="!flyer.Active" class="glyphicon glyphicon-remove"> {{flyer.Active}}</span>
+                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Active" class="checkbox checkbox-inline" type="checkbox" ng-checked="flyer.Active" />
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Range.Min}}</span>
+                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Range.Min" class="form-control input-sm" value="{{flyer.Range.Min}}" />
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Range.Max}}</span>
+                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Range.Max" class="form-control input-sm" value="{{flyer.Range.Max}}" />
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Category.Name}}</span>
+                        <select ng-show="vm.selFlyer.ID == flyer.ID" class="form-control dropdown" ng-model="vm.selectedCat" ng-options="c.Name for c in vm.cats track by c.ID"></select>
+                    </td>
+                    <td>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-info" ng-click="vm.editFlyer(flyer.ID)">Ändra</a></span>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteFlyer(flyer.ID)">Ta bort</a></span>
+                        <span ng-show="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveFlyerEdits(flyer.ID)">Spara</a></span>
+                        <span ng-show="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleFlyer(flyer.ID)">Avbryt</a></span>
+                    </td>
                 </tr>
             </tbody>
         </table>

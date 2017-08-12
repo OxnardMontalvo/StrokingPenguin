@@ -226,7 +226,6 @@
         // Save flyer form function.
         vm.saveFormFlyer = function () {
             vm.formDataFlyer.CategoryID = vm.selectedCat.ID;
-
             //console.log(vm.formDataFlyer);
             //console.log(vm.selectedCat);
 
@@ -242,10 +241,13 @@
             });
         };
 
-        //vm.flyers = [];
-        //adminCreate.flyers.get(function (data) {
-        //    console.log(data);
-        //});
+        vm.flyers = [];
+        adminCreate.flyers.get(function (data) {
+            console.log(data);
+            console.log(data[0].Range.Max);
+            angular.copy(data, vm.flyers);
+        });
+        console.log(vm.flyers);
 
         vm.displayCats = false;
         vm.displayFlyers = false;
@@ -253,25 +255,95 @@
 
         vm.catClick = function () {
             vm.displayCats = true;
+            vm.displayFlyers = false;
+        };
+        vm.flyerClick = function () {
+            vm.displayCats = false;
+            vm.displayFlyers = true;
         };
 
+        var copy;
         vm.editCats = function (id) {
             vm.editMode = true;
             for (var i = 0; i < vm.cats.length; i++) {
                 if (vm.cats[i].ID == id) {
                     vm.selCat = vm.cats[i];
+                    copy = JSON.parse(JSON.stringify(vm.selCat));
+                };
+            };
+        };
+        
+        vm.editFlyer = function (id) {
+            vm.editMode = true;
+            for (var i = 0; i < vm.flyers.length; i++) {
+                if (vm.flyers[i].ID == id) {
+                    vm.selFlyer = vm.flyers[i];
+                    copy = JSON.parse(JSON.stringify(vm.selFlyer));
                 };
             };
         };
 
         vm.saveCatEdits = function (id) {
-            console.log(vm.selCat)
             adminCreate.cats.update({ id: id }, vm.selCat, function (data) {
                 vm.editMode = false;
             });
             vm.selCat = "";
         };
+        vm.saveFlyerEdits = function (id) {
+            //vm.formDataFlyer.CategoryID = vm.selectedCat.ID;
+            vm.selFlyer.CategoryID = vm.selectedCat.ID;
+            adminCreate.flyers.update({ id: id }, vm.selFlyer, function (data) {
+                console.log(data);
+                vm.editMode = false;
+            });
+            vm.selFlyer = "";
+        };
+        
+        vm.cancleCat = function () {
+            for (var i = 0; i < vm.cats.length; i++) {
+                if (vm.cats[i].ID == id) {
+                    vm.cats[i] = copy;
+                };
+            };
+            vm.selCat = "";
+        };
+        vm.cancleFlyer = function (id) {
+            for (var i = 0; i < vm.flyers.length; i++) {
+                if (vm.flyers[i].ID == id) {
+                    console.log(vm.flyers[i]);
+                    console.log(copy);
+                    vm.flyers[i] = copy;
+                };
+            };
+            vm.selFlyer = "";
+        };
 
+        vm.deleteCat = function (id) {
+            if (confirm('Vill du verkligen ta bort kategorin från Databasen?')) {
+                adminCreate.cats.delete({ id: id }, function (data) {
+                    var index;
+                    for (var i = 0; i < vm.cats.length; i++) {
+                        if (vm.cats[i].Id == id) {
+                            index = i;
+                        };
+                    };
+                    vm.cats.splice(index, 1);
+                });
+            };
+        };
+        vm.deleteFlyer = function (id) {
+            if (confirm('Vill du verkligen ta bort reklambladet från Databasen?')) {
+                adminCreate.flyers.delete({ id: id }, function (data) {
+                    var index;
+                    for (var i = 0; i < vm.flyers.length; i++) {
+                        if (vm.flyers[i].Id == id) {
+                            index = i;
+                        };
+                    };
+                    vm.flyers.splice(index, 1);
+                });
+            };
+        };
     });
 
 })();

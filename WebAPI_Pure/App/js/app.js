@@ -78,9 +78,9 @@
             controllerAs: "vm"
         })
         .when("/User", {
-            templateUrl: "",
-            controller: "",
-            controllerAs: ""
+            templateUrl: "App/html/userPage.html",
+            controller: "userCtrl",
+            controllerAs: "vm"
         })
         .otherwise({
             redirectTo: "/"
