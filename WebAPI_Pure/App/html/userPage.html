@@ -1,15 +1,12 @@
-﻿<div class="row ma-main">
-
-    <div class="col-md-3">
+﻿<div class="row ma-main" >
+    <div class="col-md-4" ng-repeat="cats in vm.cats" ng-if="cats.Flyers.length > 0">
         <div class="panel panel-primary">
             <div class="panel-heading clearfix">
-                <h2>Kategori namn <span style="font-size: 9pt;" class="pull-right"> Välj alla <input style="margin-left: .5em;" type="checkbox" /></span></h2>
+                <h2>Kategori {{cats.Name}} <span style="font-size: 9pt;" class="pull-right"> Välj alla <input style="margin-left: .5em;" type="checkbox" /></span></h2>
             </div>
             <div class="panel-body">
+                <p style="margin-right: .5em;" ng-repeat="flyer in cats.Flyers track by $index">{{flyer.Name}} <span class="pull-right"><input type="checkbox" /></span></p>
             </div>
         </div>
     </div>
 </div>
-
-
-<user-dir test="3"></user-dir>
