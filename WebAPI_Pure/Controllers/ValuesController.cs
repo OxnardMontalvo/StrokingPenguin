@@ -9,9 +9,7 @@ using System.Web;
 using System.Web.Http;
 using WebAPI_Pure.Models;
 using Microsoft.AspNet.Identity.Owin;
-using System.Web.Http.Description;
 using System.Web.Http.OData;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -47,7 +45,7 @@ namespace WebAPI_Pure.Controllers {
 
 				if ( !DB.Database.Exists() || await DB.Roles.CountAsync() == 0 ) {
 					var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
-					DB.Roles.Add(new IdentityRole { Name = "User" });
+					var userRole = DB.Roles.Add(new IdentityRole { Name = "User" });
 
 					var adminEmail = SecretsManager.AdminEmail;
 					var adminPass = GeneratePassword();
@@ -82,22 +80,19 @@ namespace WebAPI_Pure.Controllers {
 				var SearchQuery = query.Trim().ToLower();
 				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
 				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) ||
-				x.PostalCode.ToLower().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new {
+				x.PostalCode.ToString().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
-					PostalCode = x.PostalCode,
+					PostalCode = new string(x.PostalCode.ToString().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
 					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z =>
-						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Active == true).Select(y => new {
-							ID = y.ID,
-							Name = y.Name
-						}).OrderBy(y => y.Name) )
+					Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
+						ID = y.ID,
+						Name = y.Name
+					}).OrderBy(y => y.Name) )
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -113,24 +108,21 @@ namespace WebAPI_Pure.Controllers {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
-					PostalCode = x.PostalCode,
+					PostalCode = new string(x.PostalCode.ToString().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
 					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z =>
-						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Active == true).Select(y => new {
-							ID = y.ID,
-							Name = y.Name
-						}).OrderBy(y => y.Name) )
+					Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
+						ID = y.ID,
+						Name = y.Name
+					}).OrderBy(y => y.Name) )
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 
 				return Ok(users);
 
-			} catch {
-				return InternalServerError();
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
 			}
 		}
 
@@ -145,18 +137,15 @@ namespace WebAPI_Pure.Controllers {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
-					PostalCode = x.PostalCode,
+					PostalCode = new string(x.PostalCode.ToString().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
 					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z =>
-						z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-						z.Active == true).Select(y => new {
-							ID = y.ID,
-							Name = y.Name
-						}).OrderBy(y => y.Name) )
+					Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
+						ID = y.ID,
+						Name = y.Name
+					}).OrderBy(y => y.Name) )
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).Skip(take * ( page - 1 )).Take(take).ToList();
 				return Ok(users);
 
@@ -179,21 +168,18 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest("User is not in user role.");
 				}
 
-				int value = int.Parse(new string(user.PostalCode.Where(Char.IsDigit).ToArray()));
-
-
 				var o = new {
 					Id = user.Id,
 					Name = user.Name,
 					Address = user.Address,
-					PostalCode = user.PostalCode,
+					PostalCode = new string(user.PostalCode.ToString().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 					County = user.County,
 					Email = user.Email,
 					DistrictNumber = user.DistrictNumber,
 					DeliveryOrderNumber = user.DeliveryOrderNumber,
 					Flyers = ( user.Flyers.Where(z =>
-						z.Range.Min <= value &&
-						z.Range.Max >= value &&
+						z.Range.Min <= user.PostalCode &&
+						z.Range.Max >= user.PostalCode &&
 						z.Active == true).Select(y => new {
 							ID = y.ID,
 							Name = y.Name
@@ -217,18 +203,15 @@ namespace WebAPI_Pure.Controllers {
 						Id = x.Id,
 						Name = x.Name,
 						Address = x.Address,
-						PostalCode = x.PostalCode,
+						PostalCode = new string(x.PostalCode.ToString().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 						County = x.County,
 						Email = x.Email,
 						DistrictNumber = x.DistrictNumber,
 						DeliveryOrderNumber = x.DeliveryOrderNumber,
-						Flyers = ( x.Flyers.Where(z =>
-							z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-							z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-							z.Active == true).Select(y => new {
-								ID = y.ID,
-								Name = y.Name
-							}).OrderBy(y => y.Name) )
+						Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
+							ID = y.ID,
+							Name = y.Name
+						}).OrderBy(y => y.Name) )
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -261,18 +244,15 @@ namespace WebAPI_Pure.Controllers {
 						Id = x.Id,
 						Name = x.Name,
 						Address = x.Address,
-						PostalCode = x.PostalCode,
+						PostalCode = new string(x.PostalCode.ToString().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
 						County = x.County,
 						Email = x.Email,
 						DistrictNumber = x.DistrictNumber,
 						DeliveryOrderNumber = x.DeliveryOrderNumber,
-						Flyers = ( x.Flyers.Where(z =>
-							z.Range.Min <= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-							z.Range.Max >= int.Parse(new string(x.PostalCode.Where(Char.IsDigit).ToArray())) && // TODO: Optimize
-							z.Active == true).Select(y => new {
-								ID = y.ID,
-								Name = y.Name
-							}).OrderBy(y => y.Name) )
+						Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
+							ID = y.ID,
+							Name = y.Name
+						}).OrderBy(y => y.Name) )
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -294,12 +274,17 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest(ModelState);
 				}
 
+				int postalCode;
+				if ( !int.TryParse(new string(vm.PostalCode.Where(Char.IsDigit).ToArray()), out postalCode) ) {
+					return BadRequest();
+				}
+
 				var user = new AppUser {
 					Name = vm.Name,
 					Address = vm.Address,
 					UserName = vm.Email,
 					Email = vm.Email,
-					PostalCode = new string(vm.PostalCode.Trim().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " "),
+					PostalCode = postalCode,
 					County = vm.County,
 					Flyers = new HashSet<Flyer>()
 				};
@@ -346,12 +331,17 @@ namespace WebAPI_Pure.Controllers {
 					return Json(HttpStatusCode.BadRequest);
 				}
 
+				int postalCode;
+				if ( !int.TryParse(new string(vm.PostalCode.Where(Char.IsDigit).ToArray()), out postalCode) ) {
+					return BadRequest();
+				}
+
 				var user = DB.Users.FirstOrDefault(x => x.Id == id);
 				user.Name = vm.Name;
 				user.Address = vm.Address;
 				user.UserName = vm.Email;
 				user.Email = vm.Email;
-				user.PostalCode = new string(vm.PostalCode.Trim().Where(c => char.IsDigit(c)).ToArray()).Insert(3, " ");
+				user.PostalCode = postalCode;
 				user.County = vm.County;
 				user.DistrictNumber = vm.DistrictNumber;
 				user.DeliveryOrderNumber = vm.DeliveryOrderNumber;
@@ -507,16 +497,13 @@ namespace WebAPI_Pure.Controllers {
 				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
 				var cats = DB.Categories.Include(x => x.Flyers).Where(x => x.Active == true && x.Flyers.Count > 0);
 
-				if ( user == null || cats == null || user.PostalCode == null ) {
+				if ( user == null || cats == null ) {
 					return NotFound();
 				}
 
-				int value;
-				int.TryParse(new String(user.PostalCode.Where(Char.IsDigit).ToArray()), out value);
-
 				var result = cats.Select(c => new {
 					Name = c.Name,
-					Flyers = ( c.Flyers.Where(z => z.Range.Min <= value && z.Range.Max >= value && z.Active == true).Select(x => new {
+					Flyers = ( c.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active == true).Select(x => new {
 						ID = x.ID,
 						Name = x.Name,
 						Selected = user.Flyers.Contains(x)
@@ -833,9 +820,7 @@ namespace WebAPI_Pure.Controllers {
 				cat.Name = vm.Name;
 				cat.Active = vm.Active;
 
-				var t = new System.Threading.CancellationToken();
-
-				var result = await DB.SaveChangesAsync(t);
+				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
 					return Ok("No changes made.");
 				} else {
@@ -866,6 +851,99 @@ namespace WebAPI_Pure.Controllers {
 					return Conflict();
 				} else {
 					return Ok($"Category {cat.Name} deleted.");
+				}
+			} catch {
+				return InternalServerError();
+			}
+		}
+	}
+
+	[Authorize]
+	public class MessagesController : BaseApiController {
+		// GET: api/Messages
+		[Route("api/Messages")]
+		public IHttpActionResult Get() {
+			try {
+				var mess = DB.Messages.ToList();
+
+				return Ok(mess);
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// GET: api/Messages/5
+		[Route("api/Messages/{id}")]
+		public async Task<IHttpActionResult> Get(int id) {
+			try {
+				var mess = await DB.Messages.FirstOrDefaultAsync(x => x.ID == id);
+
+				return Ok(mess);
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+
+		// POST: api/Messages
+		[Route("api/Messages")]
+		public async Task<IHttpActionResult> Post([FromBody]string message) {
+			try {
+				if ( string.IsNullOrWhiteSpace(message) ) {
+					return BadRequest("Message cannot be null");
+				}
+
+				var mess = DB.Messages.Add(new Message { Bulletin = message });
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok($"Message '{mess.Bulletin}' created.");
+				}
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// PUT: api/Messages/5
+		[Route("api/Messages/{id}")]
+		public async Task<IHttpActionResult> Put(int id, [FromBody]string message) {
+			try {
+				if ( string.IsNullOrWhiteSpace(message) ) {
+					return BadRequest("Message cannot be null");
+				}
+
+				var mess = await DB.Messages.FirstOrDefaultAsync(x => x.ID == id);
+				mess.Bulletin = message;
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Ok("No changes made.");
+				} else {
+					return Ok($"Message '{mess.Bulletin}' updated.");
+				}
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// DELETE: api/Messages/5
+		[Route("api/Messages/{id}")]
+		public async Task<IHttpActionResult> Delete(int id) {
+			try {
+				var mess = await DB.Messages.FirstOrDefaultAsync(x => x.ID == id);
+
+				if ( mess == null ) {
+					return NotFound();
+				}
+
+				DB.Messages.Remove(mess);
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok($"Message '{mess.Bulletin}' deleted.");
 				}
 			} catch {
 				return InternalServerError();
