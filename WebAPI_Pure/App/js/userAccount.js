@@ -122,7 +122,11 @@
                     isArray: true,
                     headers: { "Authorization": tokenHeader }
                 },
-
+                'save': {
+                    method: 'POST',
+                    isArray: false,
+                    headers: { "Authorization": tokenHeader }
+                }
             });
         }])
 

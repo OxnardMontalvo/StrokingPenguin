@@ -14,14 +14,29 @@
                 angular.copy(data, vm.cats);
             });
 
-            vm.checkChange = function () {
-                
-            };
+            vm.allFlyers = [];
+            vm.checkChange = function (cat) {
+                vm.allFlyers = [];
+                //console.log(id);
+                //console.log(name);
+                //console.log(sel);
+                console.log(cat);
+                for (var i = 0; i < cat.length; i++) {
+                    console.log(vm.cats[i]);
+                    for (var f = 0; f < vm.cats[i].Flyers.length; f++) {
+                        console.log(vm.cats[i].Flyers[f]);
+                        //console.log("a")
+                        vm.allFlyers.push(vm.cats[i].Flyers[f]);
+                    };
+                };
+                console.log(vm.allFlyers);
 
-            //adminCreate.cats.get(function (data) {
-            //    console.log(data);
-            //    angular.copy(data, vm.cats);
-            //});
+                //console.log(cat.Flyers)
+
+                userInfo.save(vm.allFlyers, function (response) {
+                    console.log(response);
+                });
+            };
 
         }).directive("userDir", function () {
             return {
