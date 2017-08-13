@@ -19,7 +19,7 @@ namespace WebAPI_Pure.Models {
 
 		public string Name { get; set; }
 		public string Address { get; set; }
-		public string PostalCode { get; set; }
+		public int PostalCode { get; set; }
 		public string County { get; set; }
 		public int? DistrictNumber { get; set; }
 		public string DeliveryOrderNumber { get; set; }
@@ -35,6 +35,7 @@ namespace WebAPI_Pure.Models {
 
 		public DbSet<Flyer> Flyers { get; set; }
 		public DbSet<Category> Categories { get; set; }
+		public DbSet<Message> Messages { get; set; }
 	}
 
 	public class Flyer {
@@ -51,6 +52,11 @@ namespace WebAPI_Pure.Models {
 		public string Name { get; set; }
 		public bool Active { get; set; }
 		public HashSet<Flyer> Flyers { get; set; }
+	}
+
+	public class Message {
+		public int ID { get; set; }
+		public string Bulletin { get; set; }
 	}
 
 	// Helpers
