@@ -9,9 +9,7 @@ using System.Web;
 using System.Web.Http;
 using WebAPI_Pure.Models;
 using Microsoft.AspNet.Identity.Owin;
-using System.Web.Http.Description;
 using System.Web.Http.OData;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -831,9 +829,7 @@ namespace WebAPI_Pure.Controllers {
 				cat.Name = vm.Name;
 				cat.Active = vm.Active;
 
-				var t = new System.Threading.CancellationToken();
-
-				var result = await DB.SaveChangesAsync(t);
+				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
 					return Ok("No changes made.");
 				} else {
@@ -864,6 +860,99 @@ namespace WebAPI_Pure.Controllers {
 					return Conflict();
 				} else {
 					return Ok($"Category {cat.Name} deleted.");
+				}
+			} catch {
+				return InternalServerError();
+			}
+		}
+	}
+
+	[Authorize]
+	public class MessagesController : BaseApiController {
+		// GET: api/Messages
+		[Route("api/Messages")]
+		public IHttpActionResult Get() {
+			try {
+				var mess = DB.Messages.ToList();
+
+				return Ok(mess);
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// GET: api/Messages/5
+		[Route("api/Messages/{id}")]
+		public async Task<IHttpActionResult> Get(int id) {
+			try {
+				var mess = await DB.Messages.FirstOrDefaultAsync(x => x.ID == id);
+
+				return Ok(mess);
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+
+		// POST: api/Messages
+		[Route("api/Messages")]
+		public async Task<IHttpActionResult> Post([FromBody]string message) {
+			try {
+				if ( string.IsNullOrWhiteSpace(message) ) {
+					return BadRequest("Message cannot be null");
+				}
+
+				var mess = DB.Messages.Add(new Message { Bulletin = message });
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok($"Message '{mess.Bulletin}' created.");
+				}
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// PUT: api/Messages/5
+		[Route("api/Messages/{id}")]
+		public async Task<IHttpActionResult> Put(int id, [FromBody]string message) {
+			try {
+				if ( string.IsNullOrWhiteSpace(message) ) {
+					return BadRequest("Message cannot be null");
+				}
+
+				var mess = await DB.Messages.FirstOrDefaultAsync(x => x.ID == id);
+				mess.Bulletin = message;
+
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Ok("No changes made.");
+				} else {
+					return Ok($"Message '{mess.Bulletin}' updated.");
+				}
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// DELETE: api/Messages/5
+		[Route("api/Messages/{id}")]
+		public async Task<IHttpActionResult> Delete(int id) {
+			try {
+				var mess = await DB.Messages.FirstOrDefaultAsync(x => x.ID == id);
+
+				if ( mess == null ) {
+					return NotFound();
+				}
+
+				DB.Messages.Remove(mess);
+				var result = await DB.SaveChangesAsync();
+				if ( result == 0 ) {
+					return Conflict();
+				} else {
+					return Ok($"Message '{mess.Bulletin}' deleted.");
 				}
 			} catch {
 				return InternalServerError();
