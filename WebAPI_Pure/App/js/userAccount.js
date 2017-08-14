@@ -124,7 +124,7 @@
                 },
                 'save': {
                     method: 'POST',
-                    isArray: false,
+                    isArray: true,
                     headers: { "Authorization": tokenHeader }
                 }
             });

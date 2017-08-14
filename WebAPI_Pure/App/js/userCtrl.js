@@ -36,33 +36,5 @@
                 });
             };
 
-        }).directive("userDir", function () {
-            return {
-                restrict: "E",
-                scope: {
-                    test: "="
-                },
-                template: '',
-
-                link: function (scope, element, attrs) {
-
-                    //console.log(scope);
-                    //console.log(attrs.test);
-                    //console.log(element);
-
-                    var a = element.add('<div>');
-                    a.css('border', '5px black solid');
-                    
-                    for (var i = 0; i < attrs.test; i++) {
-                        var p = element.add('<p>');
-                        a.append(p);
-                        p.html(i);
-                    };
-
-                },
-                controller: function () {
-
-                }
-            };
         });
 })();

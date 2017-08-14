@@ -135,7 +135,9 @@
             </p>
         </div>
         <div>
-            Alla reklamblad.
+            <p ng-repeat="flyer in user.Flyers track by $index">
+                {{flyer.Name}}
+            </p>
         </div>
     </div>
 </div>

@@ -44,7 +44,7 @@
             checkForMoreUsers(take);
         };
         vm.firstUsers(vm.take);
-
+        console.log(vm.users);
         // Load more users with rules for search, refreshed and such. Call the DB for the next users and push them too the array.
         // Also calls DB once too check if there are more users left after we grabbed ours.
         vm.loadMoreUsers = function (take) {
@@ -74,12 +74,12 @@
         };
 
         // Select a user.
-        var copy;
+        var copyUser;
         vm.selectUser = function (id) {
             for (var i = 0; i < vm.users.length; i++) {
                 if (vm.users[i].Id == id) {
                     vm.selUser = vm.users[i];
-                    copy = JSON.parse(JSON.stringify(vm.selUser));
+                    copyUser = JSON.parse(JSON.stringify(vm.selUser));
                 };
             };
         };
@@ -88,7 +88,7 @@
         vm.cancleUserEdit = function (id) {
             for (var i = 0; i < vm.users.length; i++) {
                 if (vm.users[i].Id == id) {
-                    vm.users[i] = copy;
+                    vm.users[i] = copyUser;
                 };
             };
             vm.selUser = "";
@@ -96,6 +96,7 @@
 
         // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
+            console.log(vm.selUser);
             user.update({ id: id }, vm.selUser, function (data) {
                 isRefreshed = false;
                 vm.disableDuringLoad = false;
