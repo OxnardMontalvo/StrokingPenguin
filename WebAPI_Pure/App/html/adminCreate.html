@@ -126,11 +126,11 @@
                         <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Active" class="checkbox checkbox-inline" type="checkbox" ng-checked="flyer.Active" />
                     </td>
                     <td>
-                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Range.Min}}</span>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.RangeMin}}</span>
                         <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.RangeMin" class="form-control input-sm" value="{{flyer.RangeMin}}" />
                     </td>
                     <td>
-                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Range.Max}}</span>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.RangeMax}}</span>
                         <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.RangeMax" class="form-control input-sm" value="{{flyer.RangeMax}}" />
                     </td>
                     <td>

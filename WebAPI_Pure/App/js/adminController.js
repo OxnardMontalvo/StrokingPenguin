@@ -287,6 +287,7 @@
         };
         vm.saveFlyerEdits = function (id) {
             vm.selFlyer.CategoryID = vm.selectedCat.ID;
+            console.log(vm.selFlyer);
             adminCreate.flyers.update({ id: id }, vm.selFlyer, function (data) {
                 vm.editMode = false;
             });
