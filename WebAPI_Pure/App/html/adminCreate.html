@@ -96,7 +96,7 @@
                         <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.editCats(cat.ID)">Ändra</a></span>
                         <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteCat(cat.ID)">Ta bort</a></span>
                         <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveCatEdits(cat.ID)">Spara</a></span>
-                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleCat()">Avbryt</a></span>
+                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleCat(cat.ID)">Avbryt</a></span>
                     </td>
                 </tr>
             </tbody>
@@ -127,11 +127,11 @@
                     </td>
                     <td>
                         <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Range.Min}}</span>
-                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Range.Min" class="form-control input-sm" value="{{flyer.Range.Min}}" />
+                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.RangeMin" class="form-control input-sm" value="{{flyer.RangeMin}}" />
                     </td>
                     <td>
                         <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Range.Max}}</span>
-                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.Range.Max" class="form-control input-sm" value="{{flyer.Range.Max}}" />
+                        <input ng-show="vm.selFlyer.ID == flyer.ID" ng-model="flyer.RangeMax" class="form-control input-sm" value="{{flyer.RangeMax}}" />
                     </td>
                     <td>
                         <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Category.Name}}</span>

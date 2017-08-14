@@ -74,26 +74,30 @@
         };
 
         // Select a user.
+        var copy;
         vm.selectUser = function (id) {
             for (var i = 0; i < vm.users.length; i++) {
                 if (vm.users[i].Id == id) {
                     vm.selUser = vm.users[i];
+                    copy = JSON.parse(JSON.stringify(vm.selUser));
                 };
             };
         };
 
-        // Cancle operation, Not working correctly yet.
-        vm.cancleUserEdit = function () {
+        // Cancle operation.
+        vm.cancleUserEdit = function (id) {
+            for (var i = 0; i < vm.users.length; i++) {
+                if (vm.users[i].Id == id) {
+                    vm.users[i] = copy;
+                };
+            };
             vm.selUser = "";
         };
 
         // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
-            //vm.disableDuringLoad = true;
-            //vm.btnText = "Laddar...";
             user.update({ id: id }, vm.selUser, function (data) {
                 isRefreshed = false;
-                //vm.btnText = "Uppdatera & Ladda fler";
                 vm.disableDuringLoad = false;
             }, function (error) {
                 vm.errorMsg = error.statusText;
@@ -183,17 +187,11 @@
 
         // Save cats form function.
         vm.saveFormCat = function () {
-            //console.log(vm.formDataCat);
-
             // Save cat form to DB
             adminCreate.cats.create(vm.formDataCat, function (data) {
-                console.log(data);
-
                 // Get cats from DB as relode. Give us all cats in drop down.
                 adminCreate.cats.get(function (data) {
-                    //console.log(data);
                     angular.copy(data, vm.cats);
-                    //console.log(vm.cats);
                 });
 
                 // Zero out cat form.
@@ -207,9 +205,7 @@
         // Load the cats from DB to display in drop down.
         vm.cats = [];
         adminCreate.cats.get(function (data) {
-            //console.log(data);
             angular.copy(data, vm.cats);
-            //console.log(vm.cats);
         });
 
         vm.activeFlyer = true;
@@ -226,28 +222,28 @@
         // Save flyer form function.
         vm.saveFormFlyer = function () {
             vm.formDataFlyer.CategoryID = vm.selectedCat.ID;
-            //console.log(vm.formDataFlyer);
-            //console.log(vm.selectedCat);
-
             // Save flyer form to DB.
             adminCreate.flyers.create(vm.formDataFlyer, function (data) {
-                //console.log(data);
-
                 // Zero out flyer form.
                 vm.formDataFlyer = {
                     ID: 0,
                     Active: vm.activeFlyer
                 };
+
+                adminCreate.flyers.get(function (data) {
+                    if (data.length > 0) {
+                        angular.copy(data, vm.flyers);
+                    };
+                });
             });
         };
 
         vm.flyers = [];
         adminCreate.flyers.get(function (data) {
-            console.log(data);
-            console.log(data[0].Range.Max);
-            angular.copy(data, vm.flyers);
+            if (data.length > 0) {
+                angular.copy(data, vm.flyers);
+            };
         });
-        console.log(vm.flyers);
 
         vm.displayCats = false;
         vm.displayFlyers = false;
@@ -290,10 +286,8 @@
             vm.selCat = "";
         };
         vm.saveFlyerEdits = function (id) {
-            //vm.formDataFlyer.CategoryID = vm.selectedCat.ID;
             vm.selFlyer.CategoryID = vm.selectedCat.ID;
             adminCreate.flyers.update({ id: id }, vm.selFlyer, function (data) {
-                console.log(data);
                 vm.editMode = false;
             });
             vm.selFlyer = "";
@@ -310,37 +304,46 @@
         vm.cancleFlyer = function (id) {
             for (var i = 0; i < vm.flyers.length; i++) {
                 if (vm.flyers[i].ID == id) {
-                    console.log(vm.flyers[i]);
-                    console.log(copy);
                     vm.flyers[i] = copy;
                 };
             };
             vm.selFlyer = "";
         };
-
+        
         vm.deleteCat = function (id) {
-            if (confirm('Vill du verkligen ta bort kategorin från Databasen?')) {
-                adminCreate.cats.delete({ id: id }, function (data) {
-                    var index;
-                    for (var i = 0; i < vm.cats.length; i++) {
-                        if (vm.cats[i].Id == id) {
-                            index = i;
-                        };
+            if (confirm('Vill du verkligen ta bort kategorin från Databasen? Detta kommer också ta bort alla reklamblad för kategorin!')) {
+                
+                for (var i = 0; i < vm.flyers.length; i++) {
+                    if (vm.flyers[i].Category.ID == id) {
+                        adminCreate.flyers.delete({ id: vm.flyers[i].ID }, function (data) {
+                            vm.flyers.splice(id, 1);
+                        });
                     };
-                    vm.cats.splice(index, 1);
+                };
+                
+                adminCreate.cats.delete({ id: id }, function (data) {
+                    vm.cats.splice(id, 1);
                 });
+
+                //adminCreate.flyers.get(function (data) {
+                //    if (data.length > 0) {
+                //        angular.copy(data, vm.flyers);
+                //    };
+                //});
+                
+                //adminCreate.cats.get(function (data) {
+                //    angular.copy(data, vm.cats);
+                //});
             };
         };
         vm.deleteFlyer = function (id) {
             if (confirm('Vill du verkligen ta bort reklambladet från Databasen?')) {
                 adminCreate.flyers.delete({ id: id }, function (data) {
-                    var index;
-                    for (var i = 0; i < vm.flyers.length; i++) {
-                        if (vm.flyers[i].Id == id) {
-                            index = i;
-                        };
-                    };
-                    vm.flyers.splice(index, 1);
+                    vm.flyers.splice(id, 1);
+
+                    adminCreate.flyers.get(function (data) {
+                        angular.copy(data, vm.flyers);
+                    });
                 });
             };
         };

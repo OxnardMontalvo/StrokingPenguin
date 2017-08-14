@@ -87,7 +87,7 @@
                 </td>
                 <td>
                     <a ng-click="vm.saveUserEdit(user.Id)" class="btn btn-sm btn-success" ng-show="vm.selUser.Id == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-save"></span> Spara</a>
-                    <a ng-click="vm.cancleUserEdit()" class="btn btn-sm btn-info" ng-show="vm.selUser.Id == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove-circle"></span> Avbryt</a>
+                    <a ng-click="vm.cancleUserEdit(user.Id)" class="btn btn-sm btn-info" ng-show="vm.selUser.Id == user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove-circle"></span> Avbryt</a>
                     <a ng-click="vm.selectUser(user.Id)" class="btn btn-sm btn-info" ng-show="vm.selUser.Id != user.Id" style="width: 100%;"><span class="glyphicon glyphicon-edit"></span> Ändra</a>
                     <a ng-click="vm.deleteUser(user.Id)" class="btn btn-sm btn-danger" ng-show="vm.selUser.Id != user.Id" style="width: 100%;"><span class="glyphicon glyphicon-remove"></span> Ta bort</a>
                 </td>
