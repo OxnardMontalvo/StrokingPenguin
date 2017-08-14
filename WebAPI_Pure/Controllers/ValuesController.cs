@@ -588,7 +588,8 @@ namespace WebAPI_Pure.Controllers {
 					Active = x.Active,
 					Category = new { ID = x.Category.ID, Name = x.Category.Name, Active = x.Category.Active },
 					ID = x.ID,
-					Range = new { Max = ( x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString() ), Min = ( x.Range.Min == int.MinValue ? "" : x.Range.Min.ToString() ) }
+					RangeMin = x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString(),
+					RangeMax = x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString()
 				});
 				return Ok(flyers);
 
@@ -606,7 +607,8 @@ namespace WebAPI_Pure.Controllers {
 					Active = x.Active,
 					Category = new { ID = x.Category.ID, Name = x.Category.Name, Active = x.Category.Active },
 					ID = x.ID,
-					Range = new { Max = ( x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString() ), Min = ( x.Range.Min == int.MinValue ? "" : x.Range.Min.ToString() ) }
+					RangeMin = x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString(),
+					RangeMax = x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString()
 				}).FirstOrDefaultAsync(x => x.ID == id);
 				return Ok(flyer);
 			} catch {
