@@ -96,7 +96,7 @@
     </table>
 </div>
 
-<div class="row ma-hidden">
+<div class="row ma-mobile">
     <div class="col-sm-12 ma-mobileMode">
         <div class="break panel panel-primary" ng-repeat="user in vm.users track by $index">
             <div class="panel-heading">
@@ -112,6 +112,31 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+<div class="row printDisplay ma-hidden">
+    <div class="col-sm-12 print" ng-repeat="user in vm.users track by $index">
+        <div class="comp">
+            <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
+        </div>
+        <div class="userInfo">
+            <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
+            <p>{{user.Address}}</p>
+            <span>{{user.PostalCode}} {{user.County}}</span>
+        </div>
+    </div>
+</div>
+<div class="row printDisplay ma-hidden">
+    <div class="col-sm-12 userMsg">
+        <div>
+            <p>
+                Meddelande.
+            </p>
+        </div>
+        <div>
+            Alla reklamblad.
+        </div>
     </div>
 </div>
 

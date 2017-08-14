@@ -136,6 +136,13 @@
     padding: 0 .25em;
 }
 
+.printDisplay {
+    display: none;
+}
+
+.ma-mobile {
+    display: none;
+}
 
 
 @media only screen and (max-width : 768px) {
@@ -186,6 +193,14 @@
     }
 
     .ma-show {
+        display: none;
+    }
+
+    .ma-mobile {
+        display: block;
+    }
+
+    .printDisplay {
         display: none;
     }
 }
