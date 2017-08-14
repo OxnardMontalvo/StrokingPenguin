@@ -588,8 +588,8 @@ namespace WebAPI_Pure.Controllers {
 					Active = x.Active,
 					Category = new { ID = x.Category.ID, Name = x.Category.Name, Active = x.Category.Active },
 					ID = x.ID,
-                    RangeMin = x.Range.Min == int.MinValue ? "" : x.Range.Min.ToString(),
-                    RangeMax = x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString()
+					RangeMin = x.Range.Min == int.MinValue ? "" : x.Range.Min.ToString(),
+					RangeMax = x.Range.Max == int.MaxValue ? "" : x.Range.Max.ToString()
 				});
 				return Ok(flyers);
 
@@ -634,12 +634,16 @@ namespace WebAPI_Pure.Controllers {
 					if ( rangeMax == 0 ) {
 						rangeMax = int.MaxValue;
 					}
+				} else {
+					rangeMax = int.MaxValue;
 				}
 				if ( !string.IsNullOrWhiteSpace(vm.RangeMin) ) {
 					int.TryParse(new string(vm.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
 					if ( rangeMin == 0 ) {
 						rangeMin = int.MinValue;
 					}
+				} else {
+					rangeMin = int.MinValue;
 				}
 
 				if ( rangeMin > rangeMax ) rangeMin = rangeMin ^ rangeMax ^ ( rangeMax = rangeMin );
@@ -681,12 +685,16 @@ namespace WebAPI_Pure.Controllers {
 					if ( rangeMax == 0 ) {
 						rangeMax = flyer.Range.Max;
 					}
+				} else {
+					rangeMax = int.MaxValue;
 				}
 				if ( !string.IsNullOrWhiteSpace(vm.RangeMin) ) {
 					int.TryParse(new string(vm.RangeMin.Trim().Where(c => Char.IsDigit(c)).ToArray()), out rangeMin);
 					if ( rangeMin == 0 ) {
 						rangeMin = flyer.Range.Min;
 					}
+				} else {
+					rangeMin = int.MinValue;
 				}
 
 				if ( rangeMin > rangeMax ) rangeMin = rangeMin ^ rangeMax ^ ( rangeMax = rangeMin );
