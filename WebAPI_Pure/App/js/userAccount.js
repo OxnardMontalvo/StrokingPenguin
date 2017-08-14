@@ -130,6 +130,21 @@
             });
         }])
 
+        .factory("printMsg", ["$resource", "appSettings", function ($resource, appSettings) {
+            return $resource(appSettings.serverPath + "api/Messages/:id", {}, {
+                'get': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: { "Authorization": tokenHeader }
+                },
+                'save': {
+                    method: 'POST',
+                    isArray: false,
+                    headers: { "Authorization": tokenHeader }
+                }
+            });
+        }])
+
         .factory("fp", ["$resource", "appSettings", function ($resource, appSettings) {
             return $resource(appSettings.serverPath + "ForgotPassword", {}, {
                 'get': {

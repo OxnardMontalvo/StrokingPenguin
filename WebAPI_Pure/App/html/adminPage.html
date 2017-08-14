@@ -11,6 +11,16 @@
     </div>
 </div>
 
+<!--<div>
+    <div>
+        <form>
+            <textarea ng-model="vm.printInfoMsg" style="margin-top: 2em; width: 100%; height: 5em;" placeholder="Kundmeddelande som vissas när man gör en utskrift."></textarea>
+            <input ng-click="vm.saveMsg()" type="button" value="Spara" />
+        </form>
+        
+    </div>
+</div>-->
+
 <div class="ma-center-text" ng-show="vm.errorMsg">
     <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
 </div>
@@ -134,10 +144,8 @@
                 Meddelande.
             </p>
         </div>
-        <div>
-            <p ng-repeat="flyer in user.Flyers track by $index">
-                {{flyer.Name}}
-            </p>
+        <div style="margin-top: 1em;" ng-repeat="user in vm.users track by $index">
+            <span style="font-size: 14pt;" ng-repeat="flyer in user.Flyers">{{flyer.Name}} | </span>
         </div>
     </div>
 </div>

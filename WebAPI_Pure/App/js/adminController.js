@@ -3,8 +3,18 @@
 
     angular.module("app")
     // Admin controller for displaying admin specific tasks.
-    .controller("adminCtrl", function (user, userPage, currentUser, searchUser) {
+    .controller("adminCtrl", function (printMsg, user, userPage, currentUser, searchUser) {
         var vm = this;
+
+        //vm.printInfoMsg = "";
+        //vm.printDisplayMsg = [];
+
+        //vm.saveMsg = function () {
+        //    console.log(vm.printInfoMsg);
+        //    printMsg.save(vm.printInfoMsg, function (response) {
+        //        console.log(response);
+        //    });
+        //};
 
         vm.users = [];
         vm.take = 25;
