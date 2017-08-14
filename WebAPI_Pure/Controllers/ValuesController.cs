@@ -321,7 +321,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[Route("api/Users/{id}")]
-		public async Task<IHttpActionResult> Put(string id, [FromBody]UserViewModel vm) {
+		public async Task<IHttpActionResult> Put(string id, [FromBody]UserPutViewModel vm) {
 			try {
 				if ( vm == null ) {
 					return Json(( "User cannot be null" ));
@@ -558,6 +558,41 @@ namespace WebAPI_Pure.Controllers {
 				user.Flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID).Selected != true);
 
 				foreach ( var f in flyers ) {
+					if ( !user.Flyers.Contains(f) ) {
+						user.Flyers.Add(f);
+					}
+				}
+
+				var result = await DB.SaveChangesAsync();
+
+				if ( result == 0 ) {
+					return Conflict();
+				}
+				return Ok(user.Flyers);
+			} catch {
+				return InternalServerError();
+			}
+		}
+		// id is catID
+		[Route("api/UserFlyers/{id}")]
+		public async Task<IHttpActionResult> Put(int id, [FromBody]HashSet<UserFlyersViewModel> vm) {
+			try {
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
+				var flyers = new HashSet<Flyer>(DB.Flyers.Where(x => x.Category.ID == id && x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
+
+				if ( user == null || flyers == null ) {
+					return NotFound();
+				}
+
+				flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID && x.Category.ID == id).Selected != true);
+				user.Flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID && x.Category.ID == id).Selected != true);
+
+				foreach ( var f in flyers.Where(x => x.Category.ID == id) ) {
 					if ( !user.Flyers.Contains(f) ) {
 						user.Flyers.Add(f);
 					}

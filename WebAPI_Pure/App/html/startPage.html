@@ -72,7 +72,7 @@
 					</div>
 					<div class="ma-center-text">
 						<input ng-hide="vm.disableDuringLoading" ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c" value="{{vm.btnText}}" />
-                        <a ng-show="vm.disableDuringLoading" class="ma-btn-lg ma-btn-c" style="text-decoration: none; color: grey;">{{vm.btnText}}</a>
+						<a ng-show="vm.disableDuringLoading" class="ma-btn-lg ma-btn-c" style="text-decoration: none; color: grey;">{{vm.btnText}}</a>
 					</div>
 				</form>
 				<div class="ma-center-text" ng-show="vm.validMsg">
@@ -87,75 +87,76 @@
 </div>
 <div class="row ma-main">
 	<div class="col-xs-12 col-md-6">
-        <div class="ma-customHeader">
-            <span class=""></span> Registrering
-        </div>
+		<div class="ma-customHeader">
+			<span class=""></span> Registrering
+		</div>
 		<div class="ma-border">
 			<div class="ma-wrap-padding">
 				<form class="ma-form" name="regForm" ng-submit="vm.regForm()">
 					<div class="form-group" ng-form="Name">
 						<label>För- & Efternamn</label>
 						<input class="form-control input-lg" ng-model="vm.formData.Name" type="text" placeholder="Namn" ng-required="true" ng-minlength="3" ng-maxlength="256" />
-                        <div ng-show="Name.$invalid && Name.$dirty">
-                            <span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
-                            <span class="text-danger" ng-show="Name.$error.minlength">Namnet måste minst innehålla 3 tecken!</span>
-                            <span class="text-danger" ng-show="Name.$error.maxlength">Namnet kan inte överstiga 128 tecken!</span>
-                        </div>
+						<div ng-show="Name.$invalid && Name.$dirty">
+							<span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="Name.$error.minlength">Namnet måste minst innehålla 3 tecken!</span>
+							<span class="text-danger" ng-show="Name.$error.maxlength">Namnet kan inte överstiga 128 tecken!</span>
+						</div>
 					</div>
 					<div class="form-group" ng-form="Address">
 						<label>Adress</label>
 						<input class="form-control input-lg" ng-model="vm.formData.Address" type="text" placeholder="Adress" ng-required="true" />
-                        <div ng-show="Address.$invalid && Address.$dirty">
-                            <span class="text-danger" ng-show="Address.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
+						<div ng-show="Address.$invalid && Address.$dirty">
+							<span class="text-danger" ng-show="Address.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
 					</div>
 					<div class="form-group" ng-form="County">
 						<label>Ort</label>
 						<input class="form-control input-lg" ng-model="vm.formData.County" type="text" placeholder="Ort" ng-required="true" />
-                        <div ng-show="County.$invalid && County.$dirty">
-                            <span class="text-danger" ng-show="County.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
+						<div ng-show="County.$invalid && County.$dirty">
+							<span class="text-danger" ng-show="County.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
 					</div>
 					<div class="form-group" ng-form="PostalCode">
-						<label>Post nummer</label>
-						<input class="form-control input-lg" ng-model="vm.formData.PostalCode" type="text" placeholder="Post nummer" ng-required="true" />
-                        <div ng-show="PostalCode.$invalid && PostalCode.$dirty">
-                            <span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
+						<label>Postnummer</label>
+						<input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^3[3-5][0-9][ -]?([0-9][0-9])|^36[0-4][ -]?([0-9][0-9])|^365[ -]?([0-8][0-9]|9[0-3])$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
+						<div ng-show="PostalCode.$invalid && PostalCode.$dirty">
+							<span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="PostalCode.$error.pattern">Giltigt postnummer: 330 30 - 365 93</span>
+						</div>
 					</div>
 					<div class="form-group" ng-form="EmailReg">
 						<label>Epost</label>
 						<input class="form-control input-lg" ng-model="vm.formData.Email" type="text" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" placeholder="Epost" />
-                        <div ng-show="EmailReg.$invalid && EmailReg.$dirty">
-                            <span class="text-danger" ng-show="EmailReg.$error.required">Fältet måste vara ifyllt!</span>
-                            <span class="text-danger" ng-show="EmailReg.$error.pattern">Fyll i en giltig e-post.</span>
-                        </div>
+						<div ng-show="EmailReg.$invalid && EmailReg.$dirty">
+							<span class="text-danger" ng-show="EmailReg.$error.required">Fältet måste vara ifyllt!</span>
+							<span class="text-danger" ng-show="EmailReg.$error.pattern">Fyll i en giltig e-post.</span>
+						</div>
 					</div>
 					<div class="form-group" ng-form="Pr">
 						<label>Lösenord</label>
 						<input class="form-control input-lg" ng-model="vm.formData.Password" type="password" placeholder="Lösenord" ng-required="true" />
-                        <div ng-show="Pr.$invalid && Pr.$dirty">
-                            <span class="text-danger" ng-show="Pr.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
+						<div ng-show="Pr.$invalid && Pr.$dirty">
+							<span class="text-danger" ng-show="Pr.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
 					</div>
 					<div class="form-group" ng-form="PrC">
 						<label>Repetera ditt lösenord</label>
 						<input class="form-control input-lg" ng-model="vm.formData.ConfirmPassword" type="password" placeholder="Repetera ditt lösenord" ng-required="true" />
-                        <div ng-show="PrC.$invalid && PrC.$dirty">
-                            <span class="text-danger" ng-show="PrC.$error.required">Fältet måste vara ifyllt!</span>
-                        </div>
+						<div ng-show="PrC.$invalid && PrC.$dirty">
+							<span class="text-danger" ng-show="PrC.$error.required">Fältet måste vara ifyllt!</span>
+						</div>
 					</div>
 					<div class="ma-center-text">
-                        <button ng-class="{'ma-btn-c-success': regForm.$valid}" ng-disabled="regForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c"><span></span> Registrera dig</button>
+						<button ng-class="{'ma-btn-c-success': regForm.$valid}" ng-disabled="regForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c"><span></span> Registrera dig</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 	<div class="col-xs-12 col-md-6">
-        <div class="ma-customHeader">
-            <span class=""></span> Inloggning
-        </div>
+		<div class="ma-customHeader">
+			<span class=""></span> Inloggning
+		</div>
 		<div class="ma-border">
 			<div class="ma-center ma-wrap-padding">
 				<form class="ma-form" ng-submit="vm.login()" name="loginForm">
@@ -182,9 +183,9 @@
 					</div>
 				</form>
 			</div>
-            <div class="ma-center-text" ng-show="vm.errorMsg">
-                <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
-            </div>
+			<div class="ma-center-text" ng-show="vm.errorMsg">
+				<p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
+			</div>
 		</div>
 	</div>
 </div>
