@@ -321,7 +321,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// PUT: api/Users/5e19bf87-26e4-4f70-9206-ad209634fca0
 		[Route("api/Users/{id}")]
-		public async Task<IHttpActionResult> Put(string id, [FromBody]UserViewModel vm) {
+		public async Task<IHttpActionResult> Put(string id, [FromBody]UserPutViewModel vm) {
 			try {
 				if ( vm == null ) {
 					return Json(( "User cannot be null" ));

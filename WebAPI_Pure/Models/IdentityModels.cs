@@ -125,6 +125,27 @@ namespace WebAPI_Pure.Models {
 		public string ConfirmPassword { get; set; }
 	}
 
+	public class UserPutViewModel {
+		public string Id { get; set; }
+		[Required]
+		[StringLength(128, MinimumLength = 3)]
+		public string Name { get; set; }
+		[Required]
+		[StringLength(128)]
+		public string Address { get; set; }
+		[Required]
+		[EmailAddress]
+		public string Email { get; set; }
+		[Required]
+		[StringLength(6, MinimumLength = 5)]
+		public string PostalCode { get; set; }
+		[Required]
+		[StringLength(128)]
+		public string County { get; set; }
+		public int? DistrictNumber { get; set; }
+		public string DeliveryOrderNumber { get; set; }
+	}
+
 	public class ChangePasswordBindingModel {
 		[Required]
 		[DataType(DataType.Password)]
