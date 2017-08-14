@@ -6,11 +6,9 @@
         .controller("userCtrl", function (user, userInfo) {
             var vm = this;
 
-            vm.maxRow = 4;
-
             vm.cats = [];
             userInfo.get(function (data) {
-                console.log(data);
+                //console.log(data);
                 angular.copy(data, vm.cats);
             });
 
