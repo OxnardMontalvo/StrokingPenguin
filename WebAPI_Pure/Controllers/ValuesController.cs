@@ -41,11 +41,9 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/Users/HoldMeBabyImAnAnimalManAndImFeelingSuchAnAnimalDesire")]
 		public async Task<IHttpActionResult> CheckAdminAndRoles() {
 			try {
-				var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(DB));
-
 				if ( !DB.Database.Exists() || await DB.Roles.CountAsync() == 0 ) {
 					var adminRole = DB.Roles.Add(new IdentityRole { Name = "Admin" });
-					var userRole = DB.Roles.Add(new IdentityRole { Name = "User" });
+					DB.Roles.Add(new IdentityRole { Name = "User" });
 
 					var adminEmail = SecretsManager.AdminEmail;
 					var adminPass = GeneratePassword();
@@ -311,8 +309,8 @@ namespace WebAPI_Pure.Controllers {
 				} else {
 					return BadRequest();
 				}
-			} catch {
-				return InternalServerError();
+			} catch ( Exception ex ) {
+				return InternalServerError(ex);
 			}
 		}
 
@@ -449,10 +447,6 @@ namespace WebAPI_Pure.Controllers {
 			int length = r.Next(128, 256);
 			for ( int i = 0; i <= length; i++ )
 				password += passwordChars.Substring(r.Next(0, passwordChars.Length - 1), 1);
-
-			var mailpath = @"c:\mail\";
-			System.IO.File.WriteAllText(mailpath + "Password.txt", password);
-
 			return password;
 		}
 		#endregion

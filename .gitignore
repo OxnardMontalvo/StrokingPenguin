@@ -15,6 +15,7 @@ i18n/
 
 # Secrets
 secrets.config
+*Web.config
 
 # Build results
 [Dd]ebug/
