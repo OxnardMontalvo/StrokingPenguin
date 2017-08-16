@@ -41,28 +41,22 @@ namespace WebAPI_Pure {
 		public Task SendAsync(IdentityMessage message) {
 			// TODO: Plug in your real email service here to send an email.
 			try {
-				MailMessage mMessage = new MailMessage(SecretsManager.SendMail, message.Destination, message.Subject, message.Body);
-				mMessage.IsBodyHtml = true;
-				SmtpClient client = new SmtpClient();
+				//MailMessage mMessage = new MailMessage(SecretsManager.SendMail, message.Destination, message.Subject, message.Body);
+				//mMessage = new MailMessage(SecretsManager.SendMail, SecretsManager.SendToTest, message.Subject, message.Body); // FOR TESTING!
+				//mMessage.IsBodyHtml = true;
+				//SmtpClient client = new SmtpClient(SecretsManager.SMTPServer, SecretsManager.SMTPServerPort);
+				//client.EnableSsl = false;
+				//client.UseDefaultCredentials = false;
+				//client.Credentials = new System.Net.NetworkCredential(SecretsManager.SendMail, SecretsManager.SendPassword);
 
 				#region REMOVE
 				var mailpath = @"c:\mail\";
+				MailMessage mMessage = new MailMessage(SecretsManager.SendMail, message.Destination, message.Subject, message.Body);
+				mMessage.IsBodyHtml = true;
+				SmtpClient client = new SmtpClient();
 				client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
 				client.PickupDirectoryLocation = mailpath;
-
-				//Write out the link to a text file for testing
-				System.IO.File.WriteAllText(mailpath + "LatestLink.txt", message.Body);
 				#endregion
-
-
-				/*
-					client.Host = SecretsManager.SMTPServer;
-					client.EnableSsl = true;
-					client.Port = 25;
-
-					client.UseDefaultCredentials = false;
-					client.Credentials = new System.Net.NetworkCredential(SecretsManager.SendUserName, SecretsManager.SendPassword);
-				*/
 
 				return client.SendMailAsync(mMessage);
 			} catch {

@@ -469,17 +469,21 @@ namespace WebAPI_Pure.Controllers {
 		public static string SMTPServer {
 			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["smtpServer"]; }
 		}
-		public static string SMTPServerPort {
-			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["smtpServerPort"]; }
+		public static int SMTPServerPort {
+			get {
+				int port;
+				int.TryParse(System.Web.Configuration.WebConfigurationManager.AppSettings["smtpServerPort"], out port);
+				return port;
+			}
 		}
-		public static string SendUserName {
-			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["sendUserName"]; }
+		public static string SendMail {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["sendMail"]; }
 		}
 		public static string SendPassword {
 			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["endPassword"]; }
 		}
-		public static string SendMail {
-			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["sendMail"]; }
+		public static string SendToTest {
+			get { return System.Web.Configuration.WebConfigurationManager.AppSettings["sendToTest"]; }
 		}
 
 	}

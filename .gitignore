@@ -15,7 +15,8 @@ i18n/
 
 # Secrets
 secrets.config
-*Web.config
+Web.config
+PublishProfiles/
 
 # Build results
 [Dd]ebug/
