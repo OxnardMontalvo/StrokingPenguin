@@ -1,9 +1,9 @@
 ﻿(function () {
-    "use strict";
+	"use strict";
 
-    angular.module("services", ["ngResource"])
-    .constant("appSettings", {
-        serverPath: "/"
-    });
+	angular.module("services", ["ngResource"])
+	.constant("appSettings", {
+		serverPath: "http://reklamtack.nu/"
+	});
 
 })();
