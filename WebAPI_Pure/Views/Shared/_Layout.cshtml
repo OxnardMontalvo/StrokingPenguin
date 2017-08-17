@@ -50,10 +50,8 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - RekalmTack.nu i samarbete med <span>
+            <p>&copy; @DateTime.Now.Year - ReklamTack.nu i samarbete med <span>
                     <img class="footerLogoImg" src="https://www.sdr.se/images/main-logo.png" />
-                    @*<img class="footerLogoImg" src="https://www.ica.se/imagevaultfiles/id_161956/cf_259/ica_supermarket_logotyp_rod_rgb_bhs.png?" />*@
-                    <img class="footerLogoImg" src="~/App/img/Ica-Logo-TU.svg" />
                 </span>
             </p>
         </footer>
@@ -63,27 +61,30 @@
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
-    @*
-        Keeping These for now, will remove before launch!!!
-    *@
-    @*<script src="~/App/js/app.js"></script>
+    <script src="~/ocLazyLoad.min.js"></script>
 
-    <script src="~/App/js/commonServices.js"></script>
+    @{
+#if DEBUG
+    ;<script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/app.js"></script>
+    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/accountController.js"></script>
+    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/commonServices.js"></script>
+    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/startController.js"></script>
+    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userAccount.js"></script>
+#else
+    ;<script src="~/App/js/app.js"></script>
     <script src="~/App/js/userAccount.js"></script>
-
     <script src="~/App/js/accountController.js"></script>
+    <script src="~/App/js/commonServices.js"></script>
     <script src="~/App/js/startController.js"></script>
-    <script src="~/App/js/adminController.js"></script>*@
+#endif
+     }
 
-
-    <script src="~/App/js/_minify/app.js"></script>
-
-    <script src="~/App/js/_minify/commonServices.js"></script>
-    <script src="~/App/js/_minify/userAccount.js"></script>
-
-    <script src="~/App/js/_minify/accountController.js"></script>
-    <script src="~/App/js/_minify/startController.js"></script>
-    <script src="~/App/js/_minify/adminController.js"></script>
+    @{
+        if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <script src="~/App/js/adminController.js"></script>
+        }
+    }
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
