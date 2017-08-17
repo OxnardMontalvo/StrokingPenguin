@@ -63,21 +63,22 @@
     <script src="~/Scripts/angular-resource.min.js"></script>
     <script src="~/ocLazyLoad.min.js"></script>
 
-    @{
-#if DEBUG
-    ;<script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/app.js"></script>
-    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/accountController.js"></script>
-    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/commonServices.js"></script>
-    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/startController.js"></script>
-    <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userAccount.js"></script>
-#else
-    ;<script src="~/App/js/app.js"></script>
-    <script src="~/App/js/userAccount.js"></script>
-    <script src="~/App/js/accountController.js"></script>
-    <script src="~/App/js/commonServices.js"></script>
-    <script src="~/App/js/startController.js"></script>
-#endif
-     }
+    @if (Context.IsDebuggingEnabled)
+    {
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/app.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/accountController.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/commonServices.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/startController.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userAccount.js"></script>
+    }
+    else
+    {
+        <script src="~/App/js/app.js"></script>
+        <script src="~/App/js/accountController.js"></script>
+        <script src="~/App/js/commonServices.js"></script>
+        <script src="~/App/js/startController.js"></script>
+        <script src="~/App/js/userAccount.js"></script>
+    }
 
     @{
         if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
