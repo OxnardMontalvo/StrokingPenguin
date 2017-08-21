@@ -264,6 +264,7 @@
     <Content Include="App\html\startPage.html" />
     <Content Include="App\html\userPage.html" />
     <Content Include="App\img\Ica-Logo-TU.svg" />
+    <Content Include="App\img\klimatkompenserad_logotyp.jpg" />
     <Content Include="App\js\adminController.js" />
     <Content Include="App\js\app.js" />
     <Content Include="App\js\commonServices.js" />
