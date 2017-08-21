@@ -501,14 +501,16 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 
+				var fIDs = user.Flyers.Select(x => x.ID).ToArray();
+
 				var result = cats.Select(c => new {
 					Name = c.Name,
 					Flyers = ( c.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active == true).Select(x => new {
 						ID = x.ID,
 						Name = x.Name,
-						Selected = user.Flyers.Contains(x)
+						Selected = fIDs.Contains(x.ID)
 					}).OrderBy(y => y.Name) )
-				});
+				}).ToList();
 
 				return Ok(result.Where(x => x.Flyers.Count() > 0));
 			} catch {
@@ -529,6 +531,10 @@ namespace WebAPI_Pure.Controllers {
 
 				if ( user == null || cat == null ) {
 					return NotFound();
+				}
+
+				if ( !cat.Active ) {
+					return Ok("Cat is inactive.");
 				}
 
 				var result = cat.Flyers.Select(x => new { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
