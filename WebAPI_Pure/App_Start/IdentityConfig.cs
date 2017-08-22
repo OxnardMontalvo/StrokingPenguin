@@ -42,7 +42,7 @@ namespace WebAPI_Pure {
 			// TODO: Plug in your real email service here to send an email.
 			try {
 				//MailMessage mMessage = new MailMessage(SecretsManager.SendMail, message.Destination, message.Subject, message.Body);
-				//mMessage = new MailMessage(SecretsManager.SendMail, SecretsManager.SendToTest, message.Subject, message.Body); // FOR TESTING!
+				////mMessage = new MailMessage(SecretsManager.SendMail, SecretsManager.SendToTest, message.Subject, message.Body); // FOR TESTING!
 				//mMessage.IsBodyHtml = true;
 				//SmtpClient client = new SmtpClient(SecretsManager.SMTPServer, SecretsManager.SMTPServerPort);
 				//client.EnableSsl = false;
