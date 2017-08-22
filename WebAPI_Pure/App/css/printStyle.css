@@ -29,3 +29,7 @@ span {
 .break {
     page-break-after: always;
 }
+
+.ma-only-print {
+    display: block;
+}

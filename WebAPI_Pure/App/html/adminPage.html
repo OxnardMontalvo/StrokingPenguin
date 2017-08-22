@@ -96,19 +96,36 @@
     </table>
 </div>
 
-<div class="row ma-hidden">
+<div class="row ma-hidden ma-print-hidden">
     <div class="col-sm-12 ma-mobileMode">
         <div class="break panel panel-primary" ng-repeat="user in vm.users track by $index">
             <div class="panel-heading">
                 <span>Namn: {{user.Name}}</span><span class="pull-right">  Adress: {{user.Address}}</span>
             </div>
             <div class="panel-body">
-                <span>Post #: {{user.PostalCode}}</span><span>  Ort: {{user.County}}</span>
+                <span>Postnummer: {{user.PostalCode}}</span><span>  Ort: {{user.County}}</span>
                 <p>Email: <span>{{user.Email}}</span></p>
-                <span>Distrikt #: {{user.DistrictNumber}}</></span><span>   Gång #: {{user.DeliveryOrderNumber}}</span>
+                <span>Distriktnummer: {{user.DistrictNumber}}</></span><span>   Gångordning: {{user.DeliveryOrderNumber}}</span>
             </div>
             <div class="panel-footer">
                 <span>{{$index + 1}}</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row ma-hidden ma-only-print">
+    <div class="col-sm-12 ma-mobileMode">
+        <div class="break panel panel-primary" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber && user.DeliveryOrderNumber">
+            <div class="panel-heading">
+                <span>Namn: {{user.Name}}</span><span class="pull-right">  Adress: {{user.Address}}</span>
+            </div>
+            <div class="panel-body">
+                <span>Postnummer: {{user.PostalCode}}</span><span>  Ort: {{user.County}}</span>
+                <p><span>Distriktnummer: {{user.DistrictNumber}}</></span><span>   Gångordning: {{user.DeliveryOrderNumber}}</span></p>
+            </div>
+            <div class="panel-footer">
             </div>
         </div>
 
