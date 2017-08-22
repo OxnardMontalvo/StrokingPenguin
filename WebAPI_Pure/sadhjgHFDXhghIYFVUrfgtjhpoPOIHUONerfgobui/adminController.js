@@ -47,6 +47,7 @@
 
         // Load more users with rules for search, refreshed and such. Call the DB for the next users and push them too the array.
         // Also calls DB once too check if there are more users left after we grabbed ours.
+        // CHECK PAGE PROBLEM!!!
         vm.loadMoreUsers = function (take) {
             if (vm.hasSearch) {
                 vm.firstUsers(take);
@@ -126,6 +127,7 @@
         };
 
         // Refresh user list by looping all pages and push the users to the array.
+        // Not a good solution!!!
         vm.refreshUserList = function () {
             isRefreshed = true;
             vm.disableDuringLoad = true;
