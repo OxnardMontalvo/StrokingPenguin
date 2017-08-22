@@ -41,6 +41,7 @@ namespace WebAPI_Pure {
 		public Task SendAsync(IdentityMessage message) {
 			// TODO: Plug in your real email service here to send an email.
 			try {
+				#region Release
 				//MailMessage mMessage = new MailMessage(SecretsManager.SendMail, message.Destination, message.Subject, message.Body);
 				////mMessage = new MailMessage(SecretsManager.SendMail, SecretsManager.SendToTest, message.Subject, message.Body); // FOR TESTING!
 				//mMessage.IsBodyHtml = true;
@@ -48,6 +49,7 @@ namespace WebAPI_Pure {
 				//client.EnableSsl = false;
 				//client.UseDefaultCredentials = false;
 				//client.Credentials = new System.Net.NetworkCredential(SecretsManager.SendMail, SecretsManager.SendPassword);
+				#endregion
 
 				#region REMOVE
 				var mailpath = @"c:\mail\";

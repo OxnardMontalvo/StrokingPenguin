@@ -72,7 +72,7 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/Query/Greta
 		[HttpGet]
-		[Route("api/Users/Query/{query}")]
+		[Route("api/Users/Query/{query?}")]
 		public IHttpActionResult GetUsersByQuery(string query = "") {
 			try {
 				var SearchQuery = query.Trim().ToLower();
