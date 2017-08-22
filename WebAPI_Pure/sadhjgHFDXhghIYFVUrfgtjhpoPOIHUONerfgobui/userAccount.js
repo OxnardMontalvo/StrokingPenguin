@@ -3,7 +3,7 @@
     angular.module("services")
 
         .factory("userAccount", ["$resource", "appSettings", function ($resource, appSettings) {
-            return $resource(appSettings.serverPath + "/Token", null,
+            return $resource(appSettings.serverPath + "Token", null,
                 {
                     'loginUser': {
                         method: 'POST',
