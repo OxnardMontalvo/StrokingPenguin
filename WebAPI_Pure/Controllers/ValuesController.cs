@@ -76,7 +76,7 @@ namespace WebAPI_Pure.Controllers {
 		public IHttpActionResult GetUsersByQuery(string query = "") {
 			try {
 				var SearchQuery = query.Trim().ToLower();
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
+				var users = DB.Users.ToList().Where(x => ( UserManager.IsInRole(x.Id, "User") &&
 				( x.Name.ToLower().Contains(SearchQuery) || x.Address.ToLower().Contains(SearchQuery) ||
 				x.PostalCode.ToString().Contains(SearchQuery) || x.County.ToLower().Contains(SearchQuery) ) )).Select(x => new {
 					Id = x.Id,
@@ -86,11 +86,7 @@ namespace WebAPI_Pure.Controllers {
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
-						ID = y.ID,
-						Name = y.Name
-					}).OrderBy(y => y.Name) )
+					DeliveryOrderNumber = x.DeliveryOrderNumber
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -102,7 +98,7 @@ namespace WebAPI_Pure.Controllers {
 		[Route("api/Users")]
 		public IHttpActionResult Get() {
 			try {
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new {
+				var users = DB.Users.ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
@@ -110,11 +106,7 @@ namespace WebAPI_Pure.Controllers {
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
-						ID = y.ID,
-						Name = y.Name
-					}).OrderBy(y => y.Name) )
+					DeliveryOrderNumber = x.DeliveryOrderNumber
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 
 				return Ok(users);
@@ -126,12 +118,16 @@ namespace WebAPI_Pure.Controllers {
 
 		// GET: api/Users/5/2
 		[Route("api/Users/{take}/{page}")]
-		public IHttpActionResult Get(int take, int page = 0) {
+		public IHttpActionResult Get(int take, int page = 1) {
 			if ( take < 1 || page < 1 ) {
 				return BadRequest("Invalid");
 			}
 			try {
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).Select(x => new {
+				var usersAll = DB.Users.ToList().Where(y => UserManager.IsInRole(y.Id, "User"));
+				var count = usersAll.Count();
+				var pages = Math.Ceiling(count / (float)take);
+
+				var users = usersAll.Select(x => new {
 					Id = x.Id,
 					Name = x.Name,
 					Address = x.Address,
@@ -139,13 +135,11 @@ namespace WebAPI_Pure.Controllers {
 					County = x.County,
 					Email = x.Email,
 					DistrictNumber = x.DistrictNumber,
-					DeliveryOrderNumber = x.DeliveryOrderNumber,
-					Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
-						ID = y.ID,
-						Name = y.Name
-					}).OrderBy(y => y.Name) )
+					DeliveryOrderNumber = x.DeliveryOrderNumber
 				}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).Skip(take * ( page - 1 )).Take(take).ToList();
+
 				return Ok(users);
+				//return Ok(new { users, pages, count });
 
 			} catch {
 				return InternalServerError();
@@ -175,13 +169,10 @@ namespace WebAPI_Pure.Controllers {
 					Email = user.Email,
 					DistrictNumber = user.DistrictNumber,
 					DeliveryOrderNumber = user.DeliveryOrderNumber,
-					Flyers = ( user.Flyers.Where(z =>
-						z.Range.Min <= user.PostalCode &&
-						z.Range.Max >= user.PostalCode &&
-						z.Active == true).Select(y => new {
-							ID = y.ID,
-							Name = y.Name
-						}).OrderBy(y => y.Name) )
+					Flyers = ( user.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active == true).Select(y => new {
+						ID = y.ID,
+						Name = y.Name
+					}).OrderBy(y => y.Name) )
 				};
 
 				return Ok(o);
@@ -196,7 +187,7 @@ namespace WebAPI_Pure.Controllers {
 		public IHttpActionResult GetRange(int min = int.MinValue, int max = int.MaxValue) {
 			try {
 				if ( min > max ) min = min ^ max ^ ( max = min );
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
+				var users = DB.Users.ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
 					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new {
 						Id = x.Id,
 						Name = x.Name,
@@ -205,11 +196,7 @@ namespace WebAPI_Pure.Controllers {
 						County = x.County,
 						Email = x.Email,
 						DistrictNumber = x.DistrictNumber,
-						DeliveryOrderNumber = x.DeliveryOrderNumber,
-						Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
-							ID = y.ID,
-							Name = y.Name
-						}).OrderBy(y => y.Name) )
+						DeliveryOrderNumber = x.DeliveryOrderNumber
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
@@ -237,7 +224,7 @@ namespace WebAPI_Pure.Controllers {
 					}
 				}
 
-				var users = DB.Users.Include(x => x.Flyers).ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
+				var users = DB.Users.ToList().Where(x => UserManager.IsInRole(x.Id, "User")).
 					Where(x => x.DistrictNumber != null & x.DistrictNumber >= min && x.DistrictNumber <= max).Select(x => new {
 						Id = x.Id,
 						Name = x.Name,
@@ -246,11 +233,7 @@ namespace WebAPI_Pure.Controllers {
 						County = x.County,
 						Email = x.Email,
 						DistrictNumber = x.DistrictNumber,
-						DeliveryOrderNumber = x.DeliveryOrderNumber,
-						Flyers = ( x.Flyers.Where(z => z.Range.Min <= x.PostalCode && z.Range.Max >= x.PostalCode && z.Active == true).Select(y => new {
-							ID = y.ID,
-							Name = y.Name
-						}).OrderBy(y => y.Name) )
+						DeliveryOrderNumber = x.DeliveryOrderNumber
 					}).OrderBy(u => u.DistrictNumber).ThenBy(u => u.DeliveryOrderNumber).ToList();
 				return Ok(users);
 
