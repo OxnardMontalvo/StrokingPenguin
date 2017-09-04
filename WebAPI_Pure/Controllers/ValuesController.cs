@@ -504,6 +504,7 @@ namespace WebAPI_Pure.Controllers {
 				var fIDs = user.Flyers.Select(x => x.ID).ToArray();
 
 				var result = cats.Select(c => new {
+					ID = c.ID,
 					Name = c.Name,
 					Flyers = ( c.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active == true).Select(x => new {
 						ID = x.ID,
