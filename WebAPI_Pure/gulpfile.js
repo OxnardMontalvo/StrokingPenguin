@@ -9,8 +9,8 @@ var ngAnnotate = require("gulp-ng-annotate")
 
 gulp.task('minify', function () {
     // place code for your default task here
-    return gulp.src("App/js/*.js")
+    return gulp.src("sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/*.js")
         .pipe(ngAnnotate())
         .pipe(uglify())
-        .pipe(gulp.dest("App/js/_minify"));
+        .pipe(gulp.dest("App/js/"));
 });

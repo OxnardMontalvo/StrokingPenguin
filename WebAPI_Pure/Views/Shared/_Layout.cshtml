@@ -62,29 +62,36 @@
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
-    @*
-        Keeping These for now, will remove before launch!!!
-    *@
+    <script src="~/ocLazyLoad.min.js"></script>
 
-    <script src="~/App/js/app.js"></script>
+    @if (Context.IsDebuggingEnabled)
+    {
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/app.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/accountController.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/commonServices.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/startController.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userAccount.js"></script>
+        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userCtrl.js"></script>
 
-    <script src="~/App/js/commonServices.js"></script>
-    <script src="~/App/js/userAccount.js"></script>
+        if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/adminController.js"></script>
+        }
+    }
+    else
+    {
+        <script src="~/App/js/app.js"></script>
+        <script src="~/App/js/accountController.js"></script>
+        <script src="~/App/js/commonServices.js"></script>
+        <script src="~/App/js/startController.js"></script>
+        <script src="~/App/js/userAccount.js"></script>
+        <script src="~/App/js/userCtrl.js"></script>
 
-    <script src="~/App/js/accountController.js"></script>
-    <script src="~/App/js/startController.js"></script>
-    <script src="~/App/js/adminController.js"></script>
-    <script src="~/App/js/userCtrl.js"></script>
-
-
-    @*<script src="~/App/js/_minify/app.js"></script>
-
-    <script src="~/App/js/_minify/commonServices.js"></script>
-    <script src="~/App/js/_minify/userAccount.js"></script>
-
-    <script src="~/App/js/_minify/accountController.js"></script>
-    <script src="~/App/js/_minify/startController.js"></script>
-    <script src="~/App/js/_minify/adminController.js"></script>*@
+        if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <script src="~/App/js/adminController.js"></script>
+        }
+    }
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
