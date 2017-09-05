@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <p style="margin-right: .5em;" ng-repeat="flyer in cat.Flyers track by $index">{{flyer.Name}} {{flyer.Selected}} {{flyer.ID}}
                  <span class="pull-right">
-                    <input type="checkbox" ng-checked="flyer.Selected" ng-model="flyer.Selected" ng-change="vm.checkChange(vm.cats)" />
+                    <input type="checkbox" ng-checked="flyer.Selected" ng-model="flyer.Selected" ng-change="vm.checkChange(cat)" />
                 </span></p>
             </div>
         </div>
