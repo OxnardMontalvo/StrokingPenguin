@@ -129,7 +129,6 @@
                 },
                 'savePut': {
                     method: 'PUT',
-                    isArray: true,
                     headers: { "Authorization": tokenHeader }
                 }
             });
