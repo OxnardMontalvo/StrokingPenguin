@@ -596,13 +596,15 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 
-				flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID && x.Category.ID == id).Selected != true);
-				user.Flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID && x.Category.ID == id).Selected != true);
+				var activeFIDs = vm.Where(x => x.Selected).Select(x => x.ID);
+
+				flyers.RemoveWhere(x => x.Category.ID == id && !activeFIDs.Contains(x.ID));
+				user.Flyers.RemoveWhere(x => x.Category.ID == id);
 
 				foreach ( var f in flyers.Where(x => x.Category.ID == id) ) {
-					if ( !user.Flyers.Contains(f) ) {
-						user.Flyers.Add(f);
-					}
+					user.Flyers.Add(f);
+					//if ( !user.Flyers.Contains(f) ) {
+					//}
 				}
 
 				var result = await DB.SaveChangesAsync();
