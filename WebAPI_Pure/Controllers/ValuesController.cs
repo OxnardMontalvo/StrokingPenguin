@@ -589,7 +589,7 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 
-				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
+				var user = await DB.Users.Include(x => x.Flyers.Select(z => z.Category)).FirstOrDefaultAsync(x => x.Id == guid);
 				var flyers = new HashSet<Flyer>(DB.Flyers.Include(x => x.Category).Where(x => x.Category.ID == id && x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
 
 				if ( user == null || flyers == null ) {
@@ -611,8 +611,8 @@ namespace WebAPI_Pure.Controllers {
 					return Ok("No changes.");
 				}
 				return Ok("Changes saves.");
-			} catch {
-				return InternalServerError();
+			} catch ( Exception e ) {
+				return InternalServerError(e);
 			}
 		}
 	}
