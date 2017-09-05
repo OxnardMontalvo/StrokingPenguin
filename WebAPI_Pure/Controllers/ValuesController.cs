@@ -590,29 +590,27 @@ namespace WebAPI_Pure.Controllers {
 				}
 
 				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
-				var flyers = new HashSet<Flyer>(DB.Flyers.Where(x => x.Category.ID == id && x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
+				var flyers = new HashSet<Flyer>(DB.Flyers.Include(x => x.Category).Where(x => x.Category.ID == id && x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
 
 				if ( user == null || flyers == null ) {
 					return NotFound();
 				}
 
-				var activeFIDs = vm.Where(x => x.Selected).Select(x => x.ID);
+				var activeFIDs = vm.Where(x => x.Selected).Select(x => x.ID).ToList();
 
 				flyers.RemoveWhere(x => x.Category.ID == id && !activeFIDs.Contains(x.ID));
-				user.Flyers.RemoveWhere(x => x.Category.ID == id);
+				user.Flyers.RemoveWhere(x => x.Category.ID == id && !activeFIDs.Contains(x.ID));
 
-				foreach ( var f in flyers.Where(x => x.Category.ID == id) ) {
+				foreach ( var f in flyers.Where(x => x.Category.ID == id && activeFIDs.Contains(x.ID)) ) {
 					user.Flyers.Add(f);
-					//if ( !user.Flyers.Contains(f) ) {
-					//}
 				}
 
 				var result = await DB.SaveChangesAsync();
 
 				if ( result == 0 ) {
-					return Conflict();
+					return Ok("No changes.");
 				}
-				return Ok(user.Flyers);
+				return Ok("Changes saves.");
 			} catch {
 				return InternalServerError();
 			}
