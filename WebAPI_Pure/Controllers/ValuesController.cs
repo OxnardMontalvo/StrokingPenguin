@@ -546,40 +546,6 @@ namespace WebAPI_Pure.Controllers {
 			}
 		}
 
-		[Route("api/UserFlyers")]
-		public async Task<IHttpActionResult> Post([FromBody]HashSet<UserFlyersViewModel> vm) {
-			try {
-				var guid = User.Identity.GetUserId();
-				if ( guid == null ) {
-					return NotFound();
-				}
-
-				var user = await DB.Users.Include(x => x.Flyers).FirstOrDefaultAsync(x => x.Id == guid);
-				var flyers = new HashSet<Flyer>(DB.Flyers.Where(x => x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
-
-				if ( user == null || flyers == null ) {
-					return NotFound();
-				}
-
-				flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID).Selected != true);
-				user.Flyers.RemoveWhere(x => vm.FirstOrDefault(y => y.ID == x.ID).Selected != true);
-
-				foreach ( var f in flyers ) {
-					if ( !user.Flyers.Contains(f) ) {
-						user.Flyers.Add(f);
-					}
-				}
-
-				var result = await DB.SaveChangesAsync();
-
-				if ( result == 0 ) {
-					return Conflict();
-				}
-				return Ok(user.Flyers);
-			} catch {
-				return InternalServerError();
-			}
-		}
 		// id is catID
 		[Route("api/UserFlyers/{id}")]
 		public async Task<IHttpActionResult> Put(int id, [FromBody]HashSet<UserFlyersViewModel> vm) {
@@ -611,8 +577,8 @@ namespace WebAPI_Pure.Controllers {
 					return Ok("No changes.");
 				}
 				return Ok("Changes saves.");
-			} catch ( Exception e ) {
-				return InternalServerError(e);
+			} catch ( Exception ) {
+				return InternalServerError();
 			}
 		}
 	}
