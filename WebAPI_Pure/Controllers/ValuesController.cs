@@ -857,18 +857,20 @@ namespace WebAPI_Pure.Controllers {
 					return BadRequest("ID must be valid");
 				}
 
-				var cat = DB.Categories.FirstOrDefault(x => x.ID == id);
+				var cat = DB.Categories.Include(x => x.Flyers).FirstOrDefault(x => x.ID == id);
 
 				if ( cat == null ) {
 					return NotFound();
 				}
 
+				DB.Flyers.RemoveRange(cat.Flyers);
 				DB.Categories.Remove(cat);
+
 				var result = await DB.SaveChangesAsync();
 				if ( result == 0 ) {
 					return Conflict();
 				} else {
-					return Ok($"Category {cat.Name} deleted.");
+					return Ok($"Category {cat.Name} and all it's children deleted.");
 				}
 			} catch {
 				return InternalServerError();
