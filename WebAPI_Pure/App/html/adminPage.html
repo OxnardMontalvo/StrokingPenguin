@@ -125,30 +125,52 @@
     </div>
 </div>
 
-<div class="row printDisplay ma-hidden">
-    <div class="col-sm-12 print" ng-repeat="user in vm.users track by $index">
-        <div class="comp">
-            <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
-        </div>
-        <div class="userInfo">
-            <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
-            <p>{{user.Address}}</p>
-            <span>{{user.PostalCode}} {{user.County}}</span>
-        </div>
-    </div>
-</div>
-<div class="row printDisplay ma-hidden">
-    <div class="col-sm-12 userMsg">
-        <div>
-            <p>
-                Meddelande.
-            </p>
-        </div>
-        <div style="margin-top: 1em;" ng-repeat="user in vm.users track by $index">
-            <span style="font-size: 14pt;" ng-repeat="flyer in user.Flyers">{{flyer.Name}} | </span>
+<!--<div class="break">
+    <div class="row printDisplay ma-hidden">
+        <div class="col-sm-12 print" ng-repeat="user in vm.users track by $index">
+            <div class="comp">
+                <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
+            </div>
+            <div class="userInfo">
+                <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
+                <p>{{user.Address}}</p>
+                <span>{{user.PostalCode}} {{user.County}}</span>
+            </div>
         </div>
     </div>
+    <div class="row printDisplay ma-hidden">
+        <div class="col-sm-12 userMsg">
+            <div>
+                <p>
+                    Meddelande.
+                </p>
+            </div>
+            <div style="margin-top: 1em;" ng-repeat="user in vm.users track by $index">
+                <span style="font-size: 14pt;" ng-repeat="flyer in user.Flyers">{{flyer.Name}} | </span>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="break printDisplay ma-hidden" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber || user.DeliveryOrderNumber">
+    <div class="distDeliv">
+        <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
+    </div>
+    <div class="userInfo">
+        <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
+        <p>{{user.Address}}</p>
+        <span>{{user.PostalCode}} {{user.County}}</span>
+    </div>
+    <div class="message">
+        <p>
+            Meddelande. puiog aerguie ergeprg ergpöuibergu erguper iug ugi iu giu gpi ug piug piu gipu g iug piu gipu giu g ipug iup gipu g iug piu g.
+            puiog aerguie ergeprg ergpöuibergu erguper iug ugi iu giu gpi ug piug piu gipu g iug piu gipu giu g ipug iup gipu g iug piu g.
+        </p>
+    </div>
+    <div class="userFlyers">
+        <span style="font-size: 14pt;" ng-repeat="flyer in user.Flyers">{{flyer.Name}} | </span>
+    </div>
 </div>
+
 
 <div class="ma-center-text" ng-show="vm.displayLoadMore" ng-cloak>
     <a class="ma-btn-sm" ng-hide="vm.disableDuringLoad" ng-click="vm.loadMoreUsers(vm.take)">{{vm.btnText}}</a>

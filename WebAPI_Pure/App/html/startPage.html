@@ -100,21 +100,21 @@
 				<form class="ma-form" ng-submit="vm.login()" name="loginForm">
 					<div class="form-group" ng-form="Email">
 						<label>Epost</label>
-						<input ng-class="{'ma-has-error-border': Email.$invalid && Email.$dirty}" ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" ng-required="true" />
-						<div ng-show="Email.$invalid && Email.$dirty">
+						<input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" ng-required="true" />
+						<!--<div ng-show="Email.$invalid && Email.$dirty">
 							<span class="text-danger" ng-show="Email.$error.required">Fältet måste vara ifyllt!</span>
 							<span class="text-danger" ng-show="Email.$error.pattern">Fyll i en giltig e-post.</span>
-						</div>
+						</div>-->
 					</div>
 					<div class="form-group" ng-form="P">
 						<label>Lösenord</label>
 						<span><a style="cursor: pointer; margin-left: 9em;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
-						<input ng-class="{'ma-has-error-border': P.$invalid && P.$dirty}" ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
-						<div ng-show="P.$invalid && P.$dirty">
+						<input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
+						<!--<div ng-show="P.$invalid && P.$dirty">
 							<span class="text-danger" ng-show="P.$error.required">Fältet måste vara ifyllt!</span>
 							<span class="text-danger" ng-show="P.$error.minlength">Namnet måste innehålla minst 6 tecken!</span>
 							<span class="text-danger" ng-show="P.$error.maxlength">Namnet kan inte överstiga 256 tecken!</span>
-						</div>
+						</div>-->
 					</div>
 					<div class="ma-center-text">
 						<button ng-class="{'ma-btn-c-success': loginForm.$valid}" ng-disabled="loginForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
