@@ -121,8 +121,8 @@ namespace WebAPI_Pure.Controllers {
 
 				return Ok(users);
 
-			} catch ( Exception ex ) {
-				return InternalServerError(ex);
+			} catch {
+				return InternalServerError();
 			}
 		}
 
@@ -577,7 +577,40 @@ namespace WebAPI_Pure.Controllers {
 					return Ok("No changes.");
 				}
 				return Ok("Changes saves.");
-			} catch ( Exception ) {
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// id is catID
+		[Route("api/UserFlyersAll/{id}")]
+		public async Task<IHttpActionResult> Put(int id) {
+			try {
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var user = await DB.Users.Include(x => x.Flyers.Select(z => z.Category)).FirstOrDefaultAsync(x => x.Id == guid);
+				var flyers = new HashSet<Flyer>(DB.Flyers.Include(x => x.Category).Where(x => x.Category.ID == id && x.Category.Active == true && x.Active == true && x.Category.Flyers.Count > 0));
+
+				if ( user == null || flyers == null ) {
+					return NotFound();
+				}
+
+				user.Flyers.RemoveWhere(x => x.Category.ID == id);
+
+				foreach ( var f in flyers.Where(x => x.Category.ID == id) ) {
+					user.Flyers.Add(f);
+				}
+
+				var result = await DB.SaveChangesAsync();
+
+				if ( result == 0 ) {
+					return Ok("No changes.");
+				}
+				return Ok("All flyers selected");
+			} catch {
 				return InternalServerError();
 			}
 		}
