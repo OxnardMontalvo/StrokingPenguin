@@ -28,6 +28,8 @@ span {
 
 .break {
     page-break-after: always;
+    position: relative;
+    border: 1px solid transparent;
 }
 
 .printDisplay {
@@ -38,7 +40,16 @@ span {
     position: relative;
 }
 
-.comp {
+.userInfo, p, span {
+    font-size: 9pt;
+    margin: 0;
+    padding: 0;
+}
+.userMsg {
+    margin-top: 12em;
+}
+
+.distDeliv {
     position: absolute;
     right: 0;
     top: 0;
@@ -49,11 +60,15 @@ span {
     right: 25em;
     top: 5.5em;
 }
-.userInfo, p, span {
-    font-size: 9pt;
-    margin: 0;
-    padding: 0;
+
+.message {
+    width: 45%;
+    position: absolute;
+    left: 0;
+    top: 5.5em;
 }
-.userMsg {
-    margin-top: 12em;
+
+.userFlyers {
+    position: absolute;
+    top: 15em;
 }

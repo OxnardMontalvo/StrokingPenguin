@@ -321,31 +321,41 @@
             };
             vm.selFlyer = "";
         };
-        
+
+        function DeleteFlyersFirst (id) {
+            // Delete all flyers for selected cat.
+            for (var i = 0; i < vm.flyers.length; i++) {
+                if (vm.flyers[i].Category.ID == id) {
+                    adminCreate.flyers.delete({ id: vm.flyers[i].ID }, function (response) {
+                        vm.flyers.splice(id, 1);
+                    });
+                };
+            };
+            return true;
+        };
+
+        // Fix delete to correct load in the new list for flyers.
         vm.deleteCat = function (id) {
             if (confirm('Vill du verkligen ta bort kategorin från Databasen? Detta kommer också ta bort alla reklamblad för kategorin!')) {
                 
-                for (var i = 0; i < vm.flyers.length; i++) {
-                    if (vm.flyers[i].Category.ID == id) {
-                        adminCreate.flyers.delete({ id: vm.flyers[i].ID }, function (data) {
-                            vm.flyers.splice(id, 1);
-                        });
-                    };
-                };
+                var doneDelFlyers = DeleteFlyersFirst(id);
                 
-                adminCreate.cats.delete({ id: id }, function (data) {
-                    vm.cats.splice(id, 1);
-                });
+                if (doneDelFlyers) {
 
-                //adminCreate.flyers.get(function (data) {
-                //    if (data.length > 0) {
-                //        angular.copy(data, vm.flyers);
-                //    };
-                //});
-                
-                //adminCreate.cats.get(function (data) {
-                //    angular.copy(data, vm.cats);
-                //});
+                    adminCreate.flyers.get(function (data) {
+                        if (data.length > 0) {
+                            angular.copy(data, vm.flyers);
+                        };
+                    });
+
+                    adminCreate.cats.delete({ id: id }, function (data) {
+                        vm.cats.splice(id, 1);
+
+                        adminCreate.cats.get(function (data) {
+                            angular.copy(data, vm.cats);
+                        });
+                    });
+                };
             };
         };
         vm.deleteFlyer = function (id) {
