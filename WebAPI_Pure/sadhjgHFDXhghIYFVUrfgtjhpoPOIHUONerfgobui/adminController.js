@@ -322,42 +322,23 @@
             vm.selFlyer = "";
         };
 
-        function DeleteFlyersFirst (id) {
-            // Delete all flyers for selected cat.
-            for (var i = 0; i < vm.flyers.length; i++) {
-                if (vm.flyers[i].Category.ID == id) {
-                    adminCreate.flyers.delete({ id: vm.flyers[i].ID }, function (response) {
-                        vm.flyers.splice(id, 1);
-                    });
-                };
-            };
-            return true;
-        };
-
-        // Fix delete to correct load in the new list for flyers.
+        // Delete Cat and all its flyers.
         vm.deleteCat = function (id) {
             if (confirm('Vill du verkligen ta bort kategorin från Databasen? Detta kommer också ta bort alla reklamblad för kategorin!')) {
-                
-                var doneDelFlyers = DeleteFlyersFirst(id);
-                
-                if (doneDelFlyers) {
+
+                adminCreate.cats.delete({ id: id }, function (data) {
+                    vm.cats.splice(id, 1);
 
                     adminCreate.flyers.get(function (data) {
-                        if (data.length > 0) {
-                            angular.copy(data, vm.flyers);
-                        };
+                        angular.copy(data, vm.flyers);
                     });
-
-                    adminCreate.cats.delete({ id: id }, function (data) {
-                        vm.cats.splice(id, 1);
-
-                        adminCreate.cats.get(function (data) {
-                            angular.copy(data, vm.cats);
-                        });
+                    adminCreate.cats.get(function (data) {
+                        angular.copy(data, vm.cats);
                     });
-                };
+                });
             };
         };
+        // Delete Flyer.
         vm.deleteFlyer = function (id) {
             if (confirm('Vill du verkligen ta bort reklambladet från Databasen?')) {
                 adminCreate.flyers.delete({ id: id }, function (data) {
