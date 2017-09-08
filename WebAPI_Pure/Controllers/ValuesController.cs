@@ -584,7 +584,8 @@ namespace WebAPI_Pure.Controllers {
 
 		// id is catID
 		[Route("api/UserFlyersAll/{id}")]
-		public async Task<IHttpActionResult> Put(int id) {
+		[HttpPut]
+		public async Task<IHttpActionResult> PutAll(int id) {
 			try {
 				var guid = User.Identity.GetUserId();
 				if ( guid == null ) {
@@ -610,6 +611,35 @@ namespace WebAPI_Pure.Controllers {
 					return Ok("No changes.");
 				}
 				return Ok("All flyers selected");
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		// id is catID
+		[Route("api/UserFlyersNone/{id}")]
+		[HttpPut]
+		public async Task<IHttpActionResult> PutNone(int id) {
+			try {
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var user = await DB.Users.Include(x => x.Flyers.Select(z => z.Category)).FirstOrDefaultAsync(x => x.Id == guid);
+
+				if ( user == null ) {
+					return NotFound();
+				}
+
+				user.Flyers.RemoveWhere(x => x.Category.ID == id);
+
+				var result = await DB.SaveChangesAsync();
+
+				if ( result == 0 ) {
+					return Ok("No changes.");
+				}
+				return Ok("All flyers unselected");
 			} catch {
 				return InternalServerError();
 			}
