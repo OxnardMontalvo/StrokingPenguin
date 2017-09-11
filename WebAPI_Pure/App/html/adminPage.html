@@ -126,6 +126,7 @@
 </div>
 
 <div class="break printDisplay ma-hidden" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber || user.DeliveryOrderNumber">
+    <!--<img class="footerLogoImg" src="https://www.sdr.se/images/main-logo.png" style="width: 150px; height: auto;" />-->
     <div class="distDeliv">
         <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
     </div>
