@@ -501,12 +501,14 @@ namespace WebAPI_Pure.Controllers {
 					return NotFound();
 				}
 
-				var fIDs = user.Flyers.Select(x => x.ID).ToArray();
+				var fIDs = user.Flyers.Where(x => x.Range.Min <= user.PostalCode && x.Range.Max >= user.PostalCode && x.Active).Select(x => x.ID).ToArray();
+				var notAllIDs = cats.Where(x => ( x.Active && x.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active && !fIDs.Contains(z.ID)).Count() > 0 )).Select(x => x.ID).ToArray();
 
 				var result = cats.Select(c => new {
 					ID = c.ID,
 					Name = c.Name,
-					Flyers = ( c.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active == true).Select(x => new {
+					bAll = !notAllIDs.Contains(c.ID),
+					Flyers = ( c.Flyers.Where(z => z.Range.Min <= user.PostalCode && z.Range.Max >= user.PostalCode && z.Active).Select(x => new {
 						ID = x.ID,
 						Name = x.Name,
 						Selected = fIDs.Contains(x.ID)
@@ -538,7 +540,13 @@ namespace WebAPI_Pure.Controllers {
 					return Ok("Cat is inactive.");
 				}
 
-				var result = cat.Flyers.Select(x => new { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) });
+				var flyers = cat.Flyers.Where(x => x.Range.Min <= user.PostalCode && x.Range.Max >= user.PostalCode && x.Active)
+							.Select(x => new { ID = x.ID, Name = x.Name, Selected = user.Flyers.Contains(x) }).OrderBy(y => y.Name);
+
+				var result = new {
+					bAll = flyers.Where(x => !x.Selected).Count() == 0,
+					Flyers = flyers
+				};
 
 				return Ok(result);
 			} catch {
