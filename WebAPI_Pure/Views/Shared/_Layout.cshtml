@@ -26,14 +26,14 @@
                         <div ng-cloak ng-show="displayLogOut">
                             <div>
                                 <span><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-click="changePass()">Byt lösenord</a></span>
-                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/Admin">Admin Användarlista</a></span>
-                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/AdminCreate">Admin Skapa Kategorier & Reklamblad</a></span>
+                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/Admin">Användarlista</a></span>
+                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/AdminCreate">Skapa Kategorier & Reklamblad</a></span>
                             </div>
                         </div>
                     </div>
                     <div class="navbar-text pull-right">
                         <div ng-cloak style="color: orange; font-size: 1.5em;">
-                            <span style="margin-right: .5em;">{{cUser}}</span>
+                            <span style="margin-right: .5em;">{{cUser}} <span ng-if="cUser" class="glyphicon glyphicon-user"></span></span>
                             <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">
                                 <span class="glyphicon glyphicon-log-out"></span> Logga ut
                             </a>

@@ -1,7 +1,7 @@
 ﻿
 <div class="row ma-main ma-print-hidden">
     <div class="col-sm-12 col-md-4" style="padding: 0;">
-        <a ng-click="vm.loadMoreUsers(vm.take)" class="ma-btn-lg ma-btn-l ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</a>
+        <a ng-disable="true" ng-click="vm.loadMoreUsers(vm.take)" class="ma-btn-lg ma-btn-l ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</a>
     </div>
     <div class="col-sm-12 col-md-4 ma-mid-pad">
         <a ng-click="vm.refreshUserList()" class="ma-btn-lg ma-btn-c ma-center-text"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</a>
@@ -125,32 +125,6 @@
     </div>
 </div>
 
-<!--<div class="break">
-    <div class="row printDisplay ma-hidden">
-        <div class="col-sm-12 print" ng-repeat="user in vm.users track by $index">
-            <div class="comp">
-                <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
-            </div>
-            <div class="userInfo">
-                <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
-                <p>{{user.Address}}</p>
-                <span>{{user.PostalCode}} {{user.County}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="row printDisplay ma-hidden">
-        <div class="col-sm-12 userMsg">
-            <div>
-                <p>
-                    Meddelande.
-                </p>
-            </div>
-            <div style="margin-top: 1em;" ng-repeat="user in vm.users track by $index">
-                <span style="font-size: 14pt;" ng-repeat="flyer in user.Flyers">{{flyer.Name}} | </span>
-            </div>
-        </div>
-    </div>
-</div>-->
 <div class="break printDisplay ma-hidden" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber || user.DeliveryOrderNumber">
     <div class="distDeliv">
         <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>

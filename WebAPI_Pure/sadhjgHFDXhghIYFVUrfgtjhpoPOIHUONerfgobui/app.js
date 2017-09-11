@@ -33,7 +33,9 @@
                 },
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
                     // you can lazy load files for an existing module
-                    return $ocLazyLoad.load('App/js/adminController.js');
+                    $ocLazyLoad.load('App/js/adminController.js');
+                    $ocLazyLoad.load('sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/adminController.js');
+                    return;
                 }]
             }
          })
@@ -68,9 +70,11 @@
             controllerAs: "vm",
             resolve: {
                 checkRoleValidation: function (checkRole, $location) {
+                    console.log(checkRole.getAURole().$$state.value);
                     if (checkRole.getAURole().$$state.value == false) {
                         $location.path("/Login");
                     } else {
+                        console.log(checkRole.getAURole());
                         return true;
                     }
                 }
@@ -95,7 +99,9 @@
                 },
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
                     // you can lazy load files for an existing module
-                    return $ocLazyLoad.load('App/js/userCtrl.js');
+                    $ocLazyLoad.load('App/js/userCtrl.js');
+                    $ocLazyLoad.load('sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userCtrl.js');
+                    return;
                 }]
             }
         })

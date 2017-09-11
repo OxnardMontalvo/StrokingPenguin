@@ -38,6 +38,7 @@
                 } else {
                     $location.path("/Login");
                 };
+                
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });
@@ -63,7 +64,7 @@
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });
-        }
+        };
 
     })
     .controller("forgotPassCtrl", function ($scope, fp) {

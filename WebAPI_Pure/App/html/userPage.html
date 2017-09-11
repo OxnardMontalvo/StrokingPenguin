@@ -1,7 +1,7 @@
-﻿<div class="row ma-main userHeight" >
-    <div class="col-md-4" ng-repeat="cat in vm.cats">
+﻿<div class="row ma-main userHeight">
+    <div class="col-md-4" ng-repeat="cat in vm.cats track by $index">
         <div class="panel panel-primary">
-            <div class="panel-heading clearfix">
+            <div class="panel-heading">
                 <h2>Kategori {{cat.Name}}<span style="font-size: 9pt;" class="pull-right"> Välj alla <input style="margin-left: .5em;" type="checkbox" ng-checked="vm.all.Selected" ng-model="vm.all.Selected" ng-change="vm.checkAllChange(cat, vm.all)" /></span></h2>
             </div>
             <div class="panel-body">
