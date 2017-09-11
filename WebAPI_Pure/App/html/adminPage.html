@@ -11,15 +11,15 @@
     </div>
 </div>
 
-<!--<div>
+<div class="ma-print-hidden">
     <div>
-        <form>
-            <textarea ng-model="vm.printInfoMsg" style="margin-top: 2em; width: 100%; height: 5em;" placeholder="Kundmeddelande som vissas när man gör en utskrift."></textarea>
-            <input ng-click="vm.saveMsg()" type="button" value="Spara" />
+        <form class="form-group">
+            <textarea class="form-control" id="msg" ng-model="vm.printInfoMsg" style="margin-top: 2em; max-width: 100%; max-height: 6.5em;" rows="4" placeholder="Kundmeddelande som vissas när man gör en utskrift."></textarea>
+            <input class="form-control" style="width: 100%" ng-click="vm.saveMsg()" type="button" value="Spara" />
         </form>
         
     </div>
-</div>-->
+</div>
 
 <div class="ma-center-text" ng-show="vm.errorMsg">
     <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
@@ -162,8 +162,7 @@
     </div>
     <div class="message">
         <p>
-            Meddelande. puiog aerguie ergeprg ergpöuibergu erguper iug ugi iu giu gpi ug piug piu gipu g iug piu gipu giu g ipug iup gipu g iug piu g.
-            puiog aerguie ergeprg ergpöuibergu erguper iug ugi iu giu gpi ug piug piu gipu g iug piu gipu giu g ipug iup gipu g iug piu g.
+            {{vm.printDisplayMsg[0].Bulletin}}
         </p>
     </div>
     <div class="userFlyers">

@@ -133,6 +133,24 @@
                 }
             });
         }])
+        .factory("userAll", ["$resource", "appSettings", function ($resource, appSettings) {
+            return {
+                selectAllFlyers: $resource(appSettings.serverPath + "api/UserFlyersAll/:id", {}, {
+                    'save': {
+                        method: 'PUT',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    }
+                }),
+                deselectAllFlyers: $resource(appSettings.serverPath + "api/UserFlyersNone/:id", {}, {
+                    'save': {
+                        method: 'PUT',
+                        isArray: false,
+                        headers: { "Authorization": tokenHeader }
+                    }
+                })
+            };
+        }])
 
         .factory("printMsg", ["$resource", "appSettings", function ($resource, appSettings) {
             return $resource(appSettings.serverPath + "api/Messages/:id", {}, {
@@ -142,6 +160,11 @@
                     headers: { "Authorization": tokenHeader }
                 },
                 'save': {
+                    method: 'PUT',
+                    isArray: false,
+                    headers: { "Authorization": tokenHeader }
+                },
+                'saveFirst': {
                     method: 'POST',
                     isArray: false,
                     headers: { "Authorization": tokenHeader }

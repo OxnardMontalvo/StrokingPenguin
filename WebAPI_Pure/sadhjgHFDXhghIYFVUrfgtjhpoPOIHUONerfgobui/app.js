@@ -33,7 +33,7 @@
                 },
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
                     // you can lazy load files for an existing module
-                    return $ocLazyLoad.load('sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/adminController.js');
+                    return $ocLazyLoad.load('App/js/adminController.js');
                 }]
             }
          })
@@ -92,7 +92,11 @@
                     } else {
                         return true;
                     }
-                }
+                },
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    // you can lazy load files for an existing module
+                    return $ocLazyLoad.load('App/js/userCtrl.js');
+                }]
             }
         })
         .otherwise({

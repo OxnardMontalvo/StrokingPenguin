@@ -5,17 +5,35 @@
     // Admin controller for displaying admin specific tasks.
     .controller("adminCtrl", function (printMsg, user, userPage, currentUser, searchUser) {
         var vm = this;
+        
+        vm.printDisplayMsg = [];
 
-        //vm.printInfoMsg = "";
-        //vm.printDisplayMsg = [];
+        printMsg.get(function (response) {
+            //console.log(response);
+            if (response.length > 0) {
+                angular.copy(response, vm.printDisplayMsg);
+                //console.log(vm.printDisplayMsg);
+                $('#msg').val(vm.printDisplayMsg[0].Bulletin);
+            }
+        });
+        vm.saveMsg = function () {
+            var custumorMsg = $('#msg').val();
+            //console.log(custumorMsg);
 
-        //vm.saveMsg = function () {
-        //    console.log(vm.printInfoMsg);
-        //    printMsg.save(vm.printInfoMsg, function (response) {
-        //        console.log(response);
-        //    });
-        //};
-
+            if (vm.printDisplayMsg.length > 0) {
+                //console.log(vm.printInfoMsg);
+                printMsg.save({ id: vm.printDisplayMsg[0].ID }, JSON.stringify(custumorMsg), function (response) {
+                    //console.log(response);
+                });
+            } else {
+                printMsg.saveFirst( JSON.stringify(custumorMsg), function (response) {
+                    //console.log(response);
+                });
+            };
+            
+        };
+        
+        
         vm.users = [];
         vm.take = 25;
         var page = 1;
