@@ -71,11 +71,14 @@
         <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/commonServices.js"></script>
         <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/startController.js"></script>
         <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userAccount.js"></script>
-        <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userCtrl.js"></script>
-
+        
         if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
             <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/adminController.js"></script>
+        }
+        if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+        {
+            <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userCtrl.js"></script>
         }
     }
     else
@@ -85,11 +88,14 @@
         <script src="~/App/js/commonServices.js"></script>
         <script src="~/App/js/startController.js"></script>
         <script src="~/App/js/userAccount.js"></script>
-        <script src="~/App/js/userCtrl.js"></script>
-
+        
         if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
             <script src="~/App/js/adminController.js"></script>
+        }
+        if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+        {
+            <script src="~/App/js/userCtrl.js"></script>
         }
     }
 
