@@ -400,14 +400,21 @@ namespace WebAPI_Pure.Controllers {
 			return BadRequest();
 		}
 
-		[Authorize(Roles = "Admin, User")]
+		[AllowAnonymous]
+		//[Authorize(Roles = "Admin, User")] //TODO: Find out why this does not work!
 		[Route("api/Users/ChangePassword")]
 		[HttpPost]
 		public async Task<IHttpActionResult> ChangePassword([FromBody]ChangePasswordBindingModel bm) {
 			var user = User.Identity.GetUserId();
+
 			if ( !ModelState.IsValid || user == null ) {
-				return BadRequest(ModelState);
+				return BadRequest();
 			}
+
+			if ( !UserManager.IsInRole(user, "User") && !UserManager.IsInRole(user, "Admin") ) {
+				return Unauthorized();
+			}
+
 			var result = await UserManager.ChangePasswordAsync(user, bm.OldPassword, bm.NewPassword);
 			return Ok(result);
 		}
