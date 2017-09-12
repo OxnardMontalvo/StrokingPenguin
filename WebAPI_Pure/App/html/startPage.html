@@ -56,10 +56,10 @@
 					<div class="form-group" ng-form="PostalCode">
 						<!--/^\d{3}\s\d{2}$/-->
 						<label>Postnummer</label>
-						<input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^363[ -]?(3[0-9]|4[0-2]|91)$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
+						<input ng-class="{'ma-has-error-border': PostalCode.$invalid && PostalCode.$dirty}" ng-model="vm.formData.PostalCode" ng-pattern="/^(35[2-9][ -]?[0-9][0-9])|^(36[0-3][ -]?[0-9][0-9])$/" class="form-control input-lg" type="text" placeholder="Postnummer" ng-required="true" />
 						<div ng-show="PostalCode.$invalid && PostalCode.$dirty">
 							<span class="text-danger" ng-show="PostalCode.$error.required">Fältet måste vara ifyllt!</span>
-							<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: 363 30 - 42 eller 91</span>
+							<span class="text-danger" ng-show="PostalCode.$error.pattern">Fyll i ett giltigt postnummer: 352 00 till 363 99</span>
 						</div>
 					</div>
 					<div class="form-group" ng-form="Email">
@@ -72,7 +72,7 @@
 					</div>
 					<div class="ma-center-text">
 						<input ng-hide="vm.disableDuringLoading" ng-class="{'ma-btn-c-success': signUpForm.$valid}" ng-disabled="signUpForm.$invalid" type="submit" class="ma-btn-lg ma-btn-c" value="{{vm.btnText}}" />
-                        <a ng-show="vm.disableDuringLoading" class="ma-btn-lg ma-btn-c" style="text-decoration: none; color: grey;">{{vm.btnText}}</a>
+						<a ng-show="vm.disableDuringLoading" class="ma-btn-lg ma-btn-c" style="text-decoration: none; color: grey;">{{vm.btnText}}</a>
 					</div>
 				</form>
 				<div class="ma-center-text" ng-show="vm.validMsg">
@@ -152,9 +152,9 @@
 					</div>
 				</form>
 			</div>
-            <div class="ma-center-text" ng-show="vm.errorMsg">
-                <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
-            </div>
+			<div class="ma-center-text" ng-show="vm.errorMsg">
+				<p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
+			</div>
 		</div>
 	</div>
 </div>
