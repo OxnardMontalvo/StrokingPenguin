@@ -33,6 +33,7 @@
                 vm.disableDuringLoading = false;
             });
         };
+        
     });
 
 })();

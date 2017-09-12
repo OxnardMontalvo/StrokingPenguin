@@ -206,4 +206,70 @@
     .printDisplay {
         display: none;
     }
+
+    .modal-content {
+        background-color: white;
+        margin: 6em auto;
+        padding: 20px;
+        min-width: 100%;
+    }
+
+    .infoBtn {
+        font-size: 12pt;
+        display: block;
+        padding: 1em 2em;
+        cursor: pointer;
+        min-width: 100%;
+    }
+}
+
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, .75);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 6em auto;
+    padding: 20px;
+    width: 30%;
+}
+
+.infoBtn {
+    font-size: 12pt;
+    display: inline-block;
+    padding: 1em 2em;
+    cursor: pointer;
+    width: 12em;
+}
+
+.infoBtn-default {
+    background-color: rgb(73, 150, 222);
+    color: white;
+}
+.infoBtn-default:hover {
+    background-color: rgb(73, 150, 222);
+    color: black;
+    text-decoration: none;
+}
+
+.orMargin {
+    margin: 0 1em;
+}
+
+.xModal {
+    float: right;
+    font-size: 24pt;
+    color: lightgray;
+    cursor: pointer;
+}
+.xModal:hover {
+    font-size: 24pt;
+    color: darkgrey;
 }

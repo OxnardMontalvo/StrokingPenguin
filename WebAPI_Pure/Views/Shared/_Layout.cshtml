@@ -26,6 +26,7 @@
                         <div ng-cloak ng-show="displayLogOut">
                             <div>
                                 <span><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-click="changePass()">Byt lösenord</a></span>
+                                <span ng-show="currentRole == 'User'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/User">Din Reklam</a></span>
                                 <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/Admin">Användarlista</a></span>
                                 <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/AdminCreate">Skapa Kategorier & Reklamblad</a></span>
                             </div>

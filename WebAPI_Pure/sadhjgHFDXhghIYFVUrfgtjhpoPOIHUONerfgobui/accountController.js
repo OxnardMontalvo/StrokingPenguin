@@ -5,8 +5,35 @@
 
     angular.module("app")
     // Register and Login controller, for both users and admin.
-        .controller("registerAndLoginCtrl", function (user, userAccount, changePass, $scope, $location, currentUser) {
+    .controller("registerAndLoginCtrl", function (user, userAccount, changePass, $scope, $location, currentUser) {
         var vm = this;
+
+        // Get modal for login and register.
+        var modalReg = document.getElementById('reg');
+        var modalLogIn = document.getElementById('login');
+
+        // Function to display the modals.
+        vm.displayReg = function () {
+            window.addEventListener('click', clickOutside);
+            modalReg.style.display = 'block';
+        };
+        vm.displayLogin = function () {
+            window.addEventListener('click', clickOutside);
+            modalLogIn.style.display = 'block';
+        }
+
+        // Function to exit by clicking on the modal.
+        function clickOutside(e) {
+            console.log(e.target)
+            if (e.target == modalReg) {
+                modalReg.style.display = 'none';
+                window.removeEventListener('click', clickOutside);
+            }
+            else if (e.target == modalLogIn) {
+                modalLogIn.style.display = 'none';
+                window.removeEventListener('click', clickOutside);
+            }
+        };
 
         vm.show = false;
         vm.phaseOneHide = false;
@@ -42,10 +69,13 @@
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });
+            window.removeEventListener('click', clickOutside);
         };
 
         vm.forgotPassword = function () {
+            window.removeEventListener('click', clickOutside);
             $location.path("/ForgotPassword");
+            
         };
 
     })

@@ -53,7 +53,7 @@
                 };
             }, function (error) {
                 vm.errorMsg = error.statusText;
-            });
+                });
         };
 
         // Runs when starting to load the first users from DB.
