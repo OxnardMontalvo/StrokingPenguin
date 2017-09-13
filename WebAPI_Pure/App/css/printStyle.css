@@ -7,17 +7,6 @@
     display: none;
 }
 
-.ma-hidden {
-    display: block;
-}
-.ma-show {
-    display: none;
-}
-
-.ma-print-hidden {
-    display: none;
-}
-
 p {
     font-size: 14pt;
 }
@@ -32,8 +21,11 @@ span {
     border: 1px solid transparent;
 }
 
-.printDisplay {
+.rt-onlyForPrint {
     display: block;
+}
+.rt-hideForPrint {
+    display: none;
 }
 
 .print {

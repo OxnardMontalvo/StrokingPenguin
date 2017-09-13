@@ -1,34 +1,33 @@
-﻿
-<div class="row ma-main ma-print-hidden">
+﻿<div class="row rt-main rt-hideForPrint">
     <div class="col-sm-12 col-md-4" style="padding: 0;">
-        <a ng-click="" style="cursor: not-allowed; color: gray; text-decoration: none;" class="ma-btn-lg ma-btn-l ma-center-text"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</a>
+        <a ng-click="" style="cursor: not-allowed; color: gray; text-decoration: none;" class="btn btn-default rt-btn-roundCorner-left text-center"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</a>
     </div>
     <div class="col-sm-12 col-md-4 ma-mid-pad">
-        <a ng-click="vm.refreshUserList()" class="ma-btn-lg ma-btn-c ma-center-text"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</a>
+        <a ng-click="vm.refreshUserList()" class="btn btn-primary rt-btn-noRoundCorner rt-btn-fix text-center"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</a>
     </div>
     <div class="col-sm-12 col-md-4" style="padding: 0;">
-        <a onclick="window.print()" class="ma-btn-lg ma-btn-r ma-center-text"><span class="glyphicon glyphicon-print"></span> Skriv ut</a>
+        <a onclick="window.print()" class="btn btn-primary rt-btn-roundCorner-right text-center"><span class="glyphicon glyphicon-print"></span> Skriv ut</a>
     </div>
 </div>
 
-<div class="ma-print-hidden">
+<div class="rt-hideForPrint">
     <div>
         <form class="form-group">
             <textarea class="form-control" id="msg" ng-model="vm.printInfoMsg" style="margin-top: 2em; max-width: 100%; max-height: 6.5em;" rows="4" placeholder="Kundmeddelande som vissas när man gör en utskrift."></textarea>
-            <input class="form-control" style="width: 100%" ng-click="vm.saveMsg()" type="button" value="Spara" />
+            <input class="form-control btn btn-primary rt-btn-fix" style="width: 100%;" ng-click="vm.saveMsg()" type="button" value="Spara" />
         </form>
         
     </div>
 </div>
 
-<div class="ma-center-text" ng-show="vm.errorMsg">
-    <p class="text-danger ma-succssesText">{{vm.errorMsg}}</p>
+<div class="text-center" ng-show="vm.errorMsg">
+    <p class="text-danger">{{vm.errorMsg}}</p>
 </div>
-<div class="ma-center-text" ng-show="vm.disableDuringLoad">
-    <p class="text-danger ma-succssesText">{{vm.btnText}}</p>
+<div class="text-center" ng-show="vm.disableDuringLoad">
+    <p class="text-danger">{{vm.btnText}}</p>
 </div>
 
-<div class="row ma-main ma-print-hidden">
+<div class="row rt-main rt-hideForPrint">
     <div class="col-sm-12 col-md-8">
         <form class="form-inline" ng-submit="vm.searchUser(vm.searchString)">
             <div class="form-group">
@@ -51,17 +50,17 @@
     </div>
 </div>
 
-<div class="row ma-show">
+<div class="row rt-deviceShow rt-hideForPrint">
     <table class="table table-responsive">
         <thead>
             <tr>
-                <th class="ma-table-width-15">Namn</th>
-                <th class="ma-table-width-20">Adress</th>
-                <th class="ma-table-width-15">Ort</th>
-                <th class="ma-table-width-15">Post nr.</th>
-                <th class="ma-table-width-15">Email</th>
-                <th class="ma-table-width-10">Distrikt nr.</th>
-                <th class="ma-table-width-10">Gång nr.</th>
+                <th class="rt-table-width-15">Namn</th>
+                <th class="rt-table-width-20">Adress</th>
+                <th class="rt-table-width-15">Ort</th>
+                <th class="rt-table-width-15">Post nr.</th>
+                <th class="rt-table-width-15">Email</th>
+                <th class="rt-table-width-10">Distrikt nr.</th>
+                <th class="rt-table-width-10">Gång nr.</th>
                 <th>Kontroll</th>
             </tr>
         </thead>
@@ -106,8 +105,8 @@
     </table>
 </div>
 
-<div class="row ma-mobile">
-    <div class="col-sm-12 ma-mobileMode">
+<div class="row rt-deviceHidden rt-hideForPrint">
+    <div class="col-sm-12 rt-mobileMode">
         <div class="break panel panel-primary" ng-repeat="user in vm.users track by $index">
             <div class="panel-heading">
                 <span>Namn: {{user.Name}}</span><span class="pull-right">  Adress: {{user.Address}}</span>
@@ -125,8 +124,8 @@
     </div>
 </div>
 
-<div class="break printDisplay ma-hidden" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber || user.DeliveryOrderNumber">
-    <!--<img class="footerLogoImg" src="https://www.sdr.se/images/main-logo.png" style="width: 150px; height: auto;" />-->
+<div class="break rt-onlyForPrint" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber || user.DeliveryOrderNumber">
+    <!--<img class="rt-footerLogoImg" src="https://www.sdr.se/images/main-logo.png" style="width: 150px; height: auto;" />-->
     <div class="distDeliv">
         <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
     </div>
@@ -146,7 +145,7 @@
 </div>
 
 
-<div class="ma-center-text" ng-show="vm.displayLoadMore" ng-cloak>
-    <a class="ma-btn-sm" ng-hide="vm.disableDuringLoad" ng-click="vm.loadMoreUsers(vm.take)">{{vm.btnText}}</a>
-    <a class="ma-btn-sm" ng-show="vm.disableDuringLoad" ng-click="">{{vm.btnText}}</a>
+<div class="text-center" ng-show="vm.displayLoadMore" ng-cloak>
+    <a class="btn btn-sm rt-btn-fix" ng-hide="vm.disableDuringLoad" ng-click="vm.loadMoreUsers(vm.take)">{{vm.btnText}}</a>
+    <a class="btn btn-sm rt-btn-fix" ng-show="vm.disableDuringLoad" ng-click="">{{vm.btnText}}</a>
 </div>

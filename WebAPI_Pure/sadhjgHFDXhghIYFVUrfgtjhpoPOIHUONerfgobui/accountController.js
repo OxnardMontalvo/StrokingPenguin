@@ -34,6 +34,12 @@
                 window.removeEventListener('click', clickOutside);
             }
         };
+        
+        vm.exitModal = function () {
+            modalReg.style.display = 'none';
+            modalLogIn.style.display = 'none';
+            window.removeEventListener('click', clickOutside);
+        };
 
         vm.show = false;
         vm.phaseOneHide = false;
