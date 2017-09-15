@@ -308,6 +308,26 @@ namespace WebAPI_Pure.Controllers {
 		}
 
 		[AllowAnonymous]
+		[Route("SendConfirm")]
+		[HttpGet]
+		public async Task<IHttpActionResult> SendConfirm() {
+			try {
+				var guid = User.Identity.GetUserId();
+				if ( guid == null ) {
+					return NotFound();
+				}
+
+				var code = await UserManager.GenerateEmailConfirmationTokenAsync(guid);
+				var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{guid}/{code.Replace('/', '_').Replace('+', '!')}";
+				await UserManager.SendEmailAsync(guid, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
+
+				return Ok();
+			} catch {
+				return InternalServerError();
+			}
+		}
+
+		[AllowAnonymous]
 		[Route("ConfirmEmail", Name = "ConfirmEmail")]
 		[HttpGet]
 		public async Task<IHttpActionResult> ConfirmEmail(string userId, string code) {
