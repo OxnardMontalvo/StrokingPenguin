@@ -48,19 +48,19 @@
         </div>
         <div ng-cloak ng-show="displayLogOut && currentRole == 'User' && confirm == 'False'" class="text-center" style="color: white; padding: 1em;">
             <div>
-                Din mail är inte bekräftad ännu. <a ng-click="newConfirmMail()" style="color: orange; cursor: pointer;">Skicka ett bekräftnings mail igen.</a>
+                Din epost är inte bekräftad ännu. <a ng-click="newConfirmMail()" style="color: orange; cursor: pointer;">Skicka ett nytt bekräftnings epost.</a>
             </div>
         </div>
 
         <div id="sendConfirmModal" class="rt-modal">
             <div class="rt-modal-content">
                 <div class="rt-modal-header clearfix">
-                    <span>Bekräftat mail</span>
+                    <span>Bekräfta epost</span>
                     <span class="rt-xModal"><a ng-click="exitModal()">&times;</a></span>
                 </div>
                 <div class="rt-modal-body">
-                    <p>Du har nu fått ett mail skickat till dig. Genom att trycka på länken i mailet bekräftar du ditt mail.</p>
-                    <p>Vid nästa inloggning kommer inte meddelandet synas om du bekräftat din mail.</p>
+                    <p>Du har nu fått ett epost meddelande skickat till dig. Genom att trycka på länken i epost meddelandet bekräftar du din epost.</p>
+                    <p>Vid nästa inloggning kommer inte meddelandet på sidan att synas om du bekräftat din epost.</p>
                 </div>
             </div>
         </div>
