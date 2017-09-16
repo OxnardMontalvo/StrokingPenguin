@@ -406,14 +406,20 @@ namespace WebAPI_Pure.Controllers {
 		public async Task<IHttpActionResult> ForgotPassword([FromUri]ForgotPasswordViewModel vm) {
 			if ( ModelState.IsValid ) {
 				var user = await UserManager.FindByNameAsync(vm.Email);
-				if ( user == null || !( await UserManager.IsEmailConfirmedAsync(user.Id) ) ) {
-					// Don't reveal that the user does not exist or is not confirmed
+				if ( user == null ) {
+					// Don't reveal that the user does not exist
 					return Ok("ForgotPasswordConfirmation");
 				}
 
-				var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-				string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
-				await UserManager.SendEmailAsync(user.Id, "Återställning av Lösenord", "Återställ ert lösenord genom att klicka på länken: <a href=\"" + callbackUrl + "\">länk</a>");
+				if ( !user.EmailConfirmed ) {
+					var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+					var callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/ConfirmEmail/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
+					await UserManager.SendEmailAsync(user.Id, "Bekräfta er epost", "Var vänlig bekräfta att er epost är korrekt innan ett lösenord kan skapas genom att klicka på länken: <a href=" + callbackUrl + ">länk</a>");
+				} else {
+					var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+					string callbackUrl = @"http://" + HttpContext.Current.Request.Url.Authority + $"/#!/RecoverPassword/{user.Id}/{code.Replace('/', '_').Replace('+', '!')}";
+					await UserManager.SendEmailAsync(user.Id, "Återställning av Lösenord", "Återställ ert lösenord genom att klicka på länken: <a href=\"" + callbackUrl + "\">länk</a>");
+				}
 				return Ok("ForgotPasswordConfirmation");
 			}
 			// If we got this far, something failed, redisplay form
