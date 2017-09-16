@@ -1,8 +1,4 @@
-﻿/// <reference path="C:\Users\deltagare\Source\Repos\StrokingPenguin\WebAPI_Pure\Scripts/angular.js" />
-/// <reference path="C:\Users\deltagare\Source\Repos\StrokingPenguin\WebAPI_Pure\Scripts/angular-route.js" />
-
-
-(function () {
+﻿(function () {
     "use strict";
 
     angular.module("app", ["ngRoute", "services", "oc.lazyLoad"])
