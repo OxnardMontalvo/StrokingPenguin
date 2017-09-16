@@ -188,6 +188,15 @@
             });
         }])
 
+        .factory("scm", ["$resource", "appSettings", function ($resource, appSettings) {
+            return $resource(appSettings.serverPath + "SendConfirm", {}, {
+                'get': {
+                    method: 'GET',
+                    headers: { "Authorization": tokenHeader }
+                }
+            });
+        }])
+
         .factory("rp", ["$resource", "appSettings", function ($resources, appSettings) {
             return $resources(appSettings.serverPath + "ResetPassword", {}, {
                 'post': {

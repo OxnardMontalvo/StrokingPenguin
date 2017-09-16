@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div ng-cloak ng-controller="userInfo" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -21,7 +21,7 @@
                 @Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div ng-cloak class="navbar-collapse collapse">
-                <div ng-cloak ng-controller="userInfo">
+                <div>
                     <div class="navbar-text">
                         <div ng-cloak ng-show="displayLogOut">
                             <div>
@@ -45,14 +45,34 @@
                     </div>
                 </div>
             </div>
-            
         </div>
+        <div ng-cloak ng-show="displayLogOut && currentRole == 'User' && confirm == 'False'" class="text-center" style="color: white; padding: 1em;">
+            <div>
+                Din mail är inte bekräftad ännu. <a ng-click="newConfirmMail()" style="color: orange; cursor: pointer;">Skicka ett bekräftnings mail igen.</a>
+            </div>
+        </div>
+
+        <div id="sendConfirmModal" class="rt-modal">
+            <div class="rt-modal-content">
+                <div class="rt-modal-header clearfix">
+                    <span>Bekräftat mail</span>
+                    <span class="rt-xModal"><a ng-click="exitModal()">&times;</a></span>
+                </div>
+                <div class="rt-modal-body">
+                    <p>Du har nu fått ett mail skickat till dig. Genom att trycka på länken i mailet bekräftar du ditt mail.</p>
+                    <p>Vid nästa inloggning kommer inte meddelandet synas om du bekräftat din mail.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - RekalmTack.nu i samarbete med <span>
+            <p>
+                &copy; @DateTime.Now.Year - RekalmTack.nu i samarbete med <span>
                     <img class="rt-footerLogoImg" src="https://www.sdr.se/images/main-logo.png" />
                 </span>
             </p>
@@ -72,7 +92,7 @@
         <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/commonServices.js"></script>
         <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/startController.js"></script>
         <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userAccount.js"></script>
-        
+
         if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
             <script src="~/sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/adminController.js"></script>
@@ -89,7 +109,7 @@
         <script src="~/App/js/commonServices.js"></script>
         <script src="~/App/js/startController.js"></script>
         <script src="~/App/js/userAccount.js"></script>
-        
+
         if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
             <script src="~/App/js/adminController.js"></script>

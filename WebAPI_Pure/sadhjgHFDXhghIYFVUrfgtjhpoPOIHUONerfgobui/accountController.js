@@ -60,7 +60,7 @@
             vm.userData.confirmPassword = vm.userData.password;
             vm.userData.userName = vm.userData.email;
             userAccount.loginUser(vm.userData, function (response, headersGetter) {
-                currentUser.setProfile(response.userName, true, response.roles);
+                currentUser.setProfile(response.userName, true, response.roles, response.confirm);
                 sessionStorage.setItem(tokenKey, response.access_token);
 
                 if (response.roles == "Admin") {
@@ -74,11 +74,9 @@
             }, function (error) {
                 vm.errorMsg = error.statusText;
             });
-            window.removeEventListener('click', clickOutside);
         };
 
         vm.forgotPassword = function () {
-            window.removeEventListener('click', clickOutside);
             $location.path("/ForgotPassword");
             
         };

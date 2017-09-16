@@ -140,13 +140,15 @@
         var profile = {
             isLoggedIn: false,
             username: "",
-            role: ""
+            role: "",
+            confirm: ""
         };
 
-        var setProfile = function (username, isLoggedIn, role) {
+        var setProfile = function (username, isLoggedIn, role, confirm) {
             profile.username = username;
             profile.isLoggedIn = isLoggedIn;
             profile.role = role;
+            profile.confirm = confirm;
 
             sessionStorage.setItem("profile", JSON.stringify(profile));
         };
@@ -162,7 +164,7 @@
         };
     })
 
-    .controller("userInfo", function (currentUser, $scope, $location) {
+    .controller("userInfo", function (currentUser, $scope, $location, scm) {
         
         $scope.displayLogOut = false;
         $scope.$watch(function () {
@@ -185,6 +187,16 @@
                 $scope.currentRole = newValue;
             };
         });
+
+        $scope.$watch(function () {
+            if (currentUser.getProfile() != null) {
+                return currentUser.getProfile().confirm;
+            }
+        }, function (newValue, oldValue) {
+            if (newValue != null) {
+                $scope.confirm = newValue;
+            };
+        });
         
         $scope.logOut = function () {
             sessionStorage.clear();
@@ -197,6 +209,31 @@
             $location.path("/ChangePassword");
         };
 
+        $scope.newConfirmMail = function () {
+            scm.get(function (response) {
+                console.log(response);
+            });
+            // Display the modal.
+            window.addEventListener('click', clickOutside);
+            modalIsMailConfirmed.style.display = 'block';
+        };
+
+        // Get modal for login and register.
+        var modalIsMailConfirmed = document.getElementById('sendConfirmModal');
+        
+        // Function to exit by clicking on the modal.
+        function clickOutside(e) {
+            if (e.target == modalIsMailConfirmed) {
+                modalIsMailConfirmed.style.display = 'none';
+                window.removeEventListener('click', clickOutside);
+            }
+        };
+
+        $scope.exitModal = function () {
+            modalIsMailConfirmed.style.display = 'none';
+            window.removeEventListener('click', clickOutside);
+        };
+        
     });
 
 })();
