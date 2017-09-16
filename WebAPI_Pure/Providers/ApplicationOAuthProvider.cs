@@ -37,7 +37,7 @@ namespace WebAPI_Pure.Providers {
 			ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
 
 			List<Claim> roles = oAuthIdentity.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-			AuthenticationProperties properties = CreateProperties(user.UserName, roles.Select(x => x.Value).FirstOrDefault());
+			AuthenticationProperties properties = CreateProperties(user.UserName, roles.Select(x => x.Value).FirstOrDefault(), user.EmailConfirmed);
 			AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
 
 			context.Validated(ticket);
@@ -75,11 +75,12 @@ namespace WebAPI_Pure.Providers {
 			return Task.FromResult<object>(null);
 		}
 
-		public static AuthenticationProperties CreateProperties(string userName, string Roles) {
+		public static AuthenticationProperties CreateProperties(string userName, string Roles, bool confirm) {
 			IDictionary<string, string> data = new Dictionary<string, string>
 			{
 				{ "userName", userName },
-				{"roles", Roles}
+				{"roles", Roles},
+				{"confirm", confirm.ToString()}
 			};
 			return new AuthenticationProperties(data);
 		}
