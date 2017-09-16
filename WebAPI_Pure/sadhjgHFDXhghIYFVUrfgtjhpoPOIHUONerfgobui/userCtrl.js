@@ -17,6 +17,9 @@
 
                 userInfo.savePut({ id: cat.ID }, cat.Flyers, function (response) {
                     //console.log(response);
+                    userInfo.get(function (data) {
+                        angular.copy(data, vm.cats);
+                    });
                 });
             };
 
