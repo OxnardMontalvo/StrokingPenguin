@@ -20,27 +20,27 @@
                 </button>
                 @Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div ng-cloak class="navbar-collapse collapse">
                 <div ng-cloak ng-controller="userInfo">
                     <div class="navbar-text">
                         <div ng-cloak ng-show="displayLogOut">
                             <div>
-                                <span><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-click="changePass()">Byt lösenord</a></span>
-                                <span ng-show="currentRole == 'User'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/User">Din Reklam</a></span>
-                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/Admin">Användarlista</a></span>
-                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/AdminCreate">Skapa Kategorier & Reklamblad</a></span>
+                                <span><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-click="changePass()">Byt lösenord</a></span>
+                                <span ng-show="currentRole == 'User'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/User">Din Reklam</a></span>
+                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/Admin">Användarlista</a></span>
+                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/AdminCreate">Skapa Kategorier & Reklamblad</a></span>
+
+                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/Admin"><span class="glyphicon glyphicon-list"></span></a></span>
+                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/AdminCreate"><span class="glyphicon glyphicon-edit"></span></a></span>
                             </div>
                         </div>
                     </div>
                     <div class="navbar-text pull-right">
-                        <div ng-cloak style="color: orange; font-size: 1.5em;">
+                        <div ng-cloak style="color: orange; font-size: 12pt;">
                             <span style="margin-right: .5em;">{{cUser}} <span ng-if="cUser" class="glyphicon glyphicon-user"></span></span>
-                            <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">
+                            <a ng-click="logOut()" ng-show="displayLogOut" class="btn btn-sm rt-btnLogOut">
                                 <span class="glyphicon glyphicon-log-out"></span> Logga ut
                             </a>
-                            @*<span ng-show="!displayLogOut">
-                                <a style="color: #333333;" ng-href="#!/Login"><span class="glyphicon glyphicon-log-in"></span></a>
-                            </span>*@
                         </div>
                     </div>
                 </div>

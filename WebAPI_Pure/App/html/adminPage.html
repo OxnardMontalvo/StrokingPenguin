@@ -2,7 +2,7 @@
     <div class="col-sm-12 col-md-4" style="padding: 0;">
         <a ng-click="" style="cursor: not-allowed; color: gray; text-decoration: none;" class="btn btn-default rt-btn-roundCorner-left text-center"><span class="glyphicon glyphicon-list-alt"></span> Lista användare</a>
     </div>
-    <div class="col-sm-12 col-md-4 ma-mid-pad">
+    <div class="col-sm-12 col-md-4 rt-btnMid">
         <a ng-click="vm.refreshUserList()" class="btn btn-primary rt-btn-noRoundCorner rt-btn-fix text-center"><span class="glyphicon glyphicon-refresh"></span> Upddatera listan</a>
     </div>
     <div class="col-sm-12 col-md-4" style="padding: 0;">
@@ -14,7 +14,8 @@
     <div>
         <form class="form-group">
             <textarea class="form-control" id="msg" ng-model="vm.printInfoMsg" style="margin-top: 2em; max-width: 100%; max-height: 6.5em;" rows="4" placeholder="Kundmeddelande som vissas när man gör en utskrift."></textarea>
-            <input class="form-control btn btn-primary rt-btn-fix" style="width: 100%;" ng-click="vm.saveMsg()" type="button" value="Spara" />
+            <a class="form-control btn btn-primary rt-btn-fix" style="width: 100%;" ng-click="vm.saveMsg()"><span class="glyphicon glyphicon-save"></span> Spara meddelandet</a>
+            <!--<input class="form-control btn btn-primary rt-btn-fix" style="width: 100%;" ng-click="vm.saveMsg()" type="button" value="Spara" />-->
         </form>
         
     </div>

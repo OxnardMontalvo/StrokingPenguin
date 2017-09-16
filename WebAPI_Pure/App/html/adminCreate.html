@@ -17,7 +17,7 @@
                 </form>
             </div>
             <div class="panel-footer clearfix">
-                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormCat()">Spara</a></span>
+                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormCat()"><span class="glyphicon glyphicon-save"></span> Spara</a></span>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
                 </form>
             </div>
             <div class="panel-footer clearfix">
-                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormFlyer()">Spara</a></span>
+                <span><a class="pull-right btn btn-success" ng-click="vm.saveFormFlyer()"><span class="glyphicon glyphicon-save"></span> Spara</a></span>
             </div>
         </div>
     </div>
@@ -59,12 +59,12 @@
 
 <legend></legend>
 
-<div class="row">
+<div class="row rt-deviceShow">
     <div class="text-center text-primary">
         <h2>Ändra Kategorier & Reklamblad</h2>
     </div>
     <div class="row rt-main">
-        <div class="col-sm-12 col-md-offset-2 col-md-4" style="padding: 0; margin-right: .25em">
+        <div class="col-sm-12 col-md-offset-2 col-md-4 rt-btnCreate">
             <a ng-click="vm.catClick()" class="btn btn-primary rt-btn-roundCorner-left text-center"><span class="glyphicon glyphicon-list-alt"></span> Lista kategorier</a>
         </div>
         <div class="col-sm-12 col-md-4" style="padding: 0;">
@@ -93,10 +93,10 @@
                         <input ng-show="vm.selCat.ID == cat.ID" ng-model="cat.Active" class="checkbox checkbox-inline" type="checkbox" ng-checked="cat.Active" />
                     </td>
                     <td>
-                        <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.editCats(cat.ID)">Ändra</a></span>
-                        <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteCat(cat.ID)">Ta bort</a></span>
-                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveCatEdits(cat.ID)">Spara</a></span>
-                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleCat(cat.ID)">Avbryt</a></span>
+                        <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.editCats(cat.ID)"><span class="glyphicon glyphicon-edit"></span> Ändra</a></span>
+                        <span ng-hide="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteCat(cat.ID)"><span class="glyphicon glyphicon-remove"></span> Ta bort</a></span>
+                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveCatEdits(cat.ID)"><span class="glyphicon glyphicon-save"></span> Spara</a></span>
+                        <span ng-show="vm.selCat.ID == cat.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleCat(cat.ID)"><span class="glyphicon glyphicon-remove-circle"></span> Avbryt</a></span>
                     </td>
                 </tr>
             </tbody>
@@ -138,13 +138,57 @@
                         <select ng-show="vm.selFlyer.ID == flyer.ID" class="form-control dropdown" ng-model="vm.selectedCat" ng-options="c.Name for c in vm.cats track by c.ID"></select>
                     </td>
                     <td>
-                        <span ng-hide="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-info" ng-click="vm.editFlyer(flyer.ID)">Ändra</a></span>
-                        <span ng-hide="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteFlyer(flyer.ID)">Ta bort</a></span>
-                        <span ng-show="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveFlyerEdits(flyer.ID)">Spara</a></span>
-                        <span ng-show="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleFlyer(flyer.ID)">Avbryt</a></span>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-info" ng-click="vm.editFlyer(flyer.ID)"><span class="glyphicon glyphicon-edit"></span> Ändra</a></span>
+                        <span ng-hide="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-danger" ng-click="vm.deleteFlyer(flyer.ID)"><span class="glyphicon glyphicon-remove"></span> Ta bort</a></span>
+                        <span ng-show="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-success" ng-click="vm.saveFlyerEdits(flyer.ID)"><span class="glyphicon glyphicon-save"></span> Spara</a></span>
+                        <span ng-show="vm.selFlyer.ID == flyer.ID"><a class="btn btn-sm btn-info" ng-click="vm.cancleFlyer(flyer.ID)"><span class="glyphicon glyphicon-remove-circle"></span> Avbryt</a></span>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="row rt-deviceHidden">
+    <div class="text-center text-primary">
+        <h2>Ändra Kategorier & Reklamblad</h2>
+    </div>
+    <div class="row rt-main">
+        <div class="col-sm-12 col-md-offset-2 col-md-4 rt-btnCreate">
+            <a ng-click="vm.catClick()" class="btn btn-primary rt-btn-roundCorner-left text-center"><span class="glyphicon glyphicon-list-alt"></span> Lista kategorier</a>
+        </div>
+        <div class="col-sm-12 col-md-4" style="padding: 0;">
+            <a ng-click="vm.flyerClick()" class="btn btn-primary rt-btn-roundCorner-right text-center"><span class="glyphicon glyphicon-list-alt"></span> Lista reklamblad</a>
+        </div>
+    </div>
+
+    <div style="padding: 0 2em;">
+        <div ng-show="vm.displayCats && !vm.displayFlyers" style="margin: 1.5em 0;">
+            <div class="panel panel-primary" ng-repeat="cat in vm.cats">
+                <div class="panel-heading">
+                    <h3>{{cat.Name}}</h3>
+                </div>
+                <div class="panel-body">
+                    <p ng-if="cat.Active">Aktiverad: <span ng-hide="vm.selCat.ID == cat.ID" class="glyphicon glyphicon-ok"></span></p>
+                    <p ng-if="!cat.Active">Aktiverad: <span ng-hide="vm.selCat.ID == cat.ID" class="glyphicon glyphicon-remove"></span></p>
+                </div>
+            </div>
+        </div>
+        <div ng-show="vm.displayFlyers && !vm.displayCats" style="margin: 1.5em 0;">
+            <div class="panel panel-primary" ng-repeat="flyer in vm.flyers">
+                <div class="panel-heading">
+                    <h3>{{flyer.Name}}</h3>
+                </div>
+                <div class="panel-body">
+                    <p ng-if="flyer.Active">Aktiverad: <span ng-hide="vm.selFlyer.ID == flyer.ID" class="glyphicon glyphicon-ok"></span></p>
+                    <p ng-if="!flyer.Active">Aktiverad: <span ng-hide="vm.selFlyer.ID == flyer.ID" class="glyphicon glyphicon-remove"></span></p>
+
+                    <p>Post nummer från: <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.RangeMin}}</span></p>
+                    <p>Post nummer till: <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.RangeMax}}</span></p>
+
+                    <p>Kategori: <span ng-hide="vm.selFlyer.ID == flyer.ID">{{flyer.Category.Name}}</span></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

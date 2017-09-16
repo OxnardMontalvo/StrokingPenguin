@@ -1,12 +1,29 @@
-﻿.ma-mid-pad {
-    padding: 0 .125em;
-}
-
-.ma-has-error-border {
+﻿.ma-has-error-border {
     border: red 2px solid !important;
 }
 
 /*--NEW--*/
+.rt-btnMid {
+    padding: 0 .125em;
+}
+.rt-btnMid-right {
+    padding-right: .125em;
+}
+
+.rt-btnCreate {
+    padding: 0;
+    margin-right: .25em;
+}
+
+.rt-btnLogOut {
+    background-color: dimgrey;
+    color: orange;
+}
+.rt-btnLogOut:hover {
+    background-color: rgb(80, 80, 80);
+    color: orange;
+}
+
 .rt-btn-roundCorner {
     padding: 1em 0;
     border-radius: 2em;
@@ -62,6 +79,12 @@
     display: block;
 }
 .rt-deviceHidden {
+    display: none;
+}
+.rt-deviceShow-inline {
+    display: inline-block;
+}
+.rt-deviceHidden-inline {
     display: none;
 }
 
@@ -184,6 +207,16 @@
     list-style: none;
 }
 
+.rt-userPanel {
+    margin-right: 1em;
+    width: 25em;
+}
+
+.rt-userRepeat {
+    margin-top: 1em;
+    display: inline-block;
+    vertical-align: top;
+}
 
 /*==================================================
 =            Bootstrap 3 Media Queries             =
@@ -204,11 +237,46 @@
     .rt-deviceHidden {
         display: block;
     }
+
+    .rt-deviceShow-inline {
+        display: none;
+    }
+
+    .rt-deviceHidden-inline {
+        display: inline-block;
+    }
+
+    .rt-userPanel {
+        margin-right: 1em;
+        width: 20em;
+    }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (max-width : 768px) {
-    
+    .rt-btn-roundCorner-left {
+        padding: 1em 0;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .rt-btn-roundCorner-right {
+        padding: 1em 0;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .rt-btnMid {
+        padding: 0;
+    }
+    .rt-btnMid-right {
+        padding-right: 0;
+    }
+
+    .rt-btnCreate {
+        padding: 0;
+        margin-right: 0;
+    }
 }
 
 /* Extra Small Devices, Phones */
@@ -226,6 +294,17 @@
         padding: 1em 2em;
         cursor: pointer;
         min-width: 100%;
+    }
+
+    .rt-userPanel {
+        margin-right: 1em;
+        width: 100%;
+    }
+
+    .rt-userRepeat {
+        margin-top: 1em;
+        display: inline;
+        vertical-align: top;
     }
 }
 

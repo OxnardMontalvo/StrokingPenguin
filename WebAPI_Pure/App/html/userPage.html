@@ -1,14 +1,16 @@
-﻿<div class="row rt-main rt-userHeight">
-    <div class="col-md-4" ng-repeat="cat in vm.cats track by $index">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h2>Kategori {{cat.Name}}<span style="font-size: 9pt;" class="pull-right"> Välj alla <input style="margin-left: .5em;" type="checkbox" ng-checked="cat.bAll" ng-model="cat.bAll" ng-change="vm.checkAllChange(cat)" /></span></h2>
+﻿<div class="rt-main rt-userHeight clearfix">
+    <div class="rt-userRepeat" ng-repeat="cat in vm.cats | orderBy: 'Name' track by $index">
+        <div class="panel panel-primary rt-userPanel">
+            <div class="panel-heading clearfix">
+                <h2>{{cat.Name}}<span style="font-size: 9pt;" class="pull-right"> Välj alla <input style="margin-left: .5em;" type="checkbox" ng-checked="cat.bAll" ng-model="cat.bAll" ng-change="vm.checkAllChange(cat)" /></span></h2>
             </div>
-            <div class="panel-body">
-                <p style="margin-right: .5em;" ng-repeat="flyer in cat.Flyers track by $index">{{flyer.Name}}
-                 <span class="pull-right">
-                    <input type="checkbox" ng-checked="flyer.Selected" ng-model="flyer.Selected" ng-change="vm.checkChange(cat)" />
-                </span></p>
+            <div class="panel-body clearfix">
+                <p style="margin-right: .5em;" ng-repeat="flyer in cat.Flyers track by $index">
+                    {{flyer.Name}}
+                    <span class="pull-right">
+                        <input type="checkbox" ng-checked="flyer.Selected" ng-model="flyer.Selected" ng-change="vm.checkChange(cat)" />
+                    </span>
+                </p>
             </div>
         </div>
     </div>

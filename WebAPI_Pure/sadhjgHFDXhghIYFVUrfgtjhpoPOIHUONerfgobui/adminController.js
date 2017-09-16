@@ -66,13 +66,12 @@
                 vm.disableDuringLoad = false;
                 vm.btnText = "Ladda fler";
             }, function (error) {
-                console.log(error);
                 vm.errorMsg = error.statusText;
             });
             checkForMoreUsers(take);
         };
         vm.firstUsers(vm.take);
-        console.log(vm.users);
+
         // Load more users with rules for search, refreshed and such. Call the DB for the next users and push them too the array.
         // Also calls DB once too check if there are more users left after we grabbed ours.
         vm.loadMoreUsers = function (take) {
@@ -124,7 +123,6 @@
 
         // Save user changes to the DB.
         vm.saveUserEdit = function (id) {
-            console.log(vm.selUser);
             user.update({ id: id }, vm.selUser, function (data) {
                 isRefreshed = false;
                 vm.disableDuringLoad = false;
@@ -277,6 +275,7 @@
         vm.displayCats = false;
         vm.displayFlyers = false;
         vm.editMode = false;
+        var catChangesWithinDisplayCats = false; // Small refresh hack!
 
         vm.catClick = function () {
             vm.displayCats = true;
@@ -285,6 +284,17 @@
         vm.flyerClick = function () {
             vm.displayCats = false;
             vm.displayFlyers = true;
+
+            if (catChangesWithinDisplayCats) {
+                // Get the changes from DB. Not optimized, but working.
+                adminCreate.flyers.get(function (data) {
+                    if (data.length > 0) {
+                        angular.copy(data, vm.flyers);
+                    };
+                });
+                catChangesWithinDisplayCats = false;
+            };
+            
         };
 
         var copy;
@@ -303,7 +313,9 @@
             for (var i = 0; i < vm.flyers.length; i++) {
                 if (vm.flyers[i].ID == id) {
                     vm.selFlyer = vm.flyers[i];
+                    console.log(vm.selFlyer);
                     copy = JSON.parse(JSON.stringify(vm.selFlyer));
+                    vm.selectedCat.ID = vm.selFlyer.Category.ID;
                 };
             };
         };
@@ -311,14 +323,21 @@
         vm.saveCatEdits = function (id) {
             adminCreate.cats.update({ id: id }, vm.selCat, function (data) {
                 vm.editMode = false;
+                catChangesWithinDisplayCats = true;
             });
             vm.selCat = "";
         };
         vm.saveFlyerEdits = function (id) {
             vm.selFlyer.CategoryID = vm.selectedCat.ID;
-            console.log(vm.selFlyer);
             adminCreate.flyers.update({ id: id }, vm.selFlyer, function (data) {
                 vm.editMode = false;
+
+                // Get the changes from DB. Not optimized, but working.
+                adminCreate.flyers.get(function (data) {
+                    if (data.length > 0) {
+                        angular.copy(data, vm.flyers);
+                    };
+                });
             });
             vm.selFlyer = "";
         };
