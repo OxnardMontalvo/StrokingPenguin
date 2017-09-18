@@ -46,7 +46,6 @@
         vm.formData = {};
         vm.regForm = function () {
             user.save(vm.formData, function (response) {
-                console.log(response);
                 vm.formData = {};
                 $scope.regForm.$setPristine();
             });
@@ -143,7 +142,6 @@
         var vm = this;
 
         cm.get({ userId: $routeParams.userId, code: $routeParams.code }, function (response) {
-            console.log(response[0]);
             if (response[0] == "C") {
                 vm.cmMsg = "Tack, Du har nu bekräftat din epost.";
             } else {

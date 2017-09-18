@@ -9,25 +9,19 @@
         vm.printDisplayMsg = [];
 
         printMsg.get(function (response) {
-            //console.log(response);
             if (response.length > 0) {
                 angular.copy(response, vm.printDisplayMsg);
-                //console.log(vm.printDisplayMsg);
                 $('#msg').val(vm.printDisplayMsg[0].Bulletin);
             }
         });
         vm.saveMsg = function () {
             var custumorMsg = $('#msg').val();
-            //console.log(custumorMsg);
 
             if (vm.printDisplayMsg.length > 0) {
-                //console.log(vm.printInfoMsg);
                 printMsg.save({ id: vm.printDisplayMsg[0].ID }, JSON.stringify(custumorMsg), function (response) {
-                    //console.log(response);
                 });
             } else {
                 printMsg.saveFirst( JSON.stringify(custumorMsg), function (response) {
-                    //console.log(response);
                 });
             };
             
@@ -313,7 +307,6 @@
             for (var i = 0; i < vm.flyers.length; i++) {
                 if (vm.flyers[i].ID == id) {
                     vm.selFlyer = vm.flyers[i];
-                    console.log(vm.selFlyer);
                     copy = JSON.parse(JSON.stringify(vm.selFlyer));
                     vm.selectedCat.ID = vm.selFlyer.Category.ID;
                 };

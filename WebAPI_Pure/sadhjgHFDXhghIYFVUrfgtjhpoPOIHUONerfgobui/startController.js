@@ -20,7 +20,6 @@
             vm.btnText = "Skickar anmälan..."
             vm.disableDuringLoading = true;
             user.save(vm.formData, function (response) {
-                console.log(response);
                 vm.validMsg = true;
                 vm.btnText = "Anmäl dig";
                 vm.disableDuringLoading = false;
@@ -37,5 +36,3 @@
     });
 
 })();
-
-//vm.users.splice(vm.user.length - 1, 0, vm.user);

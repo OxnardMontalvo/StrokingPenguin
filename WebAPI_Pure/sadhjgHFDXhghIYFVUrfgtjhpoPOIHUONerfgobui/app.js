@@ -19,20 +19,19 @@
             controller: "adminCtrl",
             controllerAs: "vm",
             resolve: {
-                
+
+                loadMyCtrl: function ($ocLazyLoad) {
+                    // you can lazy load files for an existing module
+                    //$ocLazyLoad.load('App/js/adminController.js');
+                    return $ocLazyLoad.load('App/js/adminController.js');
+                },
                 checkRoleValidation: function (checkRole, $location) {
                     if (checkRole.getARole().$$state.value == false) {
                         $location.path("/Login");
                     } else {
                         return true;
                     }
-                },
-                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // you can lazy load files for an existing module
-                    $ocLazyLoad.load('App/js/adminController.js');
-                    $ocLazyLoad.load('sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/adminController.js');
-                    return;
-                }]
+                }
             }
          })
         .when("/AdminCreate", {
@@ -70,7 +69,6 @@
                     if (checkRole.getAURole().$$state.value == false) {
                         $location.path("/Login");
                     } else {
-                        console.log(checkRole.getAURole());
                         return true;
                     }
                 }
@@ -86,19 +84,19 @@
             controller: "userCtrl",
             controllerAs: "vm",
             resolve: {
+
+                loadMyCtrl: function ($ocLazyLoad) {
+                    // you can lazy load files for an existing module
+                    //$ocLazyLoad.load('App/js/userCtrl.js');
+                    return $ocLazyLoad.load('App/js/userCtrl.js');
+                },
                 checkRoleValidation: function (checkRole, $location) {
                     if (checkRole.getAURole().$$state.value == false) {
                         $location.path("/Login");
                     } else {
                         return true;
                     }
-                },
-                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // you can lazy load files for an existing module
-                    $ocLazyLoad.load('App/js/userCtrl.js');
-                    $ocLazyLoad.load('sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui/userCtrl.js');
-                    return;
-                }]
+                }
             }
         })
         .otherwise({
@@ -207,7 +205,6 @@
 
         $scope.newConfirmMail = function () {
             scm.get(function (response) {
-                console.log(response);
             });
             // Display the modal.
             window.addEventListener('click', clickOutside);
