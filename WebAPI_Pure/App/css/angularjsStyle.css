@@ -52,7 +52,7 @@
 }
 
 .rt-main {
-    margin: 5em 0 0 0;
+    margin: 7em 0 0 0;
 }
 
 .rt-formWrap {
@@ -61,7 +61,7 @@
 }
 
 .rt-infoMain {
-    margin: 6em 0 0 0;
+    margin: 8em 0 0 0;
 }
 
 .rt-infoTxt {
@@ -215,7 +215,6 @@
 }
 
 .rt-userRepeat {
-    margin-top: 1em;
     display: inline-block;
     vertical-align: top;
 }
@@ -231,6 +230,11 @@
 }
 
 .rt-usernameDisplay {
+    color: rgb(74, 143, 192);
+    font-size: 9pt;
+    margin-top: 2.5em;
+}
+.rt-usernameDisplay.a {
     color: black;
     font-size: 9pt;
     margin-top: 2.5em;
@@ -273,8 +277,15 @@
 /* Custome, iPad Pro */
 @media only screen and (max-width : 1024px) {
     .rt-usernameDisplay {
+        color: rgb(74, 143, 192);
+        font-size: 9pt;
+        margin-top: 2.5em;
+    }
+
+    .rt-usernameDisplay.a {
         color: black;
         font-size: 9pt;
+        margin-top: 2.5em;
     }
 }
 
@@ -338,9 +349,16 @@
     }
 
     .rt-userRepeat {
-        margin-top: 1em;
         display: inline;
         vertical-align: top;
+    }
+
+    .rt-main {
+        margin: 8.5em 0 0 0;
+    }
+
+    .rt-infoMain {
+        margin: 9.5em 0 0 0;
     }
 }
 
