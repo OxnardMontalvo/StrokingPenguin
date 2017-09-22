@@ -10,33 +10,39 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div ng-cloak ng-controller="userInfo" class="navbar navbar-inverse navbar-fixed-top">
+    <div ng-cloak ng-controller="userInfo" class="navbar navbar-fixed-top" style="background-color: rgb(167, 220, 248);">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span style="background-color: black;" class="icon-bar"></span>
+                    <span style="background-color: black;" class="icon-bar"></span>
+                    <span style="background-color: black;" class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                <a href="/"><img src="~/App/img/ReklamTack_logo_color_fixed.png" style="width:259px; height:93px; padding: .25em 0;" /></a>
             </div>
             <div ng-cloak class="navbar-collapse collapse">
                 <div>
                     <div class="navbar-text">
                         <div ng-cloak ng-show="displayLogOut">
-                            <div>
-                                <span><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-click="changePass()">Byt lösenord</a></span>
-                                <span ng-show="currentRole == 'User'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/User">Din Reklam</a></span>
-                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/Admin">Användarlista</a></span>
-                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/AdminCreate">Skapa Kategorier & Reklamblad</a></span>
+                            <div class="rt-navLinksGroup">
+                                <span class="rt-deviceShow-inline"><a class="rt-navLinks" ng-click="changePass()"><span class="glyphicon glyphicon-lock"></span> Byt lösenord</a></span>
+                                <span class="rt-deviceHidden-inline"><a class="rt-navLinks" ng-click="changePass()"><span class="glyphicon glyphicon-lock"></span></a></span>
 
-                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/Admin"><span class="glyphicon glyphicon-list"></span></a></span>
-                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: .5em;" ng-href="#!/AdminCreate"><span class="glyphicon glyphicon-edit"></span></a></span>
+                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'User'"><a class="rt-navLinks" ng-href="#!/User"><span class="glyphicon glyphicon-file"></span> Din Reklam</a></span>
+                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'User'"><a class="rt-navLinks" ng-href="#!/User"><span class="glyphicon glyphicon-file"></span></a></span>
+
+                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'Admin'"><a class="rt-navLinks" ng-href="#!/Admin"><span class="glyphicon glyphicon-list"></span> Användarlista</a></span>
+                                <span class="rt-deviceShow-inline" ng-show="currentRole == 'Admin'"><a class="rt-navLinks" margin-right: .5em;" ng-href="#!/AdminCreate"><span class="glyphicon glyphicon-edit"></span> Skapa Kategorier & Reklamblad</a></span>
+
+                                
+                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'Admin'"><a class="rt-navLinks" ng-href="#!/Admin"><span class="glyphicon glyphicon-list"></span></a></span>
+                                <span class="rt-deviceHidden-inline" ng-show="currentRole == 'Admin'"><a class="rt-navLinks" ng-href="#!/AdminCreate"><span class="glyphicon glyphicon-edit"></span></a></span>
                             </div>
                         </div>
                     </div>
                     <div class="navbar-text pull-right">
-                        <div ng-cloak style="color: orange; font-size: 12pt;">
+                        <div ng-cloak class="rt-usernameDisplay">
                             <span style="margin-right: .5em;">{{cUser}} <span ng-if="cUser" class="glyphicon glyphicon-user"></span></span>
                             <a ng-click="logOut()" ng-show="displayLogOut" class="btn btn-sm rt-btnLogOut">
                                 <span class="glyphicon glyphicon-log-out"></span> Logga ut

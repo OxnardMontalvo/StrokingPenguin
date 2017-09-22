@@ -16,12 +16,14 @@
 }
 
 .rt-btnLogOut {
-    background-color: dimgrey;
-    color: orange;
+    background-color: rgb(96, 186, 239);
+    color: black;
+    border-radius: 0;
 }
 .rt-btnLogOut:hover {
-    background-color: rgb(80, 80, 80);
-    color: orange;
+    background-color: rgba(96, 186, 239, .50);
+    color: black;
+    border-radius: 0;
 }
 
 .rt-btn-roundCorner {
@@ -50,7 +52,7 @@
 }
 
 .rt-main {
-    margin: 4em 0 0 0;
+    margin: 5em 0 0 0;
 }
 
 .rt-formWrap {
@@ -59,7 +61,7 @@
 }
 
 .rt-infoMain {
-    margin: 3.2em 0 0 0;
+    margin: 6em 0 0 0;
 }
 
 .rt-infoTxt {
@@ -140,7 +142,7 @@
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 0;
+    top: 2.5em;
     height: 100%;
     width: 100%;
     overflow: auto;
@@ -156,11 +158,11 @@
 
 .rt-modal-header {
     width: 100%;
-    background-color: rgba(0, 0, 0 , .75);
+    background-color: rgba(167, 220, 248, .75);
     font-size: 24pt;
     font-weight: bold;
     padding: .25em;
-    color: orange;
+    color: black;
 }
 
 .rt-modal-body {
@@ -192,7 +194,7 @@
 
 .rt-xModal a {
     font-size: 24pt;
-    color: lightgray;
+    color: black;
     cursor: pointer;
     float: right;
 }
@@ -216,6 +218,22 @@
     margin-top: 1em;
     display: inline-block;
     vertical-align: top;
+}
+
+.rt-navLinks {
+    cursor: pointer;
+    color: black;
+    margin-right: .5em;
+    font-size: 9pt;
+}
+.rt-navLinksGroup {
+    margin-top: 2.8em;
+}
+
+.rt-usernameDisplay {
+    color: black;
+    font-size: 9pt;
+    margin-top: 2.5em;
 }
 
 /*==================================================
@@ -252,6 +270,14 @@
     }
 }
 
+/* Custome, iPad Pro */
+@media only screen and (max-width : 1024px) {
+    .rt-usernameDisplay {
+        color: black;
+        font-size: 9pt;
+    }
+}
+
 /* Small Devices, Tablets */
 @media only screen and (max-width : 768px) {
     .rt-btn-roundCorner-left {
@@ -276,6 +302,16 @@
     .rt-btnCreate {
         padding: 0;
         margin-right: 0;
+    }
+
+    .rt-navLinks {
+        cursor: pointer;
+        color: black;
+        margin-right: .5em;
+        font-size: 15pt;
+    }
+    .rt-navLinksGroup {
+        margin-top: 2.5em;
     }
 }
 
@@ -316,5 +352,10 @@
         margin: 0 auto;
         padding: 1em;
         border: solid 4px black;
+    }
+
+    .rt-formWrap {
+        width: 100%;
+        margin: 0 auto;
     }
 }
