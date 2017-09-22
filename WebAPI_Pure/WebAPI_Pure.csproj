@@ -263,6 +263,7 @@
     <Content Include="App\html\restorePasswordPage.html" />
     <Content Include="App\html\startPage.html" />
     <Content Include="App\img\Ica-Logo-TU.svg" />
+    <Content Include="App\img\ReklamTack_logo_color_fixed.png" />
     <Content Include="ocLazyLoad.min.js" />
     <Content Include="sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui\adminController.js" />
     <Content Include="sadhjgHFDXhghIYFVUrfgtjhpoPOIHUONerfgobui\app.js" />

@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top" style="background-color: rgb(167, 220, 248);">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -18,26 +18,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("ReklamTack.nu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                <a href="/"><img src="~/App/img/ReklamTack_logo_color_fixed.png" style="width: 259px; height: 93px;" /></a>
             </div>
             <div class="navbar-collapse collapse">
                 <div ng-cloak ng-controller="userInfo">
-                    <div class="navbar-text">
+                    <div class="navbar-text" style="padding-top: 2.8em;">
                         <div ng-cloak ng-show="displayLogOut">
                             <div>
-                                <span><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-click="changePass()">Byt lösenord</a></span>
-                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: orange; margin-right: 1em;" ng-href="#!/Admin">Admin Kontroller</a></span>
+                                <span><a style="cursor: pointer; color: black; margin-right: 1em;" ng-click="changePass()">Byt lösenord</a></span>
+                                <span ng-show="currentRole == 'Admin'"><a style="cursor: pointer; color: black; margin-right: 1em;" ng-href="#!/Admin">Admin Kontroller</a></span>
                             </div>
                         </div>
                     </div>
-                    <div class="navbar-text pull-right">
-                        <div ng-cloak style="color: orange; font-size: 1.5em;">
-                            <span style="margin-right: .5em;">{{cUser}}</span>
-                            <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: dimgrey; color: orange;" class="btn btn-sm">
+                    <div class="navbar-text pull-right" style="padding-top: 2em;">
+                        <div ng-cloak style="color: black; font-size: 1.5em;">
+                            <span style="margin-right: .5em; color: rgb(73, 142, 191); font-size: 9pt;">{{cUser}}</span>
+                            <a ng-click="logOut()" ng-show="displayLogOut" style="background-color: rgb(73, 142, 191); color: black;" class="btn btn-sm">
                                 <span class="glyphicon glyphicon-log-out"></span> Logga ut
                             </a>
                             <span ng-show="!displayLogOut">
-                                <a style="color: #333333;" ng-href="#!/Login"><span class="glyphicon glyphicon-log-in"></span></a>
+                                <a style="color: rgb(170, 212, 242);" ng-href="#!/Login"><span class="glyphicon glyphicon-log-in"></span></a>
                             </span>
                         </div>
                     </div>
