@@ -28,6 +28,7 @@ namespace WebAPI_Pure.Models {
 
 	public class AppDB : IdentityDbContext<AppUser> {
 		public AppDB() : base("StrokingPenguin", throwIfV1Schema: false) { }
+		//public AppDB() : base("DefaultConnection") { }
 
 		public static AppDB Create() {
 			return new AppDB();
