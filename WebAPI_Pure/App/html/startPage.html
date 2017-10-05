@@ -74,22 +74,31 @@
                     </div>
                     <div class="form-group" ng-form="Pr">
                         <label>Lösenord</label>
-                        <input class="form-control input-lg" ng-model="vm.formData.Password" type="password" placeholder="Lösenord" ng-required="true" />
+                        <input class="form-control input-lg" ng-model="vm.formData.Password" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="12" ng-maxlength="512" />
                         <div ng-show="Pr.$invalid && Pr.$dirty">
                             <span class="text-danger" ng-show="Pr.$error.required">Fältet måste vara ifyllt!</span>
+                            <span class="text-danger" ng-show="Pr.$error.minlength">Lösenordet måste minst innehålla 12 tecken!</span>
+                            <span class="text-danger" ng-show="Pr.$error.maxlength">Lösenordet kan inte överstiga 512 tecken!</span>
                         </div>
                     </div>
                     <div class="form-group" ng-form="PrC">
                         <label>Repetera ditt lösenord</label>
-                        <input class="form-control input-lg" ng-model="vm.formData.ConfirmPassword" type="password" placeholder="Repetera ditt lösenord" ng-required="true" />
+                        <input compare-to="vm.formData.Password" class="form-control input-lg" ng-model="vm.formData.ConfirmPassword" type="password" placeholder="Repetera ditt lösenord" ng-required="true" ng-minlength="12" ng-maxlength="512" />
                         <div ng-show="PrC.$invalid && PrC.$dirty">
                             <span class="text-danger" ng-show="PrC.$error.required">Fältet måste vara ifyllt!</span>
+                            <p class="text-danger" ng-show="PrC.$error.compareTo">Lösenorden stämer ej överrens!</p>
                         </div>
                     </div>
                     <div class="text-center">
-                        <button ng-class="{'btn-success': regForm.$valid}" ng-disabled="regForm.$invalid" type="submit" class="btn btn-default btn-lg rt-btn-fix"><span></span> Registrera dig</button>
+                        <button id="regBtn" ng-class="{'btn-success': regForm.$valid}" ng-disabled="regForm.$invalid" type="submit" class="btn btn-default btn-lg rt-btn-fix"><span></span> Registrera dig</button>
                     </div>
                 </form>
+                <div class="text-center" ng-show="vm.regMsg">
+                    <p class="text-success">{{vm.regMsg}}</p>
+                </div>
+                <div class="text-center" ng-show="vm.errorMsg">
+                    <p class="text-danger">{{vm.errorMsg}}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -108,7 +117,7 @@
                     <div class="form-group clearfix" ng-form="P">
                         <label>Lösenord</label>
                         <span><a style="cursor: pointer; float: right;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
-                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="6" ng-maxlength="256" />
+                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="12" ng-maxlength="256" />
                     </div>
                     <div class="text-center">
                         <button ng-class="{'btn-success': loginForm.$valid}" ng-disabled="loginForm.$invalid" type="submit" class="btn btn-default btn-lg rt-btn-fix"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>

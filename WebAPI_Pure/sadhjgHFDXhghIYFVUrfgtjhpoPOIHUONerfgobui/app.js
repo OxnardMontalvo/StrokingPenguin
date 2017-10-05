@@ -65,7 +65,6 @@
             controllerAs: "vm",
             resolve: {
                 checkRoleValidation: function (checkRole, $location) {
-                    console.log(checkRole.getAURole().$$state.value);
                     if (checkRole.getAURole().$$state.value == false) {
                         $location.path("/Login");
                     } else {

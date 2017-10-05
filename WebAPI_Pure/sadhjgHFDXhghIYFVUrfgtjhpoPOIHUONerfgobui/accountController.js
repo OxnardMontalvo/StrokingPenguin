@@ -46,11 +46,15 @@
         vm.formData = {};
         vm.regForm = function () {
             user.save(vm.formData, function (response) {
+                vm.errorMsg = ""
                 vm.formData = {};
+                vm.regMsg = "Tack för registreringen."
                 $scope.regForm.$setPristine();
+            }, function (error) {
+                vm.errorMsg = error.statusText;
             });
         };
-
+        
         //Logging in code.
         vm.userData = {};
 
@@ -150,6 +154,23 @@
         }, function (error) {
             vm.errorMsg = error.statusText;
         });
+    })
+    .directive("compareTo", function () {
+        return {
+            require: "ngModel",
+            scope:
+            {
+                confirmPassword: "=compareTo"
+            },
+            link: function (scope, element, attributes, modelVal) {
+                modelVal.$validators.compareTo = function (val) {
+                    return val == scope.confirmPassword;
+                };
+                scope.$watch("confirmPassword", function () {
+                    modelVal.$validate();
+                });
+            }
+        };
     });
 
 })();
