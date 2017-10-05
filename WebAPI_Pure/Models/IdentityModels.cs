@@ -115,7 +115,7 @@ namespace WebAPI_Pure.Models {
 		public int? DistrictNumber { get; set; }
 		public string DeliveryOrderNumber { get; set; }
 		[Required]
-		[StringLength(512, MinimumLength = 6)]
+		[StringLength(512, MinimumLength = 12)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
@@ -154,7 +154,7 @@ namespace WebAPI_Pure.Models {
 		public string OldPassword { get; set; }
 
 		[Required]
-		[StringLength(512, MinimumLength = 6)]
+		[StringLength(512, MinimumLength = 12)]
 		[DataType(DataType.Password)]
 		[Display(Name = "New password")]
 		public string NewPassword { get; set; }
@@ -179,7 +179,7 @@ namespace WebAPI_Pure.Models {
 		public string Email { get; set; }
 
 		[Required]
-		[StringLength(512, MinimumLength = 6)]
+		[StringLength(512, MinimumLength = 12)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
