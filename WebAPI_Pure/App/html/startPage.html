@@ -112,12 +112,12 @@
                 <form class="" ng-submit="vm.login()" name="loginForm">
                     <div class="form-group" ng-form="Email">
                         <label>Epost</label>
-                        <input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" ng-pattern="/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/" ng-required="true" />
+                        <input ng-model="vm.userData.email" class="form-control input-lg" type="email" placeholder="Epost" ng-required="true" />
                     </div>
                     <div class="form-group clearfix" ng-form="P">
                         <label>Lösenord</label>
                         <span><a style="cursor: pointer; float: right;" ng-click="vm.forgotPassword()">Glömt lösenord</a></span>
-                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" ng-minlength="12" ng-maxlength="256" />
+                        <input ng-model="vm.userData.password" class="form-control input-lg" type="password" placeholder="Lösenord" ng-required="true" />
                     </div>
                     <div class="text-center">
                         <button ng-class="{'btn-success': loginForm.$valid}" ng-disabled="loginForm.$invalid" type="submit" class="btn btn-default btn-lg rt-btn-fix"><span class="glyphicon glyphicon-log-in"></span> Logga in</button>
