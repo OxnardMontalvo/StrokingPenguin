@@ -13,9 +13,8 @@
 <div class="rt-hideForPrint">
     <div>
         <form class="form-group">
-            <textarea class="form-control" id="msg" ng-model="vm.printInfoMsg" style="margin-top: 2em; max-width: 100%; max-height: 6.5em;" rows="4" placeholder="Kundmeddelande som vissas när man gör en utskrift."></textarea>
+            <textarea class="form-control" id="msg" ng-model="vm.printInfoMsg" style="margin-top: 2em; max-width: 100%; max-height: 6.5em;" rows="4" placeholder="Kundmeddelande som visas när man gör en utskrift."></textarea>
             <a class="form-control btn btn-primary rt-btn-fix" style="width: 100%;" ng-click="vm.saveMsg()"><span class="glyphicon glyphicon-save"></span> Spara meddelandet</a>
-            <!--<input class="form-control btn btn-primary rt-btn-fix" style="width: 100%;" ng-click="vm.saveMsg()" type="button" value="Spara" />-->
         </form>
         
     </div>
@@ -125,8 +124,8 @@
     </div>
 </div>
 
-<div class="break rt-onlyForPrint" ng-repeat="user in vm.users track by $index" ng-if="user.DistrictNumber || user.DeliveryOrderNumber">
-    <!--<img class="rt-footerLogoImg" src="https://www.sdr.se/images/main-logo.png" style="width: 150px; height: auto;" />-->
+<div class="break rt-onlyForPrint" ng-repeat="user in vm.users track by $index" ng-if="(user.DistrictNumber || user.DeliveryOrderNumber) && user.Flyers.length > 0">
+    <img src="App/img/ReklamTack_logo_color_fixed.png" style="width:259px; height:93px;" />
     <div class="distDeliv">
         <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
     </div>
@@ -134,6 +133,7 @@
         <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
         <p>{{user.Address}}</p>
         <span>{{user.PostalCode}} {{user.County}}</span>
+        <p class="distDelivTwo">Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</p>
     </div>
     <div class="message">
         <p>
@@ -141,7 +141,13 @@
         </p>
     </div>
     <div class="userFlyers">
-        <span style="font-size: 14pt;" ng-repeat="flyer in user.Flyers">{{flyer.Name}} | </span>
+        <p ng-repeat="flyer in user.Flyers | limitTo: 30:0">{{flyer.Name}}</p>
+    </div>
+    <div class="userFlyers flyersMiddle">
+        <p ng-repeat="flyer in user.Flyers | limitTo: 30:30">{{flyer.Name}}</p>
+    </div>
+    <div class="userFlyers flyersRight">
+        <p ng-repeat="flyer in user.Flyers | limitTo: 30:60">{{flyer.Name}}</p>
     </div>
 </div>
 

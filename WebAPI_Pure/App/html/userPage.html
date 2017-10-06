@@ -1,4 +1,20 @@
-﻿<div class="rt-main rt-userHeight clearfix">
+﻿<div class="rt-main rt-userHeight text-center" ng-show="vm.loadingBool">
+    <span class="text-info text-center" style="font-size: 18pt;">{{vm.loadingMsg}}Loading</span>
+</div>
+<div class="rt-main rt-userHeight text-center text-info">
+    <div>
+        <p style="font-size: 18pt;">
+            Välkommen
+        </p>
+        <p style="font-size: 14pt;">
+            Du kan nu klicka i dem trycksaker du är intresserad av, du kan ändra dina val när som helst.
+        </p>
+        <p style="font-size: 14pt;">
+            När nya kategorier och trycksaker blir aktuella kommer du automatiskt se dem här.
+        </p>
+    </div>
+</div>
+<div class="rt-catagoryField rt-userHeight clearfix">
     <div class="rt-userRepeat" ng-repeat="cat in vm.cats | orderBy: 'Name' track by $index">
         <div class="panel panel-primary rt-userPanel">
             <div class="panel-heading clearfix">

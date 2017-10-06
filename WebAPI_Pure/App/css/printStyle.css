@@ -46,21 +46,40 @@ span {
     right: 0;
     top: 0;
 }
+.distDelivTwo {
+    font-size: 9pt;
+}
 
 .userInfo {
     position: absolute;
-    right: 25em;
+    right: 12.8em;
     top: 5.5em;
 }
 
 .message {
-    width: 45%;
+    width: 50%;
+    height: 10em;
     position: absolute;
     left: 0;
-    top: 5.5em;
+    top: 7em;
+    overflow: hidden;
 }
 
 .userFlyers {
     position: absolute;
-    top: 15em;
+    top: 17.5em;
+    width: 33%;
+    height: 42em;
+    overflow: hidden;
+}
+.userFlyers,p  {
+    font-size: 12pt;
+}
+
+.flyersMiddle {
+    left: 15.20em;
+}
+
+.flyersRight {
+    right: 0;
 }

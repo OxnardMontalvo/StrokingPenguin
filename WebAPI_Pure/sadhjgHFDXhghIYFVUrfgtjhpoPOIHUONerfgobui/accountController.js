@@ -43,15 +43,26 @@
         vm.show = false;
         vm.phaseOneHide = false;
 
+        vm.loadingMsg = "";
+        vm.loadingBool = false;
+
         vm.formData = {};
         vm.regForm = function () {
+            vm.loadingBool = true;
+            vm.loadingMsg = "Registrering pågår...";
             user.save(vm.formData, function (response) {
                 vm.errorMsg = ""
                 vm.formData = {};
                 vm.regMsg = "Tack för registreringen."
                 $scope.regForm.$setPristine();
+
+                vm.loadingBool = false;
+                vm.loadingMsg = "";
             }, function (error) {
-                vm.errorMsg = error.statusText;
+                vm.regErrorMsg = error.statusText;
+
+                vm.loadingBool = false;
+                vm.loadingMsg = "";
             });
         };
         
@@ -90,15 +101,26 @@
 
         vm.formData = {};
 
+        vm.loadingMsg = "";
+        vm.loadingBool = false;
+
         vm.changePassword = function () {
+            vm.loadingMsg = "Ändrar lösenordet...";
+            vm.loadingBool = true;
             changePass.update(vm.formData, function (response) {
                 if (response.Succeeded) {
                     vm.formData = {};
                     $scope.changeForm.$setPristine();
                     vm.msg = "Lösenordet ändrat."
+
+                    vm.loadingMsg = "";
+                    vm.loadingBool = false;
                 };
             }, function (error) {
                 vm.errorMsg = error.statusText;
+
+                vm.loadingMsg = "";
+                vm.loadingBool = false;
             });
         };
 
@@ -110,14 +132,25 @@
         vm.msg = "";
         vm.validMsg = false;
 
+        vm.loadingMsg = "";
+        vm.loadingBool = false;
+
         vm.send = function () {
+            vm.loadingMsg = "Länken skickas...";
+            vm.loadingBool = true;
             fp.get(vm.formData, function (response) {
                 vm.msg = "Länken är nu skickad till den angivna eposten.";
                 vm.validMsg = true;
                 vm.formData = {};
                 $scope.forgotForm.$setPristine();
+
+                vm.loadingMsg = "";
+                vm.loadingBool = false;
             }, function (error) {
                 vm.errorMsg = error.statusText;
+
+                vm.loadingMsg = "";
+                vm.loadingBool = false;
             });
         };
 

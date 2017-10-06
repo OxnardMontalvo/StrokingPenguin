@@ -51,6 +51,10 @@
     height: auto;
 }
 
+.rt-catagoryField {
+    margin: 1.5em 0;
+}
+
 .rt-main {
     margin: 7em 0 0 0;
 }

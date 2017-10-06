@@ -5,10 +5,16 @@
         // The start controller for displaying the info and getting the user information.
         .controller("userCtrl", function (user, userInfo, userAll) {
             var vm = this;
+
+            vm.loadingMsg = "Laddar...";
+            vm.loadingBool = true;
             
             vm.cats = [];
             userInfo.get(function (data) {
                 angular.copy(data, vm.cats);
+
+                vm.loadingMsg = "";
+                vm.loadingBool = false;
             });
 
             vm.checkChange = function (cat) {

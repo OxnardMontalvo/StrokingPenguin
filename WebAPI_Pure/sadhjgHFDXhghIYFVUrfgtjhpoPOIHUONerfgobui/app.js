@@ -22,7 +22,6 @@
 
                 loadMyCtrl: function ($ocLazyLoad) {
                     // you can lazy load files for an existing module
-                    //$ocLazyLoad.load('App/js/adminController.js');
                     return $ocLazyLoad.load('App/js/uwefvyACodfiusge.js');
                 },
                 checkRoleValidation: function (checkRole, $location) {
@@ -86,7 +85,6 @@
 
                 loadMyCtrl: function ($ocLazyLoad) {
                     // you can lazy load files for an existing module
-                    //$ocLazyLoad.load('App/js/userCtrl.js');
                     return $ocLazyLoad.load('App/js/dfgsihsdfUCaergdstd.js');
                 },
                 checkRoleValidation: function (checkRole, $location) {

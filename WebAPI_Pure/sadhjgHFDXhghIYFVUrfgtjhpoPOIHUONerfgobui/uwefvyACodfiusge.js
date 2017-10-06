@@ -14,14 +14,36 @@
                 $('#msg').val(vm.printDisplayMsg[0].Bulletin);
             }
         });
+
         vm.saveMsg = function () {
-            var custumorMsg = $('#msg').val();
+            var custumorMsg = "";
+            if ($('#msg').val() == "") {
+                custumorMsg = "Ingen ny information.";
+            } else {
+                custumorMsg = $('#msg').val();
+            }
 
             if (vm.printDisplayMsg.length > 0) {
                 printMsg.save({ id: vm.printDisplayMsg[0].ID }, JSON.stringify(custumorMsg), function (response) {
+
+                    printMsg.get(function (response) {
+                        console.log(response);
+                        if (response.length > 0) {
+                            angular.copy(response, vm.printDisplayMsg);
+                            $('#msg').val(vm.printDisplayMsg[0].Bulletin);
+                        }
+                    });
                 });
             } else {
-                printMsg.saveFirst( JSON.stringify(custumorMsg), function (response) {
+                printMsg.saveFirst(JSON.stringify(custumorMsg), function (response) {
+
+                    printMsg.get(function (response) {
+                        console.log(response);
+                        if (response.length > 0) {
+                            angular.copy(response, vm.printDisplayMsg);
+                            $('#msg').val(vm.printDisplayMsg[0].Bulletin);
+                        }
+                    });
                 });
             };
             
@@ -258,7 +280,7 @@
                 });
             });
         };
-
+        
         vm.flyers = [];
         adminCreate.flyers.get(function (data) {
             if (data.length > 0) {
