@@ -21,6 +21,10 @@ span {
     border: 1px solid transparent;
 }
 
+.break:nth-last-child(2) {
+    page-break-after: avoid;
+}
+
 .rt-onlyForPrint {
     display: block;
 }
