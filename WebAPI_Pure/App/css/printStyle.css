@@ -56,34 +56,48 @@ span {
 
 .userInfo {
     position: absolute;
-    right: 12.8em;
+    right: 13.8em;
     top: 5.5em;
 }
 
 .message {
-    width: 50%;
-    height: 10em;
+    width: 40%;
+    height: 61em;
     position: absolute;
     left: 0;
     top: 7em;
     overflow: hidden;
+    padding: 0 .25em;
+    border-right: 1px solid black;
 }
 
 .userFlyers {
     position: absolute;
-    top: 17.5em;
-    width: 33%;
-    height: 42em;
+    top: 14.5em;
+    width: 30%;
+    height: 45em;
     overflow: hidden;
+    padding: 0 .5em;
 }
 .userFlyers,p  {
     font-size: 12pt;
 }
 
+.flyersFirst {
+    left: 18.15em;
+}
+
 .flyersMiddle {
-    left: 15.20em;
+    /*left: 15.20em;*/
+    right: 0;
 }
 
 .flyersRight {
     right: 0;
+}
+
+.productHeader {
+    position: absolute;
+    top: 14em;
+    left: 21em;
 }
