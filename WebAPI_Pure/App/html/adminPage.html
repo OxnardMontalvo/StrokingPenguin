@@ -126,9 +126,6 @@
 
 <div class="break rt-onlyForPrint" ng-repeat="user in vm.users track by $index" ng-if="(user.DistrictNumber || user.DeliveryOrderNumber) && user.Flyers.length > 0">
     <img src="App/img/ReklamTack_logo_color_fixed.png" style="width:259px; height:93px;" />
-    <!--<div class="distDeliv">
-        <span>Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</span>
-    </div>-->
     <div class="userInfo">
         <p style="margin-bottom: 1.8em;">{{user.Name}}</p>
         <p>{{user.Address}}</p>
@@ -136,19 +133,17 @@
         <p class="distDelivTwo">Distrikt nr: {{user.DistrictNumber}}  |   Gång nr: {{user.DeliveryOrderNumber}}</p>
     </div>
     <div class="message">
-        <p>
-            {{vm.printDisplayMsg[0].Bulletin}}
-        </p>
+        <p>{{vm.printDisplayMsg[0].Bulletin}}</p>
     </div>
     <div class="productHeader">
-        <h4>Veckans produkter</h4>
+        <h2>Veckans produkter</h2>
     </div>
     <div class="userFlyers flyersFirst">
-        <p ng-repeat="flyer in user.Flyers | limitTo: 32:0">{{flyer.Name}}</p>
+        <p ng-repeat="flyer in user.Flyers | limitTo: 31:0">{{flyer.Name}}</p>
     </div>
-    <div class="userFlyers flyersMiddle">
-        <p ng-repeat="flyer in user.Flyers | limitTo: 32:32">{{flyer.Name}}</p>
-    </div>
+    <!--<div class="userFlyers flyersMiddle">
+        <p ng-repeat="flyer in user.Flyers | limitTo: 31:31">{{flyer.Name}}</p>
+    </div>-->
     <!--<div class="userFlyers flyersRight">
         <p ng-repeat="flyer in user.Flyers | limitTo: 30:60">{{flyer.Name}}</p>
     </div>-->
