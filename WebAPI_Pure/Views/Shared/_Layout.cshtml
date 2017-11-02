@@ -76,12 +76,17 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>
-                &copy; @DateTime.Now.Year - ReklamTack.nu i samarbete med <span>
-                    <img class="rt-footerLogoImg" src="https://www.sdr.se/images/main-logo.png" />
-                </span>
-            </p>
+        <footer class="clearfix">
+            <div class="pull-left rt-contactInfo">
+                <p>Vid frågor kontakta oss via:</p>
+                <p class="rt-contactP"><span class="glyphicon glyphicon-envelope"></span> <a href="mailto:info@reklamtack.nu"> info@reklamtack.nu</a></p>
+                <p class="rt-contactP"><span class="glyphicon glyphicon-earphone"></span> 0470-30081</p>
+            </div>
+            <div class="pull-left">
+                <p>&copy; @DateTime.Now.Year - ReklamTack.nu i samarbete med
+                    <span><img class="rt-footerLogoImg" src="https://www.sdr.se/images/main-logo.png" /></span>
+                </p>
+            </div>
         </footer>
     </div>
 

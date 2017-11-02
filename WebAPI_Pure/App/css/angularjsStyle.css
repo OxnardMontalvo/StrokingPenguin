@@ -244,6 +244,14 @@
     margin-top: 2.5em;
 }
 
+.rt-contactInfo {
+    margin-right: 7.5em;
+}
+.rt-contactP {
+    margin: 0;
+    padding: 0;
+}
+
 /*==================================================
 =            Bootstrap 3 Media Queries             =
 ==================================================*/
@@ -278,6 +286,13 @@
     }
 }
 
+/* Custome, iPad Pro rotated*/
+/*@media only screen and (max-width : 1366px) {
+    .rt-contactInfo {
+        margin-right: 9em;
+    }
+}*/
+
 /* Custome, iPad Pro */
 @media only screen and (max-width : 1024px) {
     .rt-usernameDisplay {
@@ -290,6 +305,10 @@
         color: black;
         font-size: 9pt;
         margin-top: 2.5em;
+    }
+
+    .rt-contactInfo {
+        margin-right: 2em;
     }
 }
 

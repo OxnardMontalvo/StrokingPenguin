@@ -20,6 +20,8 @@
         vm.displayLogin = function () {
             window.addEventListener('click', clickOutside);
             modalLogIn.style.display = 'block';
+
+            modalReg.style.display = 'none';
         }
 
         // Function to exit by clicking on the modal.
@@ -53,7 +55,7 @@
             user.save(vm.formData, function (response) {
                 vm.errorMsg = ""
                 vm.formData = {};
-                vm.regMsg = "Tack för registreringen."
+                vm.regMsg = "Du är nu registrerad och kan nu logga in och välja dina trycksaker."
                 $scope.regForm.$setPristine();
 
                 vm.loadingBool = false;

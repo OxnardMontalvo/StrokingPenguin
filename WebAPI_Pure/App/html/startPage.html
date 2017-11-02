@@ -90,7 +90,8 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button id="regBtn" ng-class="{'btn-success': regForm.$valid}" ng-disabled="regForm.$invalid || vm.loadingBool" type="submit" class="btn btn-default btn-lg rt-btn-fix"><span></span> Registrera dig</button>
+                        <button ng-hide="vm.regMsg" id="regBtn" ng-class="{'btn-success': regForm.$valid}" ng-disabled="regForm.$invalid || vm.loadingBool" type="submit" class="btn btn-default btn-lg rt-btn-fix"><span></span> Registrera dig</button>
+                        <a ng-show="vm.regMsg" ng-click="vm.displayLogin()" class="rt-infoBtn rt-infoBtn-default">Logga in</a>
                     </div>
                 </form>
                 <div class="text-center" ng-show="vm.loadingBool">
